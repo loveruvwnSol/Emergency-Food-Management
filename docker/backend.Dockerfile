@@ -7,6 +7,4 @@ RUN go install github.com/cosmtrek/air@v1.29.0
 
 WORKDIR /go/src/app
 
-RUN go mod init
-
 CMD ["air"]
