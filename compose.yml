@@ -1,6 +1,6 @@
 services:
   frontend:
-    container_name: frontend
+    container_name: EFM-frontend
     build:
       context: .
       dockerfile: ./docker/frontend.Dockerfile
@@ -14,7 +14,7 @@ services:
       - backend
 
   backend:
-    container_name: backend
+    container_name: EFM-backend
     build:
       context: .
       dockerfile: ./docker/backend.Dockerfile
@@ -28,7 +28,7 @@ services:
         condition: service_healthy
 
   database:
-    container_name: database
+    container_name: EFM-database
     image: mysql:8.0
     volumes:
       - ./database/my.cnf:/etc/mysql/conf.d/my.cnf
