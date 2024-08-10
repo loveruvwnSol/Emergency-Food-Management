@@ -17,7 +17,7 @@ type EmailLoginRequest struct {
 	Password string `json:"password"`
 }
 
-func SignUp(db *gorm.DB) gin.HandlerFunc {
+func CreateAccount(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var newUser model.User
 
@@ -36,7 +36,7 @@ func SignUp(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
-func SignIn(db *gorm.DB) gin.HandlerFunc {
+func Login(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var requestUser EmailLoginRequest
 
@@ -71,4 +71,18 @@ func SignIn(db *gorm.DB) gin.HandlerFunc {
 		c.Header("Authorization", tokenString)
 		c.JSON(http.StatusOK, tokenString)
 	}
+
+}
+
+func ParseJWT(tokenStr string) (*model.Claims, error) {
+	claims := &model.Claims{}
+	token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
+		return []byte("EMERGENCY-FOOD-MANAGEMENT-TOKEN-KEY-007"), nil
+	})
+
+	if err != nil || !token.Valid {
+		return nil, err
+	}
+
+	return claims, nil
 }

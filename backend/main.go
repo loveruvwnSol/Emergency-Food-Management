@@ -14,8 +14,10 @@ func main() {
 	r.Use(middleware.CORSMiddleware())
 	db := repository.DBInit()
 
-	r.POST("/signup", handler.SignUp(db))
-	r.POST("/signin", handler.SignIn(db))
+	r.POST("/createAccount", handler.CreateAccount(db))
+	r.POST("/login", handler.Login(db))
+
+	r.POST("/isLoggedInUser", middleware.AuthMiddleWare())
 
 	r.Run(":8080")
 }
