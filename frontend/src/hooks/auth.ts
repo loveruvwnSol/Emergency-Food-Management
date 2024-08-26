@@ -52,10 +52,11 @@ export const useAuth = () => {
     const token = sessionStorage.getItem("TOKEN_KEY");
     if (token) {
       try {
-        const res = await axios.post(
-          "http://localhost:8080/isLoggedInUser",
-          JSON.stringify(token)
-        );
+        const res = await axios.get("http://localhost:8080/isLoggedInUser", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (res.status === 200) {
           navigate("/");
         } else {

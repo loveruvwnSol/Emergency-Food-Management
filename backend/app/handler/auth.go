@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -18,42 +19,42 @@ type EmailLoginRequest struct {
 }
 
 func CreateAccount(db *gorm.DB) gin.HandlerFunc {
-	return func(c *gin.Context) {
+	return func(ctx *gin.Context) {
 		var newUser model.User
 
-		if err := c.BindJSON(&newUser); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid"})
+		if err := ctx.BindJSON(&newUser); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid"})
 			return
 		}
 
 		newUser.Password = fmt.Sprintf("%x", sha256.Sum256([]byte(newUser.Password)))
 		res := db.Table("users").Create(&newUser)
 		if res.Error != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Failed sign up"})
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Failed to sign up"})
 			return
 		}
-		c.JSON(http.StatusOK, gin.H{"message": "Success"})
+		ctx.JSON(http.StatusOK, gin.H{"success": "Create new account"})
 	}
 }
 
 func Login(db *gorm.DB) gin.HandlerFunc {
-	return func(c *gin.Context) {
+	return func(ctx *gin.Context) {
 		var requestUser EmailLoginRequest
 
-		if err := c.BindJSON(&requestUser); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid"})
+		if err := ctx.BindJSON(&requestUser); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid"})
 		}
 
 		requestUser.Password = fmt.Sprintf("%x", sha256.Sum256([]byte(requestUser.Password)))
 
 		var findUser model.User
 		if err := db.Table("users").Where("email = ?", requestUser.Email).First(&findUser).Error; err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Can not found request user"})
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Can not found request user"})
 			return
 		}
 
 		if requestUser.Email != findUser.Email || requestUser.Password != findUser.Password {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 			return
 		}
 
@@ -64,14 +65,31 @@ func Login(db *gorm.DB) gin.HandlerFunc {
 
 		tokenString, err := token.SignedString([]byte("EMERGENCY-FOOD-MANAGEMENT-TOKEN-KEY-007"))
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error signing token"})
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to signing token"})
 			return
 		}
 
-		c.Header("Authorization", tokenString)
-		c.JSON(http.StatusOK, tokenString)
+		ctx.Header("Authorization", tokenString)
+		ctx.JSON(http.StatusOK, tokenString)
 	}
 
+}
+
+func IsLoggedInUser() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		tokenStr := strings.TrimPrefix(ctx.GetHeader("Authorization"), "Bearer ")
+
+		claims, err := ParseJWT(tokenStr)
+		if err != nil {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+			ctx.Abort()
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{"success": "Logged in user now", "claims": claims})
+
+	}
 }
 
 func ParseJWT(tokenStr string) (*model.Claims, error) {

@@ -15,7 +15,19 @@ func DBInit() *gorm.DB {
 	}
 
 	if err := db.AutoMigrate(&model.User{}); err != nil {
-		panic("failed migrate user")
+		panic("failed migrate users")
+	}
+
+	if err := db.AutoMigrate(&model.Family{}); err != nil {
+		panic("failed migrate families")
+	}
+
+	if err := db.AutoMigrate(&model.Member{}); err != nil {
+		panic("failed migrate members")
+	}
+
+	if err := db.AutoMigrate(&model.Invitation{}); err != nil {
+		panic("failed migrate invitations")
 	}
 	return db
 }
