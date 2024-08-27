@@ -2,6 +2,7 @@ package handler
 
 import (
 	"app/app/model"
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -21,7 +22,11 @@ func GetFamilyMembers(db *gorm.DB) gin.HandlerFunc {
 		var member model.Member
 
 		if err := db.Where("user_id = ?", currentUserID).First(&member).Error; err != nil {
-			ctx.JSON(http.StatusNotFound, gin.H{"message": "User's family not found"})
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				ctx.JSON(http.StatusOK, gin.H{"success": "User is not part of any family", "members": []model.Member{}})
+			} else {
+				ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error finding user's family"})
+			}
 			return
 		}
 
