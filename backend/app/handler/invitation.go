@@ -21,7 +21,12 @@ func GetInvitations(db *gorm.DB) gin.HandlerFunc {
 		var invitations []model.Invitation
 
 		if err := db.Preload("Inviter").Preload("Family").Where("invitee_id = ?", currentUserID).Find(&invitations).Error; err != nil {
-			ctx.JSON(http.StatusNotFound, gin.H{"message": "Invitations not found"})
+			ctx.JSON(http.StatusNotFound, gin.H{"error": "Error fetching invitations"})
+			return
+		}
+
+		if len(invitations) == 0 {
+			ctx.JSON(http.StatusOK, gin.H{"success": "No invitations found", "invitations": invitations})
 			return
 		}
 
