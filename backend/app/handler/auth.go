@@ -43,6 +43,7 @@ func Login(db *gorm.DB) gin.HandlerFunc {
 
 		if err := ctx.BindJSON(&requestUser); err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid"})
+			return
 		}
 
 		requestUser.Password = fmt.Sprintf("%x", sha256.Sum256([]byte(requestUser.Password)))
