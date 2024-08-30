@@ -1,4 +1,4 @@
-import { Box, Image } from '@chakra-ui/react';
+import { Image } from '@chakra-ui/react';
 import LogoIcon from '../../../images/icon-text.png';
 
 type LogoProps = {
