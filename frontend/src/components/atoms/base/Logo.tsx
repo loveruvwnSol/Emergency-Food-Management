@@ -5,7 +5,7 @@ type LogoProps = {
     size : string
 }
 
-const Logo : React.FC<LogoProps> =({ size = "md" }) => (
+const Logo : React.FC<LogoProps> =({ size }) => (
     <Image
         src={LogoIcon}
         alt="備えの食卓"
