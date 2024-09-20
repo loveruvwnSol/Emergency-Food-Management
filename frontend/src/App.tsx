@@ -4,6 +4,7 @@ import { Login } from './pages/Login';
 import { CreateAccount } from './pages/CreateAccount';
 import { useAuth } from './hooks/auth';
 import { useEffect } from 'react';
+import Family from './pages/Family';
 
 function App() {
   const [{ IsLoggedInUser }] = useAuth();
@@ -25,6 +26,10 @@ function App() {
       <Route
         path='/createAccount'
         element={<CreateAccount />}
+      />
+      <Route
+        path='/family'
+        element={<Family />}
       />
     </Routes>
   );

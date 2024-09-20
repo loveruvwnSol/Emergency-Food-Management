@@ -12,6 +12,8 @@ import React, { useState } from 'react';
 import { IoIosArrowForward } from 'react-icons/io';
 import OtherFamilyMenbers from './OtherFamilyMenbers';
 import InviteFamilyBtn from '../../atoms/InviteFamilyBtn';
+import { IoMdClose } from 'react-icons/io';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 type FamilyMemberModalProps = {
   onClose: () => void;
@@ -20,6 +22,7 @@ type FamilyMemberModalProps = {
 
 const FamilyMemberModal: React.FC<FamilyMemberModalProps> = ({ onClose, isOpen }) => {
   const [familyNumber, setFamilyNumber] = useState(4);
+  const navigate = useNavigate();
 
   const Members = [
     { Name: 'jason', food: 3, drink: 3 },
@@ -39,7 +42,6 @@ const FamilyMemberModal: React.FC<FamilyMemberModalProps> = ({ onClose, isOpen }
           maxW={'1000px'}
           h={'600px'}
         >
-          <ModalCloseButton />
           <ModalBody position={'relative'}>
             <Box
               width={'80%'}

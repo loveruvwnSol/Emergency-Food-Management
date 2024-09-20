@@ -13,6 +13,13 @@ export const Home = () => {
       >
         ログアウト
       </button>
+      <button
+        onClick={() => {
+          navigate('/family');
+        }}
+      >
+        familypageへ
+      </button>
     </div>
   );
 };
