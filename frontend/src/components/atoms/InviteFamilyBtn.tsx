@@ -1,13 +1,8 @@
 import { Button, useDisclosure } from '@chakra-ui/react';
-import React from 'react';
 import AddFamily from '../organisms/Family/InviteFamilyModal';
 
 const InviteFamilyBtn = () => {
-  const {
-    isOpen: isSecondModalOpen,
-    onOpen: onSecondModalOpen,
-    onClose: onSecondModalClose,
-  } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <Button
@@ -21,13 +16,13 @@ const InviteFamilyBtn = () => {
         fontWeight={'bold'}
         cursor={'pointer'}
         _hover={{ bgColor: '#ffa959' }}
-        onClick={onSecondModalOpen}
+        onClick={onOpen}
       >
         家族に招待
       </Button>
       <AddFamily
-        isSecondModalOpen={isSecondModalOpen}
-        onSecondModalClose={onSecondModalClose}
+        isSecondModalOpen={isOpen}
+        onSecondModalClose={onClose}
       />
     </>
   );
