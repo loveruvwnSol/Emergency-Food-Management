@@ -7,15 +7,18 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react';
 import React from 'react';
-import SerachMemberInput from '../../molecules/Family/SerachMemberInput';
+import SerachMemberInput from '../../molecules/Family/SearchMember';
 import FamilyMembersBoard from './FamilyMembersBoard';
 
-type AddFmilyProps = {
+type InviteFamilyModalProps = {
   isSecondModalOpen: boolean;
   onSecondModalClose: () => void;
 };
 
-const AddFamily: React.FC<AddFmilyProps> = ({ isSecondModalOpen, onSecondModalClose }) => {
+const InviteFamilyModal: React.FC<InviteFamilyModalProps> = ({
+  isSecondModalOpen,
+  onSecondModalClose,
+}) => {
   return (
     <Modal
       isOpen={isSecondModalOpen}
@@ -45,4 +48,4 @@ const AddFamily: React.FC<AddFmilyProps> = ({ isSecondModalOpen, onSecondModalCl
   );
 };
 
-export default AddFamily;
+export default InviteFamilyModal;

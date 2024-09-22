@@ -2,13 +2,13 @@ import { Box, Icon, Text } from '@chakra-ui/react';
 import React from 'react';
 import { IoIosArrowForward } from 'react-icons/io';
 
-type OtherFamilyMenbersProps = {
+type OtherFamilyMembersProps = {
   Name: string;
   food: number;
   drink: number;
 };
 
-const OtherFamilyMenbers: React.FC<OtherFamilyMenbersProps> = ({ Name, drink, food }) => {
+const OtherFamilyMembers: React.FC<OtherFamilyMembersProps> = ({ Name, drink, food }) => {
   return (
     <>
       <Box //利用者のプロフィール
@@ -91,4 +91,4 @@ const OtherFamilyMenbers: React.FC<OtherFamilyMenbersProps> = ({ Name, drink, fo
   );
 };
 
-export default OtherFamilyMenbers;
+export default OtherFamilyMembers;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import FamilyBoard from '../components/templates/Family/FamilyBoard';
 import NoneFamily from '../components/organisms/Family/NoneFamily';
 

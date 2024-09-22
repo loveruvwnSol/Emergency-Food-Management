@@ -1,7 +1,7 @@
 import { Box, Icon, Modal, ModalBody, ModalContent, ModalOverlay, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { IoIosArrowForward } from 'react-icons/io';
-import OtherFamilyMenbers from './OtherFamilyMenbers';
+import OtherFamilyMenbers from './OtherFamilyMembers';
 import InviteFamilyBtn from '../../atoms/InviteFamilyBtn';
 
 type FamilyMemberModalProps = {
