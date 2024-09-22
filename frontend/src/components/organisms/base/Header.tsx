@@ -7,6 +7,7 @@ const Header = () => {
       display={'flex'}
       justifyContent={'space-between'}
       mt={2}
+      mb={12}
     >
       <Text>logo入れるここ</Text>
       <Box
