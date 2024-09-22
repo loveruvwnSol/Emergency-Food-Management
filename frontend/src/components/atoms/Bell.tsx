@@ -9,6 +9,7 @@ const Bell = () => {
       mr={4}
       mb={0.5}
       cursor={'pointer'}
+      _hover={{ opacity: '50%' }}
     />
   );
 };

@@ -13,7 +13,7 @@ const SearchMember = () => {
       >
         <Text fontSize={'16px'}>家族を検索</Text>
         <Input
-          placeholder='検索'
+          placeholder='鈴木太郎'
           w={'400px'}
         />
       </Box>
@@ -24,6 +24,7 @@ const SearchMember = () => {
         top={7}
         right={'15.5rem'}
         cursor={'pointer'}
+        _hover={{ opacity: '50%' }}
       />
     </Box>
   );

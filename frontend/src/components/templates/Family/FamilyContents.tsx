@@ -13,7 +13,6 @@ const FamilyContents = () => {
         flexDirection={'column'}
         justifyContent={'center'}
         alignItems={'center'}
-        mt={8}
       >
         <Box
           display={'flex'}
@@ -25,13 +24,14 @@ const FamilyContents = () => {
             fontSize={'28px'}
             fontWeight={'bold'}
           >
-            備蓄目標
+            家族の備蓄目標
           </Text>
           <Icon //家族メンバー一覧を開くアイコン
             as={GoPeople}
             boxSize={'32px'}
             cursor={'pointer'}
             onClick={onOpen}
+            _hover={{ opacity: '50%' }}
           />
         </Box>
         <Box
