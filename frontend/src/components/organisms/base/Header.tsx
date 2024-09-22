@@ -1,6 +1,5 @@
-import Logo from '../../atoms/Logo';
 import Bell from '../../atoms/Bell';
-import { Box } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 
 const Header = () => {
   return (
@@ -9,7 +8,7 @@ const Header = () => {
       justifyContent={'space-between'}
       mt={2}
     >
-      <Logo />
+      <Text>logo入れるここ</Text>
       <Box
         mr={3}
         mt={2}
