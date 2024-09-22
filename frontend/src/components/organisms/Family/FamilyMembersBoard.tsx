@@ -17,7 +17,6 @@ const FamilyMembersBoard = () => {
   return (
     <>
       <Box
-        // bgColor={'red'}
         h={'400px'}
         display={'flex'}
         flexWrap={'wrap'}
