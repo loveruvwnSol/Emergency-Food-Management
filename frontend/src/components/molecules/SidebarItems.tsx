@@ -1,87 +1,63 @@
 import { Box, Icon, Text } from '@chakra-ui/react';
-import { AiOutlineHome } from 'react-icons/ai';
 import { IoIosList } from 'react-icons/io';
-import { MdFamilyRestroom } from 'react-icons/md';
+import { IoListSharp } from 'react-icons/io5';
+import { BsPeople } from 'react-icons/bs';
 import { IoSettingsOutline } from 'react-icons/io5';
+import { IoMdSettings } from 'react-icons/io';
+import { IoPeople } from 'react-icons/io5';
+import { GoHome } from 'react-icons/go';
+import { GoHomeFill } from 'react-icons/go';
+import { NavLink } from 'react-router-dom';
 
 const SidebarItems = () => {
+  const data = [
+    { label: 'ホーム', icon: GoHome, activeIcon: GoHomeFill, link: '/' },
+    { label: 'リスト', icon: IoIosList, activeIcon: IoListSharp, link: '/list' },
+    { label: '家族', icon: BsPeople, activeIcon: IoPeople, link: '/family' },
+    { label: '設定', icon: IoSettingsOutline, activeIcon: IoMdSettings, link: '/setting' },
+  ];
+
   return (
-    <Box
-      mt={10}
-      ml={10}
-      mr={20}
-    >
-      <Box
-        display={'flex'}
-        alignItems={'center'}
-        gap={'9px'}
-        cursor={'pointer'}
-      >
-        <Icon
-          as={AiOutlineHome}
-          boxSize={'24px'}
-        />
-        <Text
-          fontWeight={'mideum'}
-          fontSize={'20px'}
+    <Box mr={12}>
+      {data.map((data, index) => (
+        <NavLink
+          to={data.link}
+          key={index}
         >
-          ホーム
-        </Text>
-      </Box>
-      <Box
-        display={'flex'}
-        alignItems={'center'}
-        gap={'9px'}
-        mt={'40px'}
-        cursor={'pointer'}
-      >
-        <Icon
-          as={IoIosList}
-          boxSize={'24px'}
-        />
-        <Text
-          fontWeight={'mideum'}
-          fontSize={'20px'}
-        >
-          リスト
-        </Text>
-      </Box>
-      <Box
-        display={'flex'}
-        alignItems={'center'}
-        gap={'9px'}
-        mt={'40px'}
-        cursor={'pointer'}
-      >
-        <Icon
-          as={MdFamilyRestroom}
-          boxSize={'24px'}
-        />
-        <Text
-          fontWeight={'mideum'}
-          fontSize={'20px'}
-        >
-          家族
-        </Text>
-      </Box>
-      <Box
-        display={'flex'}
-        alignItems={'center'}
-        gap={'9px'}
-        mt={'40px'}
-        cursor={'pointer'}
-      >
-        <Icon
-          as={IoSettingsOutline}
-          boxSize={'24px'}
-        />
-        <Text
-          fontWeight={'mideum'}
-          fontSize={'20px'}
-        >
-          設定
-        </Text>
-      </Box>
+          {({ isActive }) => (
+            <Box
+              w={'210px'}
+              h={'42px'}
+              ml={3}
+              borderRadius={'10px'}
+              display={'flex'}
+              justifyContent={'start'}
+              alignItems={'center'}
+              bg={isActive ? '#f0f0f0' : 'transparent'}
+              _hover={{ bgColor: '#f0f0f0' }}
+            >
+              <Box
+                display={'flex'}
+                alignItems={'center'}
+                cursor={'pointer'}
+                ml={3}
+              >
+                <Icon
+                  as={isActive ? data.activeIcon : data.icon}
+                  boxSize={'24px'}
+                  mr={8}
+                />
+                <Text
+                  fontWeight={'medium'}
+                  fontSize={'16px'}
+                >
+                  {data.label}
+                </Text>
+              </Box>
+            </Box>
+          )}
+        </NavLink>
+      ))}
     </Box>
   );
 };
