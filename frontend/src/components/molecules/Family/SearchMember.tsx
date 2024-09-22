@@ -1,7 +1,7 @@
 import { Box, Icon, Input, Text } from '@chakra-ui/react';
 import { CiSearch } from 'react-icons/ci';
 
-const SerachMemberInput = () => {
+const SearchMember = () => {
   return (
     <Box
       mb={'30px'}
@@ -29,4 +29,4 @@ const SerachMemberInput = () => {
   );
 };
 
-export default SerachMemberInput;
+export default SearchMember;
