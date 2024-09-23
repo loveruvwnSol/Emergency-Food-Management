@@ -28,6 +28,7 @@ const InviteFamilyModal: React.FC<InviteFamilyModalProps> = ({
       <ModalContent
         maxW={'1000px'}
         h={'600px'}
+        mt={'96px'}
       >
         <ModalHeader
           textAlign={'center'}
