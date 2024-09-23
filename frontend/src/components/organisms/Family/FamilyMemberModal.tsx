@@ -1,7 +1,7 @@
 import { Box, Icon, Modal, ModalBody, ModalContent, ModalOverlay, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { IoIosArrowForward } from 'react-icons/io';
-import OtherFamilyMenbers from './OtherFamilyMembers';
+import OtherFamilyMembers from './OtherFamilyMembers';
 import InviteFamilyBtn from '../../atoms/InviteFamilyBtn';
 
 type FamilyMemberModalProps = {
@@ -142,7 +142,7 @@ const FamilyMemberModal: React.FC<FamilyMemberModalProps> = ({ onClose, isOpen }
                 </Box>
 
                 {Members.map((member, index) => (
-                  <OtherFamilyMenbers
+                  <OtherFamilyMembers
                     Name={member.Name}
                     food={member.food}
                     drink={member.drink}
