@@ -16,6 +16,11 @@ const FamilyMemberModal: React.FC<FamilyMemberModalProps> = ({ onClose, isOpen }
     { Name: 'jason', food: 3, drink: 3 },
     { Name: 'jason', food: 3, drink: 3 },
     { Name: 'jason', food: 3, drink: 3 },
+    { Name: 'jason', food: 3, drink: 3 },
+    { Name: 'jason', food: 3, drink: 3 },
+    { Name: 'jason', food: 3, drink: 3 },
+    { Name: 'jason', food: 3, drink: 3 },
+    { Name: 'jason', food: 3, drink: 3 },
   ];
 
   return (
@@ -32,9 +37,12 @@ const FamilyMemberModal: React.FC<FamilyMemberModalProps> = ({ onClose, isOpen }
         >
           <ModalBody position={'relative'}>
             <Box
-              width={'80%'}
+              width={'100%'}
               height={'100%'}
+              overflowY={'auto'}
+              maxH={'580px'}
               m={'0 auto'}
+              pl={10}
             >
               <Box pt={10}>
                 <Text
