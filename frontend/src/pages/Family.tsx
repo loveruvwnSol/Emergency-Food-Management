@@ -10,25 +10,18 @@ const Family = () => {
   return (
     <>
       <Header />
-      {familyCheck ? (
-        <Box
-          display={'flex'}
-          alignItems={'start'}
-        >
-          <SidebarItems />
+      <Box display={'flex'}>
+        <SidebarItems />
+        {familyCheck ? (
           <FamilyContents />
-        </Box>
-      ) : (
-        <Box display={'flex'}>
-          <SidebarItems />
+        ) : (
           <Box
             w={'1100px'}
-            h={'100vh'}
+            h={'690px'}
             display={'flex'}
             flexDirection={'column'}
             justifyContent={'center'}
             alignItems={'center'}
-            pb={'60px'}
           >
             <Text
               fontSize={'36px'}
@@ -39,8 +32,8 @@ const Family = () => {
             </Text>
             <InviteFamilyBtn />
           </Box>
-        </Box>
-      )}
+        )}
+      </Box>
     </>
   );
 };
