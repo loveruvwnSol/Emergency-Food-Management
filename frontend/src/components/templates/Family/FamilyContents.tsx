@@ -37,7 +37,7 @@ const FamilyContents = () => {
         <Box
           mt={'24px'}
           display={'flex'}
-          gap={40}
+          gap={20}
         >
           <DataBoard
             Type='食料'
