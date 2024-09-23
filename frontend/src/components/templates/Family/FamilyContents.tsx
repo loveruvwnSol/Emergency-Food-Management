@@ -29,6 +29,7 @@ const FamilyContents = () => {
           <Icon //家族メンバー一覧を開くアイコン
             as={GoPeople}
             boxSize={'32px'}
+            mr={'48px'}
             cursor={'pointer'}
             onClick={onOpen}
             _hover={{ opacity: '50%' }}
