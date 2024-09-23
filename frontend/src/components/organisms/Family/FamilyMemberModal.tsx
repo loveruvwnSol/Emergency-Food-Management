@@ -2,7 +2,7 @@ import { Box, Icon, Modal, ModalBody, ModalContent, ModalOverlay, Text } from '@
 import React, { useState } from 'react';
 import { IoIosArrowForward } from 'react-icons/io';
 import OtherFamilyMembers from './OtherFamilyMembers';
-import InviteFamilyBtn from '../../atoms/InviteFamilyBtn';
+import InviteFamilyBtn from '../../molecules/Family/InviteFamilyBtn';
 
 type FamilyMemberModalProps = {
   onClose: () => void;

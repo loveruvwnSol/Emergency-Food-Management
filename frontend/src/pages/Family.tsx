@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import Header from '../components/organisms/base/Header';
 import { Box, Text } from '@chakra-ui/react';
-import SidebarItems from '../components/molecules/SidebarItems';
+import SidebarItems from '../components/organisms/Family/SidebarItems';
 import FamilyContents from '../components/templates/Family/FamilyContents';
-import InviteFamilyBtn from '../components/atoms/InviteFamilyBtn';
+import InviteFamilyBtn from '../components/molecules/Family/InviteFamilyBtn';
 
 const Family = () => {
   const [familyCheck, setFamilyCheck] = useState(true); //trueで家族ページfalseで家族招待ページ

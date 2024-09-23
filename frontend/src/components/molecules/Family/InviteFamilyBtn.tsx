@@ -1,5 +1,5 @@
 import { Button, useDisclosure } from '@chakra-ui/react';
-import AddFamily from '../organisms/Family/InviteFamilyModal';
+import AddFamily from '../../organisms/Family/InviteFamilyModal';
 
 const InviteFamilyBtn = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
