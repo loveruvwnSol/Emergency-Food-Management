@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -7,11 +7,18 @@ export const Home = () => {
       <h1>HOME</h1>
       <button
         onClick={() => {
-          sessionStorage.removeItem("TOKEN_KEY");
-          navigate("/login");
+          sessionStorage.removeItem('TOKEN_KEY');
+          navigate('/login');
         }}
       >
         ログアウト
+      </button>
+      <button
+        onClick={() => {
+          navigate('/family');
+        }}
+      >
+        familypageへ
       </button>
     </div>
   );
