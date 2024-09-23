@@ -1,5 +1,5 @@
 import Bell from '../../atoms/base/Bell';
-import { Box, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import Logo from '../../atoms/base/Logo';
 
 const Header = () => {
