@@ -1,5 +1,6 @@
-import Bell from '../../atoms/Bell';
+import Bell from '../../atoms/base/Bell';
 import { Box, Text } from '@chakra-ui/react';
+import Logo from '../../atoms/base/Logo';
 
 const Header = () => {
   return (
@@ -9,7 +10,12 @@ const Header = () => {
       mt={2}
       mb={12}
     >
-      <Text>logo入れるここ</Text>
+      <Box
+        mt={2}
+        ml={5}
+      >
+        <Logo size='58' />
+      </Box>
       <Box
         mr={3}
         mt={2}
