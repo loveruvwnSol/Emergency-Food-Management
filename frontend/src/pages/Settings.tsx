@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
-import Header from '../components/organisms/base/Header';
-import SidebarItems from '../components/organisms/base/SidebarItems';
+import Header from '../components/organisms/Base/Header';
+import SidebarItems from '../components/organisms/Base/SidebarItems';
 import SettingBoard from '../components/templates/Settings/SettingBoard';
 
 const Settings = () => {

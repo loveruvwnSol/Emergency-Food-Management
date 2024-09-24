@@ -12,7 +12,7 @@ import { NavLink } from 'react-router-dom';
 const SidebarItems = () => {
   const data = [
     { label: 'ホーム', icon: GoHome, activeIcon: GoHomeFill, link: '/' },
-    { label: 'リスト', icon: IoIosList, activeIcon: IoListSharp, link: '/list' },
+    { label: 'リスト', icon: IoIosList, activeIcon: IoListSharp, link: '/items' },
     { label: '家族', icon: BsPeople, activeIcon: IoPeople, link: '/family' },
     { label: '設定', icon: IoSettingsOutline, activeIcon: IoMdSettings, link: '/settings' },
   ];

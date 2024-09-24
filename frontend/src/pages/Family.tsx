@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import Header from '../components/organisms/base/Header';
+import Header from '../components/organisms/Base/Header';
 import { Box, Text } from '@chakra-ui/react';
-import SidebarItems from '../components/organisms/base/SidebarItems';
+import SidebarItems from '../components/organisms/Base/SidebarItems';
 import FamilyContents from '../components/templates/Family/FamilyContents';
 import InviteFamilyBtn from '../components/molecules/Family/InviteFamilyBtn';
 
