@@ -5,7 +5,7 @@ import { CreateAccount } from './pages/CreateAccount';
 import { useAuth } from './hooks/auth';
 import { useEffect } from 'react';
 import Family from './pages/Family';
-import Setting from './pages/Setting';
+import Settings from './pages/Settings';
 
 function App() {
   const [{ IsLoggedInUser }] = useAuth();
@@ -33,8 +33,8 @@ function App() {
         element={<Family />}
       />
       <Route
-        path='/setting'
-        element={<Setting />}
+        path='/settings'
+        element={<Settings />}
       />
     </Routes>
   );
