@@ -1,7 +1,14 @@
-import { Box, Icon } from '@chakra-ui/react';
+import { Box, Icon, Input } from '@chakra-ui/react';
+import { useRef } from 'react';
 import { IoCameraOutline } from 'react-icons/io5';
 
-const IconSetting = () => {
+const IconSettings = () => {
+  const fileInputRef = useRef<any>(null);
+
+  const handleIconClick = () => {
+    fileInputRef.current.click();
+  };
+
   return (
     <Box //アイコン
       w={'100px'}
@@ -12,6 +19,7 @@ const IconSetting = () => {
       position={'relative'}
       cursor={'pointer'}
       _hover={{ opacity: '50%' }}
+      onClick={() => handleIconClick()}
     >
       <Icon
         as={IoCameraOutline}
@@ -20,8 +28,13 @@ const IconSetting = () => {
         top={26}
         right={27.5}
       />
+      <Input
+        type='file'
+        ref={fileInputRef}
+        display={'none'}
+      />
     </Box>
   );
 };
 
-export default IconSetting;
+export default IconSettings;

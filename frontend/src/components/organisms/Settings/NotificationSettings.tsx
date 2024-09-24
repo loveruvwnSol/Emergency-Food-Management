@@ -1,6 +1,6 @@
 import { Box, FormControl, FormLabel, Switch, Text } from '@chakra-ui/react';
 
-const NotificationSetting = () => {
+const NotificationSettings = () => {
   return (
     <Box w={'100%'}>
       <Text
@@ -56,4 +56,4 @@ const NotificationSetting = () => {
   );
 };
 
-export default NotificationSetting;
+export default NotificationSettings;

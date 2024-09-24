@@ -1,10 +1,9 @@
 import { Box } from '@chakra-ui/react';
-import React from 'react';
 import Header from '../components/organisms/base/Header';
 import SidebarItems from '../components/organisms/base/SidebarItems';
-import SettingBoard from '../components/templates/Setting/SettingBoard';
+import SettingBoard from '../components/templates/Settings/SettingBoard';
 
-const Setting = () => {
+const Settings = () => {
   return (
     <Box>
       <Header />
@@ -16,4 +15,4 @@ const Setting = () => {
   );
 };
 
-export default Setting;
+export default Settings;

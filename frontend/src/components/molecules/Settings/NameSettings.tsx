@@ -1,7 +1,7 @@
-import { Box, Input, Text } from '@chakra-ui/react';
+import { Box, Button, Input, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 
-const NameSetting = () => {
+const NameSettings = () => {
   const [userName, setUserName] = useState('鈴木太郎');
 
   return (
@@ -23,8 +23,19 @@ const NameSetting = () => {
         w={'280px'}
         onChange={(e) => setUserName(e.target.value)}
       />
+      <Button
+        bgColor={'#FB8B24'}
+        _hover={{ bgColor: '#ffa959' }}
+        _active={{ bgColor: '#FB8B24' }}
+        color={'#fff'}
+        borderRadius={'25px'}
+        w={'90px'}
+        h={'40px'}
+      >
+        保存
+      </Button>
     </Box>
   );
 };
 
-export default NameSetting;
+export default NameSettings;

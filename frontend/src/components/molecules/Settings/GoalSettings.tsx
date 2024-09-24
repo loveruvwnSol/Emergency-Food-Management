@@ -10,7 +10,7 @@ import {
 
 const type = ['食料', '飲料'];
 
-const SettingNumber = () => {
+const GoalSettings = () => {
   return (
     <>
       {type.map((type, index) => (
@@ -43,6 +43,7 @@ const SettingNumber = () => {
               fontWeight={'semibold'}
               color={'#000000'}
               opacity={'50%'}
+              ml={2}
             >
               日分
             </Text>
@@ -53,4 +54,4 @@ const SettingNumber = () => {
   );
 };
 
-export default SettingNumber;
+export default GoalSettings;
