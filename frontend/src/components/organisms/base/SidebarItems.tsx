@@ -14,7 +14,7 @@ const SidebarItems = () => {
     { label: 'ホーム', icon: GoHome, activeIcon: GoHomeFill, link: '/' },
     { label: 'リスト', icon: IoIosList, activeIcon: IoListSharp, link: '/list' },
     { label: '家族', icon: BsPeople, activeIcon: IoPeople, link: '/family' },
-    { label: '設定', icon: IoSettingsOutline, activeIcon: IoMdSettings, link: '/setting' },
+    { label: '設定', icon: IoSettingsOutline, activeIcon: IoMdSettings, link: '/settings' },
   ];
 
   return (
