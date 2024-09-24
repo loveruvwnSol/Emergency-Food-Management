@@ -24,8 +24,8 @@ const FamilyMembers: React.FC<FamilyMembersProps> = ({ Name }) => {
           gap={4}
         >
           <Box //アイコン
-            w={35}
-            h={35}
+            w={'55px'}
+            h={'55px'}
             borderRadius={50}
             border={'1px solid'}
           ></Box>
@@ -33,7 +33,7 @@ const FamilyMembers: React.FC<FamilyMembersProps> = ({ Name }) => {
         </Box>
         <Button
           w={'90px'}
-          h={'32px'}
+          h={'40px'}
           borderRadius={'25px'}
           mr={5}
           bgColor={'#FB8B24'}
