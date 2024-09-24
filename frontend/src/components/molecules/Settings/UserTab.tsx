@@ -2,12 +2,12 @@ import { Box, Icon, Text } from '@chakra-ui/react';
 import { AiOutlineUser } from 'react-icons/ai';
 import { IoIosArrowForward } from 'react-icons/io';
 
-type UserActiveProps = {
-  toggle: boolean;
-  setToggle: React.Dispatch<React.SetStateAction<boolean>>;
+type UserTabProps = {
+  isToggle: boolean;
+  setIsToggle: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const UserActive: React.FC<UserActiveProps> = ({ toggle, setToggle }) => {
+const UserTab: React.FC<UserTabProps> = ({ isToggle, setIsToggle }) => {
   return (
     <Box
       display={'flex'}
@@ -21,7 +21,7 @@ const UserActive: React.FC<UserActiveProps> = ({ toggle, setToggle }) => {
       _hover={{ bgColor: '#f0f0f0' }}
       position={'relative'}
       onClick={() => {
-        setToggle(true);
+        setIsToggle(true);
       }}
     >
       <Box
@@ -52,7 +52,7 @@ const UserActive: React.FC<UserActiveProps> = ({ toggle, setToggle }) => {
           color={'#808080'}
         />
       </Box>
-      {toggle ? (
+      {isToggle ? (
         <Box
           w={1}
           h={35}
@@ -67,4 +67,4 @@ const UserActive: React.FC<UserActiveProps> = ({ toggle, setToggle }) => {
   );
 };
 
-export default UserActive;
+export default UserTab;

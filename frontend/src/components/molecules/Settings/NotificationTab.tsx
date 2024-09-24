@@ -2,12 +2,12 @@ import { Box, Icon, Text } from '@chakra-ui/react';
 import { IoIosArrowForward } from 'react-icons/io';
 import { FiBell } from 'react-icons/fi';
 
-type NotificationActiveProps = {
-  toggle: boolean;
-  setToggle: React.Dispatch<React.SetStateAction<boolean>>;
+type NotificationTabProps = {
+  isToggle: boolean;
+  setIsToggle: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const NotificationActive: React.FC<NotificationActiveProps> = ({ toggle, setToggle }) => {
+const NotificationTab: React.FC<NotificationTabProps> = ({ isToggle, setIsToggle }) => {
   return (
     <Box
       display={'flex'}
@@ -21,7 +21,7 @@ const NotificationActive: React.FC<NotificationActiveProps> = ({ toggle, setTogg
       _hover={{ bgColor: '#f0f0f0' }}
       position={'relative'}
       onClick={() => {
-        setToggle(false);
+        setIsToggle(false);
       }}
     >
       <Box
@@ -52,7 +52,7 @@ const NotificationActive: React.FC<NotificationActiveProps> = ({ toggle, setTogg
           color={'#808080'}
         />
       </Box>
-      {toggle ? (
+      {isToggle ? (
         ''
       ) : (
         <Box
@@ -67,4 +67,4 @@ const NotificationActive: React.FC<NotificationActiveProps> = ({ toggle, setTogg
   );
 };
 
-export default NotificationActive;
+export default NotificationTab;
