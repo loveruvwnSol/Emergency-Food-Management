@@ -4,6 +4,7 @@ import { Login } from "./pages/Login";
 import { CreateAccount } from "./pages/CreateAccount";
 import { useAuth } from "./hooks/auth";
 import { useEffect } from "react";
+import { Start } from "./pages/Start";
 
 function App() {
   const [{ IsLoggedInUser }] = useAuth();
@@ -17,6 +18,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/createAccount" element={<CreateAccount />} />
+      <Route path="/start" element={<Start />} />
     </Routes>
   );
 }
