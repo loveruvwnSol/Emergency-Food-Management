@@ -1,6 +1,6 @@
 import { Box, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import Logo from "../../atoms/base/Logo";
+import Logo from "../../atoms/Base/Logo";
 import RegisterBtn from "../../atoms/Register/RegisterBtn";
 
 export const StartBoard = () => {

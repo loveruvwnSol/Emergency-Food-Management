@@ -1,5 +1,5 @@
 import { Box, Text } from '@chakra-ui/react';
-import Logo from '../../atoms/base/Logo';
+import Logo from '../../atoms/Base/Logo';
 import EmailInput from '../../molecules/Register/EmailInput';
 import PasswordInput from '../../molecules/Register/PasswordInput';
 import RegisterBtn from '../../atoms/Register/RegisterBtn';
