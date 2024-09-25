@@ -44,15 +44,15 @@ func UpdateStock(db *gorm.DB) gin.HandlerFunc {
 		})
 
 		if result.Error != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Cannot update stock"})
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Cannot update user's stock"})
 			return
 		}
 
 		if result.RowsAffected == 0 {
-			ctx.JSON(http.StatusNotFound, gin.H{"error": "Not found stock"})
+			ctx.JSON(http.StatusNotFound, gin.H{"error": "Not found user' stock"})
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"success": "Update stock"})
+		ctx.JSON(http.StatusOK, gin.H{"success": "Update user's stock"})
 	}
 }
