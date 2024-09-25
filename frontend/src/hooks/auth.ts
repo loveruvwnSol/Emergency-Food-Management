@@ -60,15 +60,15 @@ export const useAuth = () => {
         if (res.status === 200) {
           navigate("/");
         } else {
-          navigate("/login");
+          navigate("/start");
         }
       } catch (error) {
         alert("エラー発生。");
         sessionStorage.removeItem("TOKEN_KEY");
-        navigate("/login");
+        navigate("/start");
       }
     } else {
-      navigate("/login");
+      navigate("/start");
     }
   };
 
