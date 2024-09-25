@@ -19,6 +19,7 @@ func main() {
 	r.GET("/isLoggedInUser", handler.IsLoggedInUser())
 
 	r.GET("/user", middleware.AuthMiddleWare(), handler.GetCurrentUser(db))
+	r.PUT("/user", middleware.AuthMiddleWare(), handler.UpdateUsername(db))
 	r.GET("/user:id/family", handler.GetFamilyMembers(db))
 	r.POST("/user/family", handler.CreateNewFamily(db))
 	r.DELETE("/user:id/family", handler.DeleteFamilyMember(db))
@@ -26,6 +27,10 @@ func main() {
 	r.GET("/invitations:id", handler.GetInvitations(db))
 	r.POST("/invitations/invite", handler.InviteUserForFamily(db))
 	r.POST("/invitations/accept", handler.JoinToFamily(db))
+
+	r.PUT("/stock", middleware.AuthMiddleWare(), handler.UpdateStock(db))
+
+	r.PUT("/notification", middleware.AuthMiddleWare(), handler.UpdateNotification(db))
 
 	r.Run(":8080")
 }

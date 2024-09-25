@@ -33,6 +33,17 @@ func CreateAccount(db *gorm.DB) gin.HandlerFunc {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Failed to sign up"})
 			return
 		}
+
+		if err := InitStock(db, newUser.ID); err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to init stock: %v", err)})
+			return
+		}
+
+		if err := InitNotification(db, newUser.ID); err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to init notification: %v", err)})
+			return
+		}
+
 		ctx.JSON(http.StatusOK, gin.H{"success": "Create new account"})
 	}
 }

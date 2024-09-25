@@ -24,3 +24,34 @@ func GetCurrentUser(db *gorm.DB) gin.HandlerFunc {
 		})
 	}
 }
+
+type UpdateUsernameRequest struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+func UpdateUsername(db *gorm.DB) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		userID := ctx.MustGet("user_id").(int)
+		user := UpdateUsernameRequest{ID: userID}
+
+		if err := ctx.Bind(&user); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user"})
+			return
+		}
+
+		result := db.Table("users").Where("id = ?", user.ID).Update("name", user.Name)
+
+		if result.Error != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Cannot update user"})
+			return
+		}
+
+		if result.RowsAffected == 0 {
+			ctx.JSON(http.StatusNotFound, gin.H{"error": "Not found user"})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{"success": "Update username"})
+	}
+}
