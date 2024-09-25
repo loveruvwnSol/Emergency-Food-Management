@@ -1,9 +1,6 @@
-import { useAuth } from "../hooks/auth";
-import CreateAccountBoard from "../components/templates/register/CreateAccountBoard";
+import CreateAccountBoard from "../components/templates/Register/CreateAccountBoard";
 
-export const CreateAccount = () => {
-  const [{ CreateAccount }] = useAuth();
-  
+export const CreateAccount = () => {  
   return (
     <CreateAccountBoard />
   );
