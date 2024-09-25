@@ -1,8 +1,8 @@
 import { Box, Text } from '@chakra-ui/react';
 import Logo from '../../atoms/base/Logo';
-import EmailInput from '../../molecules/register/EmailInput';
-import PasswordInput from '../../molecules/register/PasswordInput';
-import RegisterBtn from '../../atoms/register/RegisterBtn';
+import EmailInput from '../../molecules/Register/EmailInput';
+import PasswordInput from '../../molecules/Register/PasswordInput';
+import RegisterBtn from '../../atoms/Register/RegisterBtn';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../../hooks/auth';
 import { useState } from "react";
@@ -28,9 +28,9 @@ const LoginBoard = () => {
             <Box onClick={() => Login(email, password)}>
                 <RegisterBtn
                     text='ログイン'
-                    bgcolor='#FB8B24'
+                    bgColor='#FB8B24'
                     color='#FFF'
-                    activecolor='#FFAB5E'
+                    activeColor='#FFAB5E'
                 />
             </Box>
             <Box display="flex" justifyContent="center" mt={8}>
