@@ -11,7 +11,7 @@ import (
 
 func InitNotification(db *gorm.DB, userID int) error {
 	// 新しいストックを初期化
-	notification := model.Notification{UserID: userID, Deadline: true, Amount: true}
+	notification := model.Notification{UserID: userID, IsExpirationWarning: true, IsLowStockWarning: true}
 
 	// ストックをデータベースに作成
 	res := db.Table("notifications").Create(&notification)
@@ -39,8 +39,8 @@ func UpdateNotification(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		result := db.Table("notifications").Where("user_id = ?", notification.UserID).Updates(map[string]interface{}{
-			"deadline": notification.Deadline,
-			"amount":   notification.Amount,
+			"is_expiration_warning": notification.IsExpirationWarning,
+			"is_low_stock_warning":  notification.IsLowStockWarning,
 		})
 
 		if result.Error != nil {
