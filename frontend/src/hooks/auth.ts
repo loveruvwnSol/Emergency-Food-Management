@@ -57,9 +57,7 @@ export const useAuth = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        if (res.status === 200) {
-          navigate("/");
-        } else {
+        if (res.status !== 200) {
           navigate("/start");
         }
       } catch (error) {
