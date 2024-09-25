@@ -3,19 +3,19 @@ import { Button } from '@chakra-ui/react';
 type RegisterBtnProps = {
     text : string;
     color : string;
-    bgcolor : string;
-    activecolor : string;
+    bgColor : string;
+    activeColor : string;
 }
 
-const RegisterBtn:React.FC<RegisterBtnProps> = ({ text,bgcolor,color,activecolor }) => (
+const RegisterBtn:React.FC<RegisterBtnProps> = ({ text,bgColor,color,activeColor }) => (
     <Button
-        bgColor={bgcolor} 
+        bgColor={bgColor} 
         color={color}
         w={60}
         py={6}
         borderRadius={50}
-        _hover={{ bgColor: bgcolor }}
-        _active={{bgColor: activecolor}}
+        _hover={{ bgColor: bgColor }}
+        _active={{bgColor: activeColor}}
         >
         {text}
     </Button>
