@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Box, FormControl, FormLabel, IconButton, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
+import React from 'react';
+import { FormControl, FormLabel, IconButton, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 
 type PasswordInputProps = {
@@ -10,28 +10,22 @@ const PasswordInput: React.FC<PasswordInputProps> = ({setPassword}) => {
     const handleClick = () => setShow(!show);
 
     return (
-        <Box>
-            <FormControl>
-                <FormLabel>パスワード</FormLabel>
-                    <InputGroup size='md'>
-                        <Input
-                            w={"600px"}
-                            type={show ? 'text' : 'password'}
-                            placeholder='Password'
-                            mb={10}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <InputRightElement>
-                            <IconButton
-                                icon={show ? <BsEye /> : <BsEyeSlash />}
-                                onClick={handleClick}
-                                aria-label={show ? 'Hide password' : 'Show password'}
-                                variant="none"
-                            />
-                        </InputRightElement>
-                    </InputGroup>
-            </FormControl>
-        </Box>
+        <FormControl>
+            <FormLabel>パスワード</FormLabel>
+            <InputGroup size='md'>
+                <Input w={"600px"} type={show ? 'text' : 'password' } placeholder='Password' mb={10} onChange={(e)=>
+                setPassword(e.target.value)}
+                />
+                <InputRightElement>
+                    <IconButton icon={show ? <BsEye /> :
+                    <BsEyeSlash />}
+                        onClick={handleClick}
+                        aria-label={show ? 'Hide password' : 'Show password'}
+                        variant="none"
+                    />
+                </InputRightElement>
+            </InputGroup>
+        </FormControl>
     );
 }
 
