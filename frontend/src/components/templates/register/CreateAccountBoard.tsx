@@ -41,7 +41,7 @@ const CreateAccountBoard = () => {
             <Box display="flex" justifyContent="center" mt={8}>
                 <Text color='#828282'>アカウントをお持ちの方は</Text>
                 <Link 
-                    to="/Login"
+                    to="/login"
                     style={{ color: '#FB8B24', fontWeight: 'bold', textDecoration: 'underline' }}
                 >
                     こちら
