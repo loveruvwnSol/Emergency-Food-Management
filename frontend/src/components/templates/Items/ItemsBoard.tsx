@@ -1,5 +1,4 @@
 import { Box } from '@chakra-ui/react';
-import React from 'react';
 import SearchItems from '../../molecules/Items/SearchItems';
 import ItemTabs from '../../organisms/Items/ItemTabs';
 
