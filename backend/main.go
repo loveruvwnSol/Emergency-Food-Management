@@ -20,13 +20,16 @@ func main() {
 
 	r.GET("/user", middleware.AuthMiddleWare(), handler.GetCurrentUser(db))
 	r.PUT("/user", middleware.AuthMiddleWare(), handler.UpdateUsername(db))
-	r.GET("/user:id/family", handler.GetFamilyMembers(db))
-	r.POST("/user/family", handler.CreateNewFamily(db))
+	r.GET("/user:id/family", middleware.AuthMiddleWare(), handler.GetFamilyMembers(db))
+	r.POST("/user/family", middleware.AuthMiddleWare(), handler.CreateNewFamily(db))
 	r.DELETE("/user:id/family", handler.DeleteFamilyMember(db))
 
-	r.GET("/invitations:id", handler.GetInvitations(db))
-	r.POST("/invitations/invite", handler.InviteUserForFamily(db))
-	r.POST("/invitations/accept", handler.JoinToFamily(db))
+	r.GET("/users", handler.GetAllIndependentUsers(db))
+	r.GET("/users/search", handler.SearchIndependentUsers(db))
+
+	r.GET("/invitations", middleware.AuthMiddleWare(), handler.GetInvitations(db))
+	r.POST("/invitations/invite", middleware.AuthMiddleWare(), handler.InviteUserForFamily(db))
+	r.POST("/invitations/accept", middleware.AuthMiddleWare(), handler.JoinToFamily(db))
 
 	r.PUT("/stock", middleware.AuthMiddleWare(), handler.UpdateStock(db))
 
