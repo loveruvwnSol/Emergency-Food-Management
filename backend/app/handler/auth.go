@@ -44,7 +44,7 @@ func CreateAccount(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"success": "Create new account"})
+		ctx.JSON(http.StatusCreated, gin.H{"success": "Create new account"})
 	}
 }
 
