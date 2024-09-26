@@ -76,6 +76,11 @@ func CreateNewFamily(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
+		if err := db.Where(&model.Invitation{InviteeID: newMember.UserID}).Delete(&model.Invitation{}).Error; err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Failed to delete invitation"})
+			return
+		}
+
 		ctx.JSON(http.StatusCreated, gin.H{"success": "Create new family", "members": members})
 	}
 }
