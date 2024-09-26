@@ -37,7 +37,7 @@ const NotificationTab: React.FC<NotificationTabProps> = ({ isToggle, setIsToggle
         />
         <Text
           fontSize={'16px'}
-          fontWeight={'bold'}
+          fontWeight={isToggle ? '' : 'bold'}
           w={'180px'}
         >
           通知設定

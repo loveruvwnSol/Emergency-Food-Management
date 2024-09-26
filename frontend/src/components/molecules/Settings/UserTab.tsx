@@ -37,7 +37,7 @@ const UserTab: React.FC<UserTabProps> = ({ isToggle, setIsToggle }) => {
         />
         <Text
           fontSize={'16px'}
-          fontWeight={'bold'}
+          fontWeight={isToggle ? 'bold' : ''}
           w={'180px'}
         >
           ユーザー設定
