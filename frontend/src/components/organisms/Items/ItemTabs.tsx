@@ -1,7 +1,7 @@
 import { Box, Tab, TabIndicator, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
-import TypeStockItems from '../../molecules/Items/TypeStockItems';
+import StockItemList from '../../molecules/Items/StockItemList';
 
-const TypeTabs = () => {
+const ItemTabs = () => {
   return (
     <Box>
       <Tabs>
@@ -27,15 +27,15 @@ const TypeTabs = () => {
         />
         <TabPanels>
           <TabPanel>
-            <TypeStockItems //全てのタイプを表示
+            <StockItemList //全てのタイプを表示
             />
           </TabPanel>
           <TabPanel>
-            <TypeStockItems //食料を表示
+            <StockItemList //食料を表示
             />
           </TabPanel>
           <TabPanel>
-            <TypeStockItems //飲料を表示
+            <StockItemList //飲料を表示
             />
           </TabPanel>
         </TabPanels>
@@ -44,4 +44,4 @@ const TypeTabs = () => {
   );
 };
 
-export default TypeTabs;
+export default ItemTabs;

@@ -1,7 +1,7 @@
 import { Box, Grid } from '@chakra-ui/react';
 import { StockItem } from '../Base/StockItem';
 
-const TypeStockItems = () => {
+const StockItemList = () => {
   return (
     <Box
       mb={10}
@@ -44,4 +44,4 @@ const TypeStockItems = () => {
   );
 };
 
-export default TypeStockItems;
+export default StockItemList;
