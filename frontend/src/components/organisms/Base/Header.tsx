@@ -28,6 +28,7 @@ const Header = () => {
           gap={10}
           borderRadius={10}
           boxShadow={"0 10px 10px #FED6B1"}
+          zIndex={10}
         >
           {notifications[0].Inviter.name}さんから招待が届きました！
           <Button
