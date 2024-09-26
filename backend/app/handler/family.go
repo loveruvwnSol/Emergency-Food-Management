@@ -10,14 +10,21 @@ import (
 	"gorm.io/gorm"
 )
 
+func FetchFamily(db *gorm.DB, userID int) ([]model.Member, error) {
+	var members []model.Member
+
+	result := db.Preload("User").Preload("Family").Where("user_id = ?", userID).Find(&members)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return members, nil
+}
+
 func GetFamilyMembers(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		currentUserID, err := strconv.Atoi(ctx.Param("id"))
-
-		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user id"})
-			return
-		}
+		currentUserID := ctx.MustGet("user_id").(int)
 
 		var member model.Member
 
@@ -44,6 +51,7 @@ func GetFamilyMembers(db *gorm.DB) gin.HandlerFunc {
 func CreateNewFamily(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var newFamily model.Family
+		userID := ctx.MustGet("user_id").(int)
 
 		familyRes := db.Create(&newFamily)
 
@@ -52,12 +60,7 @@ func CreateNewFamily(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		newMember := model.Member{FamilyID: newFamily.ID, Role: "admin"}
-
-		if err := ctx.Bind(&newMember); err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid member"})
-			return
-		}
+		newMember := model.Member{UserID: userID, FamilyID: newFamily.ID, Role: "admin"}
 
 		memberRes := db.Create(&newMember)
 
@@ -66,14 +69,21 @@ func CreateNewFamily(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"success": "Create new family"})
+		members, err := FetchFamily(db, userID)
+
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed fetch family members"})
+			return
+		}
+
+		ctx.JSON(http.StatusCreated, gin.H{"success": "Create new family", "members": members})
 	}
 }
 
 func JoinToFamily(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-
-		newMember := model.Member{Role: "member"}
+		userID := ctx.MustGet("user_id").(int)
+		newMember := model.Member{UserID: userID, Role: "member"}
 
 		if err := ctx.Bind(&newMember); err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid member"})
@@ -92,12 +102,19 @@ func JoinToFamily(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		if err := db.Where(&model.Invitation{InviteeID: newMember.UserID, FamilyID: newMember.FamilyID}).Delete(&model.Invitation{}).Error; err != nil {
+		if err := db.Where(&model.Invitation{InviteeID: newMember.UserID}).Delete(&model.Invitation{}).Error; err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Failed to delete invitation"})
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"success": "Join to new family group"})
+		invitations, err := FetchInvitations(db, userID)
+
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Failed fetch invitations"})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{"success": "Join to new family group", "invitations": invitations})
 	}
 }
 

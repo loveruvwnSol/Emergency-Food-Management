@@ -38,7 +38,7 @@ export const useAuth = () => {
           "http://localhost:8080/createAccount",
           user
         );
-        if (res.status === 200) {
+        if (res.status === 201) {
           alert("アカウントを作成しました。");
           navigate("/login");
         }

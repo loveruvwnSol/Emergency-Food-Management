@@ -3,6 +3,7 @@ package handler
 import (
 	"app/app/model"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -22,6 +23,61 @@ func GetCurrentUser(db *gorm.DB) gin.HandlerFunc {
 			"name":      user.Name,
 			"email":     user.Email,
 		})
+	}
+}
+
+func IndependentUsers(db *gorm.DB) ([]model.User, error) {
+	var independentUsers []model.User
+
+	if err := db.Table("users").
+		Where("id NOT IN (?)", db.Table("members").Select("user_id")).
+		Find(&independentUsers).Error; err != nil {
+		return nil, err
+	}
+
+	return independentUsers, nil
+}
+
+func GetAllIndependentUsers(db *gorm.DB) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		independentUsers, err := IndependentUsers(db)
+
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Failed get independent users"})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{"success": "Get all independent users", "independentUsers": independentUsers})
+	}
+}
+
+func SearchIndependentUsers(db *gorm.DB) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		query := ctx.Query("q")
+		var filteredUsers []model.User
+
+		independentUsers, err := IndependentUsers(db)
+
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+			return
+		}
+
+		if query == "" {
+			filteredUsers = independentUsers
+		} else {
+			lowerQuery := strings.ToLower(query)
+
+			for _, user := range independentUsers {
+				if strings.Contains(strings.ToLower(user.Name), lowerQuery) {
+					filteredUsers = append(filteredUsers, user)
+				}
+			}
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{"success": "Search users", "filteredUsers": filteredUsers})
+
 	}
 }
 
@@ -54,4 +110,5 @@ func UpdateUsername(db *gorm.DB) gin.HandlerFunc {
 
 		ctx.JSON(http.StatusOK, gin.H{"success": "Update username"})
 	}
+
 }

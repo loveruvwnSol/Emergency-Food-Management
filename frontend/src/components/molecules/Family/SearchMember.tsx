@@ -1,31 +1,37 @@
-import { Box, Icon, Input, Text } from '@chakra-ui/react';
-import { CiSearch } from 'react-icons/ci';
+import { Box, Input, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
-const SearchMember = () => {
+type SearchMemberProps = {
+  GetIndependentUsers: () => void;
+  SearchIndependentUsers: (query: string) => void;
+};
+
+const SearchMember: React.FC<SearchMemberProps> = ({
+  GetIndependentUsers,
+  SearchIndependentUsers,
+}) => {
+  const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    if (query === "") {
+      GetIndependentUsers();
+    }
+  }, [query]);
+
   return (
-    <Box
-      mb={'30px'}
-      position={'relative'}
-    >
-      <Box
-        w={'400px'}
-        m={'0 auto'}
-      >
-        <Text fontSize={'16px'}>家族を検索</Text>
+    <Box mb={"30px"} position={"relative"}>
+      <Box w={"400px"} m={"0 auto"}>
+        <Text fontSize={"16px"}>家族を検索</Text>
         <Input
-          placeholder='鈴木太郎'
-          w={'400px'}
+          placeholder="鈴木太郎"
+          w={"400px"}
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            SearchIndependentUsers(query);
+          }}
         />
       </Box>
-      <Icon
-        as={CiSearch}
-        boxSize={'28px'}
-        position={'absolute'}
-        top={7}
-        right={'15.5rem'}
-        cursor={'pointer'}
-        _hover={{ opacity: '50%' }}
-      />
     </Box>
   );
 };
