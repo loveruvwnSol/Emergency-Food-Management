@@ -1,6 +1,5 @@
-import { Box, Button, IconButton, Input, Text } from "@chakra-ui/react";
+import { Box, Input, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { FiSearch } from "react-icons/fi";
 
 type SearchMemberProps = {
   GetIndependentUsers: () => void;
