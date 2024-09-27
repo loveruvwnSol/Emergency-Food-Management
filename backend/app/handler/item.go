@@ -21,6 +21,33 @@ func FetchItem(db *gorm.DB, id int) (*model.Item, error) {
 	return &item, nil
 }
 
+func GetItems(db *gorm.DB) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		var items []model.Item
+
+		family_id, err := strconv.Atoi(ctx.Param("familyId"))
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid familyId"})
+			return
+		}
+
+		if err := db.Table("items").Where("family_id = ?", family_id).Preload("Family").Find(&items).Error; err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch items"})
+			return
+		}
+
+		if len(items) == 0 {
+			ctx.JSON(http.StatusNotFound, gin.H{"message": "No items found for the specified familyId"})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{
+			"success": "Get items successfully",
+			"items":   items,
+		})
+	}
+}
+
 func AddItem(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
