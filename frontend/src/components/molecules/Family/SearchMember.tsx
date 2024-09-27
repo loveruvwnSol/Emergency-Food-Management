@@ -10,11 +10,13 @@ const SearchMember: React.FC<SearchMemberProps> = ({
   GetIndependentUsers,
   SearchIndependentUsers,
 }) => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState<string>("");
 
   useEffect(() => {
     if (query === "") {
       GetIndependentUsers();
+    } else {
+      SearchIndependentUsers(query);
     }
   }, [query]);
 
@@ -28,7 +30,6 @@ const SearchMember: React.FC<SearchMemberProps> = ({
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
-            SearchIndependentUsers(query);
           }}
         />
       </Box>
