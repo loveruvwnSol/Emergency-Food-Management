@@ -36,8 +36,10 @@ func main() {
 	r.PUT("/item/:item_id", handler.UpdateItem(db))
 	r.DELETE("/item/:family_id/:item_id", handler.DeleteItem(db))
 
+	r.GET("/stocks", middleware.AuthMiddleWare(), handler.GetStocks(db))
 	r.PUT("/stock", middleware.AuthMiddleWare(), handler.UpdateStock(db))
 
+	r.GET("/notifications", middleware.AuthMiddleWare(), handler.GetNotifications(db))
 	r.PUT("/notification", middleware.AuthMiddleWare(), handler.UpdateNotification(db))
 
 	r.Run(":8080")
