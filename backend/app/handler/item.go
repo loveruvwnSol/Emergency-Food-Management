@@ -9,30 +9,30 @@ import (
 	"gorm.io/gorm"
 )
 
-func FetchItem(db *gorm.DB, id int) (*model.Item, error) {
-	var item model.Item
+func FetchItems(db *gorm.DB, familyID int) ([]model.Item, error) {
+	var items []model.Item
 
-	result := db.Preload("Family").First(&item, id)
+	result := db.Preload("Family").Where("family_id = ?", familyID).Find(&items)
 
 	if result.Error != nil {
 		return nil, result.Error
 	}
 
-	return &item, nil
+	return items, nil
 }
 
 func GetItems(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var items []model.Item
 
-		family_id, err := strconv.Atoi(ctx.Param("familyId"))
+		familyID, err := strconv.Atoi(ctx.Param("family_id"))
 		if err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid familyId"})
 			return
 		}
 
-		if err := db.Table("items").Where("family_id = ?", family_id).Preload("Family").Find(&items).Error; err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch items"})
+		if err := db.Table("items").Where("family_id = ?", familyID).Preload("Family").Find(&items).Error; err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get items"})
 			return
 		}
 
@@ -63,29 +63,29 @@ func AddItem(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		fetchedItem, err := FetchItem(db, newItem.ID)
+		fetchedItem, err := FetchItems(db, newItem.FamilyID)
 		if err != nil {
-
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching items: "})
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"message": "Item added successfully", "newItem": fetchedItem})
+		ctx.JSON(http.StatusOK, gin.H{"success": "Item added successfully", "newItem": fetchedItem})
 	}
 }
 
 func UpdateItem(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var updateItem model.Item
 
-		id, err := strconv.Atoi(ctx.Param("id"))
+		itemID, err := strconv.Atoi(ctx.Param("item_id"))
 		if err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
 			return
 		}
-		updateItem.ID = id
+
+		updateItem := model.Item{Base: model.Base{ID: itemID}}
 
 		if err := ctx.Bind(&updateItem); err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid updateItem"})
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid item"})
 			return
 		}
 
@@ -101,16 +101,28 @@ func UpdateItem(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"success": "Update item"})
+		fetchedItem, err := FetchItems(db, updateItem.FamilyID)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching items: "})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{"success": "Update item", "items": fetchedItem})
 	}
 }
 
 func DeleteItem(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		id := ctx.Param("id")
+		itemID := ctx.Param("item_id")
+		var item model.Item
 
-		result := db.Table("items").Where("id = ?", id).Delete(&model.Item{})
+		if err := db.Table("items").Where("id = ?", itemID).First(&item).Error; err != nil {
+			ctx.JSON(http.StatusNotFound, gin.H{"error": "Item not found"})
+			return
+		}
+
+		result := db.Table("items").Where("id = ?", itemID).Delete(&model.Item{})
 
 		if result.Error != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Cannot delete item"})
@@ -122,6 +134,12 @@ func DeleteItem(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"message": "Item deleted successfully"})
+		fetchedItem, err := FetchItems(db, item.FamilyID)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching items: "})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{"success": "Item deleted successfully", "items": fetchedItem})
 	}
 }
