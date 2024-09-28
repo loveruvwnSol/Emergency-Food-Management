@@ -28,6 +28,30 @@ func InitNotification(db *gorm.DB, userID int) error {
 	return nil
 }
 
+func GetNotifications(db *gorm.DB) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		userID := ctx.MustGet("user_id").(int)
+
+		var notification model.Notification
+
+		result := db.Table("notifications").Where("user_id = ?", userID).Preload("User").First(&notification)
+
+		if result.Error != nil {
+			if result.Error == gorm.ErrRecordNotFound {
+				ctx.JSON(http.StatusNotFound, gin.H{"error": "Notification not found"})
+				return
+			}
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve notification"})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{
+			"success": "get notification successfully", "notification": notification,
+		})
+	}
+}
+
 func UpdateNotification(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		userID := ctx.MustGet("user_id").(int)
