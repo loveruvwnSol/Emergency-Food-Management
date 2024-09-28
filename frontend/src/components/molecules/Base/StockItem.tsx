@@ -1,20 +1,45 @@
 import { Box, Image, Text, useDisclosure } from "@chakra-ui/react";
 import WaterImage from "../../../images/water.jpg";
 import { NewItemModal } from "../../organisms/Items/NewItemModal";
+import { Item } from "../../../hooks/items";
 
 type StockItemProps = {
   size: number;
+  item: Item;
+  AddNewItem: (
+    name: string,
+    expiration: string,
+    stock: number,
+    type: string
+  ) => Promise<void>;
+  UpdateItem: (
+    id: number,
+    name: string,
+    expiration: string,
+    stock: number,
+    type: string
+  ) => Promise<void>;
+  DeleteItem: (itemID: number) => Promise<void>;
 };
 
-export const StockItem: React.FC<StockItemProps> = ({ size }) => {
+export const StockItem: React.FC<StockItemProps> = ({
+  size,
+  item,
+  AddNewItem,
+  UpdateItem,
+  DeleteItem,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const item = {
-    name: "天然水 2L",
-    expiration: "2024-01-01",
-    stock: 3,
-    type: "water",
-    image: WaterImage,
+
+  const formatSlashDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}/${month}/${day}`;
   };
+
   return (
     <Box>
       <Image
@@ -33,13 +58,17 @@ export const StockItem: React.FC<StockItemProps> = ({ size }) => {
         {item.name}
       </Text>
       <Text fontWeight={"bold"} color={"#FB8B24"} mt={1}>
-        {item.expiration}
+        {formatSlashDate(item.expiration)}
       </Text>
       <NewItemModal
         isOpen={isOpen}
         onClose={onClose}
         mode="edit"
         item={item}
+        image={WaterImage}
+        AddNewItem={AddNewItem}
+        UpdateItem={UpdateItem}
+        DeleteItem={DeleteItem}
       />
     </Box>
   );
