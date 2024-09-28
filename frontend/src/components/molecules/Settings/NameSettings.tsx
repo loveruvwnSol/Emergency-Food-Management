@@ -1,8 +1,20 @@
 import { Box, Button, Input, Text } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useUser } from '../../../hooks/user';
 
 const NameSettings = () => {
-  const [userName, setUserName] = useState('鈴木太郎');
+  const [{ user, UpdateUsername }] = useUser();
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    if (user) {
+      setUserName(user.name);
+    }
+  }, [user]);
+
+  const handleSave = async () => {
+    await UpdateUsername(userName);
+  };
 
   return (
     <Box //名前設定
@@ -19,9 +31,11 @@ const NameSettings = () => {
         名前
       </Text>
       <Input
-        placeholder={userName}
+        placeholder={user?.name}
         w={'280px'}
+        value={userName}
         onChange={(e) => setUserName(e.target.value)}
+        focusBorderColor='#FB8B24'
       />
       <Button
         bgColor={'#FB8B24'}
@@ -31,6 +45,7 @@ const NameSettings = () => {
         borderRadius={'25px'}
         w={'90px'}
         h={'40px'}
+        onClick={handleSave}
       >
         保存
       </Button>

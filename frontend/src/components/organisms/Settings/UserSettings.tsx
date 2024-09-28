@@ -1,7 +1,7 @@
 import { Box, Text } from '@chakra-ui/react';
 import IconSettings from '../../molecules/Settings/IconSettings';
-import GoalSettings from '../../molecules/Settings/GoalSettings';
 import NameSettings from '../../molecules/Settings/NameSettings';
+import GoalSettings from './GoalSettings';
 
 const UserSettings = () => {
   return (
