@@ -7,13 +7,28 @@ import {
 } from "@chakra-ui/react";
 import { NewItemModalForm } from "../../molecules/Items/NewItemForm";
 import { UploadNewItemImage } from "../../molecules/Items/UploadNewItemImage";
-import { Item } from "../../templates/Items/ItemsBoard";
+import { Item } from "../../../hooks/items";
 
 type NewItemModalProps = {
   isOpen: boolean;
   onClose: () => void;
   mode: string;
   item: Item;
+  image: string;
+  AddNewItem: (
+    name: string,
+    expiration: string,
+    stock: number,
+    type: string
+  ) => Promise<void>;
+  UpdateItem: (
+    id: number,
+    name: string,
+    expiration: string,
+    stock: number,
+    type: string
+  ) => Promise<void>;
+  DeleteItem: (itemID: number) => Promise<void>;
 };
 
 export const NewItemModal: React.FC<NewItemModalProps> = ({
@@ -21,6 +36,10 @@ export const NewItemModal: React.FC<NewItemModalProps> = ({
   onClose,
   mode,
   item,
+  image,
+  AddNewItem,
+  UpdateItem,
+  DeleteItem,
 }) => {
   return (
     <Modal onClose={onClose} isOpen={isOpen} isCentered>
@@ -32,8 +51,15 @@ export const NewItemModal: React.FC<NewItemModalProps> = ({
           justifyContent={"space-around"}
           alignItems={"center"}
         >
-          <UploadNewItemImage image={item.image} />
-          <NewItemModalForm mode={mode} item={item} onClose={onClose} />
+          <UploadNewItemImage image={image} />
+          <NewItemModalForm
+            mode={mode}
+            item={item}
+            onClose={onClose}
+            AddNewItem={AddNewItem}
+            UpdateItem={UpdateItem}
+            DeleteItem={DeleteItem}
+          />
         </ModalBody>
       </ModalContent>
     </Modal>

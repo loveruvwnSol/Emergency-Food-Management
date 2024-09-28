@@ -1,41 +1,93 @@
-import { Box, Tab, TabIndicator, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
-import StockItemList from '../../molecules/Items/StockItemList';
+import {
+  Box,
+  Tab,
+  TabIndicator,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+} from "@chakra-ui/react";
+import StockItemList from "../../molecules/Items/StockItemList";
+import { Item } from "../../../hooks/items";
 
-const ItemTabs = () => {
+type ItemTabsProps = {
+  items: Item[];
+  AddNewItem: (
+    name: string,
+    expiration: string,
+    stock: number,
+    type: string
+  ) => Promise<void>;
+  UpdateItem: (
+    id: number,
+    name: string,
+    expiration: string,
+    stock: number,
+    type: string
+  ) => Promise<void>;
+  DeleteItem: (itemID: number) => Promise<void>;
+};
+
+const ItemTabs: React.FC<ItemTabsProps> = ({
+  items,
+  AddNewItem,
+  UpdateItem,
+  DeleteItem,
+}) => {
+  const foodItems = items.filter((item) => item.type === "food");
+  const drinkItems = items.filter((item) => item.type === "drink");
+
+  if (!items) {
+    return <Text>loading...</Text>;
+  }
+
   return (
     <Box>
       <Tabs>
         <TabList
-          w={'210px'}
+          w={"210px"}
           gap={2}
-          color={'#808080'}
-          fontSize={'16px'}
-          borderWidth={'10px'}
-          border={'none'}
-          borderBottom={'1px solid #d7d7d7'}
+          color={"#808080"}
+          fontSize={"16px"}
+          borderWidth={"10px"}
+          border={"none"}
+          borderBottom={"1px solid #d7d7d7"}
         >
-          <Tab _selected={{ color: '#FB8B24' }}>全て</Tab>
-          <Tab _selected={{ color: '#FB8B24' }}>食料</Tab>
-          <Tab _selected={{ color: '#FB8B24' }}>飲料</Tab>
+          <Tab _selected={{ color: "#FB8B24" }}>全て</Tab>
+          <Tab _selected={{ color: "#FB8B24" }}>食料</Tab>
+          <Tab _selected={{ color: "#FB8B24" }}>飲料</Tab>
         </TabList>
         <TabIndicator
-          mt='-1.5px'
-          w={'100%'}
-          height='2px'
-          bg='#FB8B24'
-          borderRadius='1px'
+          mt="-1.5px"
+          w={"100%"}
+          height="2px"
+          bg="#FB8B24"
+          borderRadius="1px"
         />
         <TabPanels>
           <TabPanel>
-            <StockItemList //全てのタイプを表示
+            <StockItemList
+              AddNewItem={AddNewItem}
+              UpdateItem={UpdateItem}
+              DeleteItem={DeleteItem}
+              items={items} //全てのタイプを表示
             />
           </TabPanel>
           <TabPanel>
-            <StockItemList //食料を表示
+            <StockItemList
+              AddNewItem={AddNewItem}
+              UpdateItem={UpdateItem}
+              DeleteItem={DeleteItem}
+              items={foodItems} //食料を表示
             />
           </TabPanel>
           <TabPanel>
-            <StockItemList //飲料を表示
+            <StockItemList
+              AddNewItem={AddNewItem}
+              UpdateItem={UpdateItem}
+              DeleteItem={DeleteItem}
+              items={drinkItems} //飲料を表示
             />
           </TabPanel>
         </TabPanels>

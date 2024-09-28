@@ -29,7 +29,7 @@ export const useUser = () => {
         setUser(res.data);
       }
     } catch (error) {
-      alert("ユーザーの取得に失敗しました。");
+      console.log(error);
     }
   };
 
@@ -40,7 +40,7 @@ export const useUser = () => {
         setIndependentUsers(res.data.independentUsers);
       }
     } catch (error) {
-      alert("ユーザーの取得に失敗しました。");
+      console.log(error);
     }
   };
 

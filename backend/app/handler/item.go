@@ -4,6 +4,7 @@ import (
 	"app/app/model"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -48,15 +49,37 @@ func GetItems(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
+type NewItemRequest struct {
+	model.Base
+	FamilyID   int    `json:"family_id"`
+	Name       string `json:"name"`
+	Type       string `json:"type"`
+	Expiration string `json:"expiration"`
+	Stock      int    `json:"stock"`
+}
+
 func AddNewItem(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		var newItem model.Item
+		var requestItem NewItemRequest
 
-		if err := ctx.Bind(&newItem); err != nil {
+		if err := ctx.ShouldBindJSON(&requestItem); err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid newItem"})
 			return
 		}
+
+		date, err := time.Parse("2006-01-02", requestItem.Expiration)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse date"})
+			return
+		}
+
+		newItem := model.Item{
+			FamilyID:   requestItem.FamilyID,
+			Name:       requestItem.Name,
+			Type:       requestItem.Type,
+			Expiration: date,
+			Stock:      requestItem.Stock}
 
 		if err := db.Table("items").Create(&newItem).Error; err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to add newItem"})
@@ -65,11 +88,11 @@ func AddNewItem(db *gorm.DB) gin.HandlerFunc {
 
 		fetchedItems, err := FetchItems(db, newItem.FamilyID)
 		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetch items: "})
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetch items "})
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"success": "Item added successfully", "items": fetchedItems})
+		ctx.JSON(http.StatusCreated, gin.H{"success": "Item added successfully", "items": fetchedItems})
 	}
 }
 
@@ -82,11 +105,26 @@ func UpdateItem(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		updateItem := model.Item{Base: model.Base{ID: itemID}}
+		var requestItem NewItemRequest
 
-		if err := ctx.Bind(&updateItem); err != nil {
+		if err := ctx.ShouldBindJSON(&requestItem); err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid item"})
 			return
+		}
+
+		date, err := time.Parse("2006-01-02", requestItem.Expiration)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse date"})
+			return
+		}
+
+		updateItem := model.Item{
+			Base:       model.Base{ID: itemID},
+			FamilyID:   requestItem.FamilyID,
+			Name:       requestItem.Name,
+			Type:       requestItem.Type,
+			Expiration: date,
+			Stock:      requestItem.Stock,
 		}
 
 		result := db.Table("items").Where("id = ?", updateItem.ID).Updates(updateItem)
@@ -136,7 +174,7 @@ func DeleteItem(db *gorm.DB) gin.HandlerFunc {
 
 		fetchedItems, err := FetchItems(db, familyID)
 		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching items: "})
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching items "})
 			return
 		}
 
