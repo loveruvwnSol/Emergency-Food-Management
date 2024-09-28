@@ -39,8 +39,8 @@ func CreateAccount(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		if err := InitNotification(db, newUser.ID); err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to init notification: %v", err)})
+		if err := InitNotificationSettings(db, newUser.ID); err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to init notification settings: %v", err)})
 			return
 		}
 
