@@ -31,6 +31,11 @@ func main() {
 	r.POST("/invitations/invite", middleware.AuthMiddleWare(), handler.InviteUserForFamily(db))
 	r.POST("/invitations/accept", middleware.AuthMiddleWare(), handler.JoinToFamily(db))
 
+	r.GET("/items/:family_id", handler.GetItems(db))
+	r.POST("/item", handler.AddNewItem(db))
+	r.PUT("/item/:item_id", handler.UpdateItem(db))
+	r.DELETE("/item/:family_id/:item_id", handler.DeleteItem(db))
+
 	r.PUT("/stock", middleware.AuthMiddleWare(), handler.UpdateStock(db))
 
 	r.PUT("/notification", middleware.AuthMiddleWare(), handler.UpdateNotification(db))

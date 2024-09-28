@@ -29,6 +29,11 @@ func DBInit() *gorm.DB {
 	if err := db.AutoMigrate(&model.Invitation{}); err != nil {
 		panic("failed migrate invitations")
 	}
+
+	if err := db.AutoMigrate(&model.Item{}); err != nil {
+		panic("failed migrate invitations")
+	}
+
 	if err := db.AutoMigrate(&model.Stock{}); err != nil {
 		panic("failed migrate invitations")
 	}
