@@ -97,13 +97,13 @@ func UpdateItem(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		if result.RowsAffected == 0 {
-			ctx.JSON(http.StatusNotFound, gin.H{"error": "Not found updateItem"})
+			ctx.JSON(http.StatusNotFound, gin.H{"error": "Not found update item"})
 			return
 		}
 
 		fetchedItems, err := FetchItems(db, updateItem.FamilyID)
 		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching items: "})
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching items"})
 			return
 		}
 
