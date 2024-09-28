@@ -115,12 +115,6 @@ func DeleteItem(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		itemID := ctx.Param("item_id")
-		var item model.Item
-
-		if err := db.Table("items").Where("id = ?", itemID).First(&item).Error; err != nil {
-			ctx.JSON(http.StatusNotFound, gin.H{"error": "Item not found"})
-			return
-		}
 
 		result := db.Table("items").Where("id = ?", itemID).Delete(&model.Item{})
 
@@ -134,7 +128,13 @@ func DeleteItem(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		fetchedItems, err := FetchItems(db, item.FamilyID)
+		familyID, err := strconv.Atoi(ctx.Param("family_id"))
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid family ID"})
+			return
+		}
+
+		fetchedItems, err := FetchItems(db, familyID)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching items: "})
 			return
