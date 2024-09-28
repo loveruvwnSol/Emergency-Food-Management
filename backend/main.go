@@ -32,7 +32,7 @@ func main() {
 	r.POST("/invitations/accept", middleware.AuthMiddleWare(), handler.JoinToFamily(db))
 
 	r.GET("/items/:family_id", handler.GetItems(db))
-	r.POST("/item", handler.AddItem(db))
+	r.POST("/item", handler.AddNewItem(db))
 	r.PUT("/item/:item_id", handler.UpdateItem(db))
 	r.DELETE("/item/:item_id", handler.DeleteItem(db))
 

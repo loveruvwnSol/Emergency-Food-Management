@@ -48,7 +48,7 @@ func GetItems(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
-func AddItem(db *gorm.DB) gin.HandlerFunc {
+func AddNewItem(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		var newItem model.Item
@@ -59,17 +59,17 @@ func AddItem(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		if err := db.Table("items").Create(&newItem).Error; err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Cannot add newItem"})
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to add newItem"})
 			return
 		}
 
-		fetchedItem, err := FetchItems(db, newItem.FamilyID)
+		fetchedItems, err := FetchItems(db, newItem.FamilyID)
 		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching items: "})
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetch items: "})
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"success": "Item added successfully", "newItem": fetchedItem})
+		ctx.JSON(http.StatusOK, gin.H{"success": "Item added successfully", "items": fetchedItems})
 	}
 }
 
@@ -92,22 +92,22 @@ func UpdateItem(db *gorm.DB) gin.HandlerFunc {
 		result := db.Table("items").Where("id = ?", updateItem.ID).Updates(updateItem)
 
 		if result.Error != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Cannot update item"})
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Failed to update item"})
 			return
 		}
 
 		if result.RowsAffected == 0 {
-			ctx.JSON(http.StatusNotFound, gin.H{"error": "Not fount updateItem"})
+			ctx.JSON(http.StatusNotFound, gin.H{"error": "Not found updateItem"})
 			return
 		}
 
-		fetchedItem, err := FetchItems(db, updateItem.FamilyID)
+		fetchedItems, err := FetchItems(db, updateItem.FamilyID)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching items: "})
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"success": "Update item", "items": fetchedItem})
+		ctx.JSON(http.StatusOK, gin.H{"success": "Update item", "items": fetchedItems})
 	}
 }
 
@@ -125,7 +125,7 @@ func DeleteItem(db *gorm.DB) gin.HandlerFunc {
 		result := db.Table("items").Where("id = ?", itemID).Delete(&model.Item{})
 
 		if result.Error != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Cannot delete item"})
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete item"})
 			return
 		}
 
@@ -134,12 +134,12 @@ func DeleteItem(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		fetchedItem, err := FetchItems(db, item.FamilyID)
+		fetchedItems, err := FetchItems(db, item.FamilyID)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching items: "})
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"success": "Item deleted successfully", "items": fetchedItem})
+		ctx.JSON(http.StatusOK, gin.H{"success": "Item deleted successfully", "items": fetchedItems})
 	}
 }
