@@ -19,6 +19,7 @@ export type FamilyMember = {
 
 export const useFamily = () => {
   const [familyMembers, setFamilyMembers] = useState<FamilyMember[]>([]);
+  const [familyID, setFamilyID] = useState<number>();
   const [{ user }] = useUser();
   const token = sessionStorage.getItem("TOKEN_KEY");
 
@@ -39,9 +40,10 @@ export const useFamily = () => {
         );
         if (res.status === 200) {
           setFamilyMembers(res.data.members);
+          setFamilyID(res.data.members[0].family_id);
         }
       } catch (error) {
-        alert("家族の取得に失敗しました。");
+        console.log(error);
       }
     }
   };
@@ -127,6 +129,12 @@ export const useFamily = () => {
   };
 
   return [
-    { familyMembers, CreateNewFamily, InviteUserForFamily, JoinToFamily },
+    {
+      familyMembers,
+      familyID,
+      CreateNewFamily,
+      InviteUserForFamily,
+      JoinToFamily,
+    },
   ];
 };

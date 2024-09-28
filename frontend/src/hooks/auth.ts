@@ -61,7 +61,7 @@ export const useAuth = () => {
           navigate("/start");
         }
       } catch (error) {
-        alert("エラー発生。");
+        console.log(error);
         sessionStorage.removeItem("TOKEN_KEY");
         navigate("/start");
       }

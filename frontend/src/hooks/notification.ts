@@ -20,7 +20,7 @@ export const useNotification = () => {
         setNotifications(res.data.invitations);
       }
     } catch (error) {
-      alert("招待の取得に失敗しました。");
+      console.log(error);
     }
   };
 
