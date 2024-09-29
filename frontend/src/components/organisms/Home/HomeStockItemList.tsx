@@ -1,7 +1,7 @@
 import { Box, Text } from "@chakra-ui/react";
 import { StockItem } from "../../molecules/Base/StockItem";
 import { Link } from "react-router-dom";
-import { Item, useItems } from "../../../hooks/items";
+import { Item } from "../../../hooks/items";
 
 type HomeStockItemListProps = {
   title: string;
@@ -79,7 +79,7 @@ export const HomeStockItemList: React.FC<HomeStockItemListProps> = ({
         </Box>
       ) : (
         <Text fontWeight={"bold"} fontSize={20} ml={2}>
-          まだアイテムがありません
+          アイテムがありません
         </Text>
       )}
     </Box>

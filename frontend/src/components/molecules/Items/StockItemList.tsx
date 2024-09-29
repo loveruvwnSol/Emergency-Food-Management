@@ -34,7 +34,7 @@ const StockItemList: React.FC<StockItemListProps> = ({
         justifyContent={"space-between"}
         mb={8}
       ></Box>
-      {items.length >= 1 ? (
+      {items?.length >= 1 ? (
         <Box display={"flex"} alignItems={"center"} gap={10}>
           <Grid templateColumns="repeat(5, 1fr)" gap={6}>
             {items.map((e: any) => (
@@ -51,7 +51,7 @@ const StockItemList: React.FC<StockItemListProps> = ({
         </Box>
       ) : (
         <Text fontWeight={"bold"} fontSize={20} ml={2}>
-          まだアイテムがありません
+          アイテムがありません
         </Text>
       )}
     </Box>
