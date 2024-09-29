@@ -1,6 +1,25 @@
 import { Box, FormControl, FormLabel, Switch, Text } from '@chakra-ui/react';
+import {
+  useNotificationSettings,
+  NotificationSettings as NotificationSettingsType,
+} from '../../../hooks/notificationSettings'; // カスタムフックのインポート
 
 const NotificationSettings = () => {
+  const { notificationSettings, UpdateNotificationSettings } = useNotificationSettings();
+
+  // Switchの状態が変更されたときに呼ばれる関数
+  const handleSwitchChange = (setting: keyof NotificationSettingsType) => {
+    if (notificationSettings) {
+      const updatedSettings = {
+        ...notificationSettings,
+        [setting]: !notificationSettings[setting], // 現在の値を反転
+      };
+      UpdateNotificationSettings(updatedSettings); // 更新関数を呼び出す
+    }
+  };
+
+  if (!notificationSettings) return <Text>loading...</Text>;
+
   return (
     <Box w={'100%'}>
       <Text
@@ -27,7 +46,8 @@ const NotificationSettings = () => {
             size='lg'
             mb={2}
             colorScheme='orange'
-            defaultChecked
+            isChecked={notificationSettings.is_expiration_warning}
+            onChange={() => handleSwitchChange('is_expiration_warning')} // Switchの変更時に関数を呼び出す
           />
         </Box>
 
@@ -48,7 +68,8 @@ const NotificationSettings = () => {
             size='lg'
             mb={2}
             colorScheme='orange'
-            defaultChecked
+            isChecked={notificationSettings.is_low_stock_warning}
+            onChange={() => handleSwitchChange('is_low_stock_warning')} // Switchの変更時に関数を呼び出す
           />
         </Box>
       </FormControl>
