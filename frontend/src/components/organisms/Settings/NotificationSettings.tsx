@@ -46,7 +46,7 @@ const NotificationSettings = () => {
             size='lg'
             mb={2}
             colorScheme='orange'
-            isChecked={notificationSettings?.is_expiration_warning}
+            isChecked={notificationSettings.is_expiration_warning}
             onChange={() => handleSwitchChange('is_expiration_warning')} // Switchの変更時に関数を呼び出す
           />
         </Box>
@@ -68,7 +68,7 @@ const NotificationSettings = () => {
             size='lg'
             mb={2}
             colorScheme='orange'
-            isChecked={notificationSettings?.is_low_stock_warning}
+            isChecked={notificationSettings.is_low_stock_warning}
             onChange={() => handleSwitchChange('is_low_stock_warning')} // Switchの変更時に関数を呼び出す
           />
         </Box>
