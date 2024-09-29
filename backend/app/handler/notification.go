@@ -228,7 +228,7 @@ func UpdateNotificationSettings(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		if result.RowsAffected == 0 {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Not found notification settings"})
+			ctx.JSON(http.StatusNotFound, gin.H{"error": "Not found notification settings"})
 			return
 		}
 
