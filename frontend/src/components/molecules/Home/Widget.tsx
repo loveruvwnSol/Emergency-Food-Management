@@ -1,7 +1,30 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, useDisclosure } from "@chakra-ui/react";
 import { FiChevronRight } from "react-icons/fi";
+import { NewItemModal } from "../../organisms/Items/NewItemModal";
 
-export const Widget = () => {
+type WidgetProps = {
+  AddNewItem: (
+    name: string,
+    expiration: string,
+    stock: number,
+    type: string
+  ) => Promise<void>;
+  UpdateItem: (
+    id: number,
+    name: string,
+    expiration: string,
+    stock: number,
+    type: string
+  ) => Promise<void>;
+  DeleteItem: (itemID: number) => Promise<void>;
+};
+
+export const Widget: React.FC<WidgetProps> = ({
+  AddNewItem,
+  UpdateItem,
+  DeleteItem,
+}) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box
       w={"372px"}
@@ -12,6 +35,7 @@ export const Widget = () => {
       mr={8}
       color={"white"}
       boxShadow={"0 10px 10px #FED6B1"}
+      onClick={onOpen}
     >
       <Box
         display={"flex"}
@@ -39,6 +63,23 @@ export const Widget = () => {
       >
         3件
       </Text>
+      <NewItemModal
+        isOpen={isOpen}
+        onClose={onClose}
+        mode="add"
+        item={{
+          id: 0,
+          family_id: 0,
+          name: "",
+          expiration: "",
+          stock: 1,
+          type: "",
+        }}
+        image=""
+        AddNewItem={AddNewItem}
+        UpdateItem={UpdateItem}
+        DeleteItem={DeleteItem}
+      />
     </Box>
   );
 };

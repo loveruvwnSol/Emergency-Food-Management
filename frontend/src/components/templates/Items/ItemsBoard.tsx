@@ -31,7 +31,6 @@ const ItemsBoard = () => {
           expiration: "",
           stock: 1,
           type: "",
-          image: "",
         }}
         image={""}
         AddNewItem={AddNewItem}

@@ -9,7 +9,6 @@ export type Item = {
   expiration: string;
   stock: number;
   type: string;
-  image: string;
 };
 
 export const useItems = () => {

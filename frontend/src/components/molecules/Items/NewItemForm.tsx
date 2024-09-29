@@ -56,7 +56,7 @@ export const NewItemModalForm: React.FC<NewItemModalForm> = ({
 
   const [name, setName] = useState<string>(item.name);
   const [expiration, setExpiration] = useState<string>(
-    formatHyphenDate(item.expiration)
+    item.expiration ? formatHyphenDate(item.expiration) : ""
   );
   const [stock, setStock] = useState<number>(item.stock);
   const [type, setType] = useState<string>(item.type);
@@ -150,12 +150,20 @@ export const NewItemModalForm: React.FC<NewItemModalForm> = ({
           onClick={
             mode === "edit"
               ? () => {
-                  onClose();
-                  UpdateItem(item.id, name, expiration, stock, type);
+                  if (name && expiration && stock && type) {
+                    onClose();
+                    UpdateItem(item.id, name, expiration, stock, type);
+                  } else {
+                    alert("入力していない項目があります。");
+                  }
                 }
               : () => {
-                  onClose();
-                  AddNewItem(name, expiration, stock, type);
+                  if (name && expiration && stock && type) {
+                    onClose();
+                    AddNewItem(name, expiration, stock, type);
+                  } else {
+                    alert("入力していない項目があります。");
+                  }
                 }
           }
         >
