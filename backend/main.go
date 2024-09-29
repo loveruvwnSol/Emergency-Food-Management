@@ -45,6 +45,8 @@ func main() {
 	r.PUT("/stock", middleware.AuthMiddleWare(), handler.UpdateStock(db))
 
 	r.GET("/notifications/:family_id", middleware.AuthMiddleWare(), handler.GetNotifications(db))
+	r.GET("notifications/settings", middleware.AuthMiddleWare(), handler.GetNotificationSettings(db))
+	r.PUT("/notifications/settings", middleware.AuthMiddleWare(), handler.UpdateNotificationSettings(db))
 
 	r.Run(":8080")
 }
