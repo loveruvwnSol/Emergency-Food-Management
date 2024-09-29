@@ -26,8 +26,6 @@ func main() {
 	r.GET("/user:id/family", middleware.AuthMiddleWare(), handler.GetFamilyMembers(db))
 	r.POST("/user/family", middleware.AuthMiddleWare(), handler.CreateNewFamily(db))
 	r.DELETE("/user:id/family", handler.DeleteFamilyMember(db))
-	r.GET("/user/notifications", middleware.AuthMiddleWare(), handler.GetNotificationSettings(db))
-	r.PUT("/user/notification", middleware.AuthMiddleWare(), handler.UpdateNotificationSettings(db))
 
 	r.GET("/users", handler.GetAllIndependentUsers(db))
 	r.GET("/users/search", handler.SearchIndependentUsers(db))
