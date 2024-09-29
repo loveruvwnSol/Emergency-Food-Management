@@ -28,6 +28,30 @@ func InitStock(db *gorm.DB, userID int) error {
 	return nil
 }
 
+func GetStocks(db *gorm.DB) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		userID := ctx.MustGet("user_id").(int)
+
+		var stock model.Stock
+
+		result := db.Table("stocks").Where("user_id = ?", userID).Preload("User").First(&stock)
+
+		if result.Error != nil {
+			if result.Error == gorm.ErrRecordNotFound {
+				ctx.JSON(http.StatusNotFound, gin.H{"error": "Stock not found"})
+				return
+			}
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve stock"})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{
+			"success": "Get stock successfully", "stock": stock,
+		})
+	}
+}
+
 func UpdateStock(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		userID := ctx.MustGet("user_id").(int)

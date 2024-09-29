@@ -183,17 +183,41 @@ func InitNotificationSettings(db *gorm.DB, userID int) error {
 	return nil
 }
 
+func GetNotificationSettings(db *gorm.DB) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		userID := ctx.MustGet("user_id").(int)
+
+		var notificationSettings model.NotificationSettings
+
+		result := db.Where("user_id = ?", userID).Preload("User").First(&notificationSettings)
+
+		if result.Error != nil {
+			if result.Error == gorm.ErrRecordNotFound {
+				ctx.JSON(http.StatusNotFound, gin.H{"error": "Notification settings not found"})
+				return
+			}
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve notification settings"})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{
+			"success": "Get notification successfully", "notification": notificationSettings,
+		})
+	}
+}
+
 func UpdateNotificationSettings(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		userID := ctx.MustGet("user_id").(int)
 		notificationSettings := model.NotificationSettings{UserID: userID}
 
 		if err := ctx.Bind(&notificationSettings); err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid notification"})
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid notification settings"})
 			return
 		}
 
-		result := db.Table("notifications").Where("user_id = ?", notificationSettings.UserID).Updates(map[string]interface{}{
+		result := db.Where("user_id = ?", notificationSettings.UserID).Updates(map[string]interface{}{
 			"is_expiration_warning": notificationSettings.IsExpirationWarning,
 			"is_low_stock_warning":  notificationSettings.IsLowStockWarning,
 		})

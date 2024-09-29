@@ -59,7 +59,36 @@ export const useUser = () => {
     }
   };
 
+  const UpdateUsername = async (newName: string) => {
+    const token = sessionStorage.getItem("TOKEN_KEY");
+    try {
+      const res = await axios.put(
+        "http://localhost:8080/user",
+        { name: newName },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res.status === 200) {
+        setUser((prevUser) =>
+          prevUser ? { ...prevUser, name: newName } : prevUser
+        );
+        // alert('ユーザー名を更新しました。');
+      }
+    } catch (error) {
+      alert("ユーザー名の更新に失敗しました。");
+    }
+  };
+
   return [
-    { user, independentUsers, GetIndependentUsers, SearchIndependentUsers },
+    {
+      user,
+      independentUsers,
+      GetIndependentUsers,
+      SearchIndependentUsers,
+      UpdateUsername,
+    },
   ];
 };
