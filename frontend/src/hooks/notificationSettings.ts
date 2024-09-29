@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { log } from 'console';
 import { useEffect, useState } from 'react';
 
 export type NotificationSettings = {
@@ -6,8 +7,8 @@ export type NotificationSettings = {
   is_low_stock_warning: boolean;
 };
 
-export const UseNotificationSettings = () => {
-  const [NotificationSettings, setNotificationSettings] = useState<NotificationSettings | null>(
+export const useNotificationSettings = () => {
+  const [notificationSettings, setNotificationSettings] = useState<NotificationSettings | null>(
     null
   ); // 初期値はnullに設定
   const token = sessionStorage.getItem('TOKEN_KEY');
@@ -25,7 +26,7 @@ export const UseNotificationSettings = () => {
         setNotificationSettings(response.data.notification);
       }
     } catch (error) {
-      alert('通知設定の取得に失敗しました。');
+      console.log('通知設定の取得に失敗しました。');
     }
   };
 
@@ -54,8 +55,7 @@ export const UseNotificationSettings = () => {
     }
   };
   return {
-    NotificationSettings,
-    GetNotificationSettings, // 現在の通知設定を再取得するための関数
+    notificationSettings,
     UpdateNotificationSettings, // 通知設定を更新するための関数
   };
 };
