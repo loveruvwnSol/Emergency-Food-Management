@@ -20,7 +20,7 @@ func ScheduleExpiringItemsCheck(db *gorm.DB) {
 		CheckExpiringItems(db)
 	})
 	// c.AddFunc("*/1 * * * *", func() {
-	// 	// log.Println("Checking expiring items...")
+	// 	log.Println("Checking expiring items...")
 	// 	CheckExpiringItems(db)
 	// })
 
@@ -160,11 +160,39 @@ func GetNotifications(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		ctx.JSON(http.StatusOK, gin.H{
-			"success":       "Get notifications",
-			"notifications": notifications,
-			"items":         items,
-		})
+			"success": "Get notifications and items",
+			"data": func() []interface{} {
+				var result []interface{}
 
+				for _, notification := range notifications {
+					var itemIDs []int
+					if err := json.Unmarshal(notification.ItemIDs, &itemIDs); err != nil {
+						log.Println("Error decoding item_ids:", err)
+						continue
+					}
+
+					var itemArray []interface{}
+					addedItems := make(map[int]bool)
+
+					for _, id := range itemIDs {
+						for _, item := range items {
+							if item.ID == id {
+								if !addedItems[item.ID] {
+									itemArray = append(itemArray, item)
+									addedItems[item.ID] = true
+								}
+							}
+						}
+					}
+
+					result = append(result, map[string]interface{}{
+						"items":        itemArray,
+						"notification": notification,
+					})
+				}
+				return result
+			}(),
+		})
 	}
 }
 
