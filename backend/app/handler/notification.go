@@ -47,7 +47,7 @@ func GetNotifications(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		ctx.JSON(http.StatusOK, gin.H{
-			"success": "get notification successfully", "notification": notification,
+			"success": "Get notification successfully", "notification": notification,
 		})
 	}
 }

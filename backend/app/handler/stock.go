@@ -47,7 +47,7 @@ func GetStocks(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		ctx.JSON(http.StatusOK, gin.H{
-			"success": "get stock successfully", "stock": stock,
+			"success": "Get stock successfully", "stock": stock,
 		})
 	}
 }
