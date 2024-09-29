@@ -22,6 +22,7 @@ func GetCurrentUser(db *gorm.DB) gin.HandlerFunc {
 			"createdAt": user.CreatedAt,
 			"name":      user.Name,
 			"email":     user.Email,
+			"icon_url":  user.IconURL,
 		})
 	}
 }
@@ -110,5 +111,33 @@ func UpdateUsername(db *gorm.DB) gin.HandlerFunc {
 
 		ctx.JSON(http.StatusOK, gin.H{"success": "Update username"})
 	}
+}
 
+func UpdateIconURL(db *gorm.DB) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		userID := ctx.MustGet("user_id").(int) // 認証されたユーザーのIDを取得
+		var request struct {
+			IconURL string `json:"icon_url"` // リクエストから取得する新しいアイコンのURL
+		}
+
+		if err := ctx.Bind(&request); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+			return
+		}
+
+		// usersテーブルのicon_urlカラムを更新
+		result := db.Table("users").Where("id = ?", userID).Update("icon_url", request.IconURL)
+
+		if result.Error != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Cannot update user icon"})
+			return
+		}
+
+		if result.RowsAffected == 0 {
+			ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{"success": "User icon updated", "icon_url": request.IconURL})
+	}
 }

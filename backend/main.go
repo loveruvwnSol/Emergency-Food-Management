@@ -23,6 +23,7 @@ func main() {
 
 	r.GET("/user", middleware.AuthMiddleWare(), handler.GetCurrentUser(db))
 	r.PUT("/user", middleware.AuthMiddleWare(), handler.UpdateUsername(db))
+	r.PUT("/user/icon", middleware.AuthMiddleWare(), handler.UpdateIconURL(db))
 	r.GET("/user:id/family", middleware.AuthMiddleWare(), handler.GetFamilyMembers(db))
 	r.POST("/user/family", middleware.AuthMiddleWare(), handler.CreateNewFamily(db))
 	r.DELETE("/user:id/family", handler.DeleteFamilyMember(db))
@@ -38,6 +39,7 @@ func main() {
 	r.GET("/items/search", handler.SearchItems(db))
 	r.POST("/item", handler.AddNewItem(db))
 	r.PUT("/item/:item_id", handler.UpdateItem(db))
+
 	r.DELETE("/item/:family_id/:item_id", handler.DeleteItem(db))
 
 	r.GET("/stocks", middleware.AuthMiddleWare(), handler.GetStocks(db))
