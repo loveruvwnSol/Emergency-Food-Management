@@ -6,7 +6,6 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
 } from "@chakra-ui/react";
 import StockItemList from "../../molecules/Items/StockItemList";
 import { Item } from "../../../hooks/items";
@@ -35,13 +34,9 @@ const ItemTabs: React.FC<ItemTabsProps> = ({
   UpdateItem,
   DeleteItem,
 }) => {
-  const foodItems = items.filter((item) => item.type === "food");
-  const drinkItems = items.filter((item) => item.type === "drink");
-
-  if (!items) {
-    return <Text>loading...</Text>;
-  }
-
+  const foodItems = items?.filter((item) => item.type === "food");
+  const drinkItems = items?.filter((item) => item.type === "drink");
+  
   return (
     <Box>
       <Tabs>

@@ -4,6 +4,7 @@ import (
 	"app/app/model"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -179,5 +180,34 @@ func DeleteItem(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		ctx.JSON(http.StatusOK, gin.H{"success": "Item deleted successfully", "items": fetchedItems})
+	}
+}
+
+func SearchItems(db *gorm.DB) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		query := ctx.Query("q")
+		familyID := ctx.Query("familyID")
+		var items []model.Item
+
+		if err := db.Where("family_id = ?", familyID).Find(&items).Error; err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid query"})
+			return
+		}
+
+		var filteredItems []model.Item
+
+		if query == "" {
+			filteredItems = items
+		} else {
+			lowerQuery := strings.ToLower(query)
+
+			for _, item := range items {
+				if strings.Contains(strings.ToLower(item.Name), lowerQuery) {
+					filteredItems = append(filteredItems, item)
+				}
+			}
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{"success": "Search items", "filteredItems": filteredItems})
 	}
 }
