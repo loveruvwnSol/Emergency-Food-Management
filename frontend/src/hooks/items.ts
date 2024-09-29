@@ -4,6 +4,7 @@ import { useFamily } from "./family";
 
 export type Item = {
   id: number;
+  family_id: number;
   name: string;
   expiration: string;
   stock: number;
@@ -103,5 +104,24 @@ export const useItems = () => {
     }
   };
 
-  return [{ items, AddNewItem, UpdateItem, DeleteItem }];
+  const SearchFamilyItems = async (query: string) => {
+    if (query.trim()) {
+      try {
+        const res = await axios.get(`http://localhost:8080/items/search`, {
+          params: { q: query, familyID: familyID },
+        });
+        if (res.status === 200) {
+          setItems(res.data.filteredItems);
+          console.log(res.data);
+        }
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  return [
+    { items, GetItems, AddNewItem, UpdateItem, DeleteItem, SearchFamilyItems },
+  ];
 };

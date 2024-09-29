@@ -1,32 +1,34 @@
-import { Box, Icon, Input } from '@chakra-ui/react';
-import { CiSearch } from 'react-icons/ci';
+import { Box, Input } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
-const SearchItems = () => {
+type SearchItemsProps = {
+  GetItems: () => Promise<void>;
+  SearchFamilyItems: (query: string) => Promise<void>;
+};
+
+const SearchItems: React.FC<SearchItemsProps> = ({
+  GetItems,
+  SearchFamilyItems,
+}) => {
+  const [query, setQuery] = useState<string>("");
+
+  useEffect(() => {
+    if (query === "") {
+      GetItems();
+    } else {
+      SearchFamilyItems(query);
+    }
+  }, [query]);
+
   return (
-    <Box
-      w={'460px'}
-      mb={'30px'}
-      position={'relative'}
-      ml={'240px'}
-    >
-      <Box
-        w={'400px'}
-        m={'0 auto'}
-      >
+    <Box w={"460px"} mb={"30px"} position={"relative"} ml={"240px"}>
+      <Box w={"400px"} m={"0 auto"}>
         <Input
-          placeholder='検索'
-          w={'400px'}
+          placeholder="検索"
+          w={"400px"}
+          onChange={(e) => setQuery(e.target.value)}
         />
       </Box>
-      <Icon
-        as={CiSearch}
-        boxSize={'28px'}
-        position={'absolute'}
-        top={1}
-        right={0}
-        cursor={'pointer'}
-        _hover={{ opacity: '50%' }}
-      />
     </Box>
   );
 };
