@@ -9,10 +9,13 @@ import (
 )
 
 func main() {
+
 	r := gin.Default()
 
 	r.Use(middleware.CORSMiddleware())
 	db := repository.DBInit()
+
+	handler.ScheduleExpiringItemsCheck(db)
 
 	r.POST("/createAccount", handler.CreateAccount(db))
 	r.POST("/login", handler.Login(db))
@@ -23,6 +26,8 @@ func main() {
 	r.GET("/user:id/family", middleware.AuthMiddleWare(), handler.GetFamilyMembers(db))
 	r.POST("/user/family", middleware.AuthMiddleWare(), handler.CreateNewFamily(db))
 	r.DELETE("/user:id/family", handler.DeleteFamilyMember(db))
+	r.GET("/user/notifications", middleware.AuthMiddleWare(), handler.GetNotificationSettings(db))
+	r.PUT("/user/notification", middleware.AuthMiddleWare(), handler.UpdateNotificationSettings(db))
 
 	r.GET("/users", handler.GetAllIndependentUsers(db))
 	r.GET("/users/search", handler.SearchIndependentUsers(db))
@@ -39,8 +44,7 @@ func main() {
 	r.GET("/stocks", middleware.AuthMiddleWare(), handler.GetStocks(db))
 	r.PUT("/stock", middleware.AuthMiddleWare(), handler.UpdateStock(db))
 
-	r.GET("/notifications", middleware.AuthMiddleWare(), handler.GetNotifications(db))
-	r.PUT("/notification", middleware.AuthMiddleWare(), handler.UpdateNotification(db))
+	r.GET("/notifications/:family_id", middleware.AuthMiddleWare(), handler.GetNotifications(db))
 
 	r.Run(":8080")
 }

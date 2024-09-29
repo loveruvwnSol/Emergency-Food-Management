@@ -2,81 +2,236 @@ package handler
 
 import (
 	"app/app/model"
+	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/robfig/cron/v3"
 	"gorm.io/gorm"
 )
 
-func InitNotification(db *gorm.DB, userID int) error {
-	// 新しいストックを初期化
-	notification := model.Notification{UserID: userID, IsExpirationWarning: true, IsLowStockWarning: true}
+func ScheduleExpiringItemsCheck(db *gorm.DB) {
+	c := cron.New()
+	c.AddFunc("0 10 * *", func() {
+		CheckExpiringItems(db)
+	})
+	// c.AddFunc("*/1 * * * *", func() {
+	// 	// log.Println("Checking expiring items...")
+	// 	CheckExpiringItems(db)
+	// })
 
-	// ストックをデータベースに作成
-	res := db.Table("notifications").Create(&notification)
+	c.Start()
+}
+
+func CheckExpiringItems(db *gorm.DB) {
+	now := time.Now()
+	threeDaysLater := now.Add(72 * time.Hour)
+
+	var items []model.Item
+
+	result := db.Where("expiration <= ?", threeDaysLater).Find(&items)
+
+	if result.Error != nil {
+		log.Println("Failed to get items")
+		return
+	}
+
+	if result.RowsAffected == 0 {
+		log.Println("No items are nearing expiration at the moment")
+		return
+	}
+
+	familyItems := make(map[int][]model.Item)
+
+	for _, item := range items {
+		familyID := item.FamilyID
+		familyItems[familyID] = append(familyItems[familyID], item)
+	}
+
+	for familyID, items := range familyItems {
+		log.Printf("ファミリーID: %d の期限切れ間近なアイテム: %v", familyID, items)
+	}
+
+	for familyID, items := range familyItems {
+		itemIDs := make([]int, len(items))
+		for i, item := range items {
+			itemIDs[i] = item.ID
+		}
+		CreateNewNotification(db, "expiration", familyID, itemIDs)
+	}
+}
+
+func CreateNewNotification(db *gorm.DB, Type string, familyID int, itemIDs []int) {
+	itemIDsJSON, err := json.Marshal(itemIDs)
+	if err != nil {
+		log.Println("Failed to JSON conversion", err)
+		return
+	}
+
+	newNotification := model.Notification{FamilyID: familyID,
+		Type: Type, IsRead: false, ItemIDs: itemIDsJSON}
+
+	switch newNotification.Type {
+	case "expiration":
+		newNotification.Text = "消費期限が切れそうなアイテムがあります。"
+	case "lowStock":
+		newNotification.Text = "備蓄量が不足しているアイテムがあります。"
+	default:
+		log.Println("Unsupported notification type")
+
+		return
+	}
+
+	if err := db.Create(&newNotification).Error; err != nil {
+		log.Println("Failed to create new notification", err)
+		return
+	}
+
+	log.Println("Create new notification")
+}
+
+func GetNotifications(db *gorm.DB) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		userID := ctx.MustGet("user_id").(int)
+		familyID, err := strconv.Atoi(ctx.Param("family_id"))
+
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid family id"})
+			return
+		}
+
+		var notificationSettings model.NotificationSettings
+
+		if err := db.Where("user_id = ?", userID).First(&notificationSettings).Error; err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user id"})
+			return
+		}
+		var notifications []model.Notification
+		var expirationWarnings []model.Notification
+		var lowStockWarnings []model.Notification
+
+		if notificationSettings.IsExpirationWarning {
+			expirationResult := db.Preload("Family").Where("family_id = ? AND type = ?", familyID, "expiration").Find(&expirationWarnings)
+			if expirationResult.Error != nil {
+				ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve expiration notifications"})
+				return
+			}
+			notifications = append(notifications, expirationWarnings...)
+		}
+
+		if notificationSettings.IsLowStockWarning {
+			lowStockResult := db.Preload("Family").Where("family_id = ? AND type = ?", familyID, "lowStock").Find(&lowStockWarnings)
+			if lowStockResult.Error != nil {
+				ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve low stock notifications"})
+				return
+			}
+			notifications = append(notifications, lowStockWarnings...)
+		}
+
+		if len(notifications) == 0 {
+			ctx.JSON(http.StatusOK, gin.H{"success": "No notifications found", "notifications": notifications})
+			return
+		}
+
+		var items []model.Item
+
+		for _, notification := range notifications {
+			var itemIDs []int
+
+			if err := json.Unmarshal(notification.ItemIDs, &itemIDs); err != nil {
+				ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode item IDs"})
+				continue
+			}
+
+			log.Println(itemIDs)
+
+			for _, itemID := range itemIDs {
+				var item model.Item
+				if err := db.Where("id = ?", itemID).First(&item).Error; err != nil {
+					ctx.JSON(http.StatusBadRequest, gin.H{"error": "Failed to get item", "item_id": itemID})
+					return
+				}
+				items = append(items, item)
+			}
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{
+			"success":       "Get notifications",
+			"notifications": notifications,
+			"items":         items,
+		})
+
+	}
+}
+
+func InitNotificationSettings(db *gorm.DB, userID int) error {
+	notificationSettings := model.NotificationSettings{UserID: userID, IsExpirationWarning: true, IsLowStockWarning: true}
+
+	res := db.Create(&notificationSettings)
 	if res.Error != nil {
-		// エラーが発生した場合、詳細なエラーメッセージを返す
-		return fmt.Errorf("failed to create notification: %v", res.Error)
+		return fmt.Errorf("failed to create notification settings: %v", res.Error)
 	}
 
 	if res.RowsAffected == 0 {
-		// データが作成されなかった場合のエラー処理
-		return fmt.Errorf("no rows affected, notification creation failed")
+		return fmt.Errorf("no rows affected, notification settings creation failed")
 	}
 
 	return nil
 }
 
-func GetNotifications(db *gorm.DB) gin.HandlerFunc {
+func GetNotificationSettings(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		userID := ctx.MustGet("user_id").(int)
 
-		var notification model.Notification
+		var notificationSettings model.NotificationSettings
 
-		result := db.Table("notifications").Where("user_id = ?", userID).Preload("User").First(&notification)
+		result := db.Where("user_id = ?", userID).Preload("User").First(&notificationSettings)
 
 		if result.Error != nil {
 			if result.Error == gorm.ErrRecordNotFound {
-				ctx.JSON(http.StatusNotFound, gin.H{"error": "Notification not found"})
+				ctx.JSON(http.StatusNotFound, gin.H{"error": "Notification settings not found"})
 				return
 			}
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve notification"})
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve notification settings"})
 			return
 		}
 
 		ctx.JSON(http.StatusOK, gin.H{
-			"success": "Get notification successfully", "notification": notification,
+			"success": "Get notification successfully", "notification": notificationSettings,
 		})
 	}
 }
 
-func UpdateNotification(db *gorm.DB) gin.HandlerFunc {
+func UpdateNotificationSettings(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		userID := ctx.MustGet("user_id").(int)
-		notification := model.Notification{UserID: userID}
+		notificationSettings := model.NotificationSettings{UserID: userID}
 
-		if err := ctx.Bind(&notification); err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid notification"})
+		if err := ctx.Bind(&notificationSettings); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid notification settings"})
 			return
 		}
 
-		result := db.Table("notifications").Where("user_id = ?", notification.UserID).Updates(map[string]interface{}{
-			"is_expiration_warning": notification.IsExpirationWarning,
-			"is_low_stock_warning":  notification.IsLowStockWarning,
+		result := db.Where("user_id = ?", notificationSettings.UserID).Updates(map[string]interface{}{
+			"is_expiration_warning": notificationSettings.IsExpirationWarning,
+			"is_low_stock_warning":  notificationSettings.IsLowStockWarning,
 		})
 
 		if result.Error != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Cannot update notification"})
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Cannot update notification settings"})
 			return
 		}
 
 		if result.RowsAffected == 0 {
-			ctx.JSON(http.StatusNotFound, gin.H{"error": "Not found notification"})
+			ctx.JSON(http.StatusNotFound, gin.H{"error": "Not found notification settings"})
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"success": "Update notification"})
+		ctx.JSON(http.StatusOK, gin.H{"success": "Update notification settings"})
 	}
 }
