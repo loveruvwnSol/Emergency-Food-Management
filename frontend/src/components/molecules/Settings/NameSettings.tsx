@@ -5,12 +5,22 @@ import { useUser } from '../../../hooks/user';
 const NameSettings = () => {
   const [{ user, UpdateUsername }] = useUser();
   const [userName, setUserName] = useState('');
+  const [disabled, setDisabled] = useState(false);
+  useEffect(() => {
+    if (user?.name === userName || userName === '') {
+      setDisabled(true);
+    } else {
+      setDisabled(false);
+    }
+  }, [userName]);
 
   useEffect(() => {
     if (user) {
       setUserName(user.name);
     }
   }, [user]);
+
+  if (!user) return <Text>loading...</Text>;
 
   const handleSave = async () => {
     await UpdateUsername(userName);
@@ -31,7 +41,7 @@ const NameSettings = () => {
         名前
       </Text>
       <Input
-        placeholder={user?.name}
+        placeholder={user.name}
         w={'280px'}
         value={userName}
         onChange={(e) => setUserName(e.target.value)}
@@ -46,6 +56,7 @@ const NameSettings = () => {
         w={'90px'}
         h={'40px'}
         onClick={handleSave}
+        isDisabled={disabled}
       >
         保存
       </Button>

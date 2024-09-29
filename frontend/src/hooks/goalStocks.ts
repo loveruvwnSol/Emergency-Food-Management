@@ -6,12 +6,12 @@ export type Stock = {
   drink: number;
 };
 
-export const useGoalStocks = () => {
+export const UseGoalStocks = () => {
   const [stock, setStock] = useState<Stock | null>(null); // 初期値はnullに設定
   const token = sessionStorage.getItem('TOKEN_KEY');
 
   // 現在のユーザーの目標ストックを取得する関数
-  const getGoalStocks = async () => {
+  const GetGoalStocks = async () => {
     try {
       const response = await axios.get('http://localhost:8080/stocks', {
         headers: {
@@ -28,10 +28,10 @@ export const useGoalStocks = () => {
   };
 
   useEffect(() => {
-    getGoalStocks();
+    GetGoalStocks();
   }, []);
 
-  const updateGoalStocks = async (newStock: Stock) => {
+  const UpdateGoalStocks = async (newStock: Stock) => {
     try {
       const response = await axios.put(
         'http://localhost:8080/stock',
@@ -45,16 +45,16 @@ export const useGoalStocks = () => {
 
       if (response.status === 200) {
         setStock(newStock);
-        // alert('目標ストック数を更新しました。'); このアラートつけるとバグる
+        console.log('目標ストック数を更新しました。');
       }
     } catch (error) {
-      // alert('目標ストック数の更新に失敗しました。');　このアラートつけるとバグる
+      console.log('目標ストック数の更新に失敗しました。');
     }
   };
 
   return {
     stock,
-    getGoalStocks, // 現在の目標ストック数を再取得するための関数
-    updateGoalStocks, // 目標ストック数を更新するための関数
+    GetGoalStocks, // 現在の目標ストック数を再取得するための関数
+    UpdateGoalStocks, // 目標ストック数を更新するための関数
   };
 };
