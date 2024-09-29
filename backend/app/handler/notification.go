@@ -223,7 +223,7 @@ func UpdateNotificationSettings(db *gorm.DB) gin.HandlerFunc {
 		})
 
 		if result.Error != nil {
-			ctx.JSON(http.StatusInternalServerError gin.H{"error": "Failed to update notification settings"})
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update notification settings"})
 			return
 		}
 
