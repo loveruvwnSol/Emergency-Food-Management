@@ -217,13 +217,13 @@ func UpdateNotificationSettings(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		result := db.Where("user_id = ?", notificationSettings.UserID).Updates(map[string]interface{}{
+		result := db.Table("notification_settings").Where("user_id = ?", notificationSettings.UserID).Updates(map[string]interface{}{
 			"is_expiration_warning": notificationSettings.IsExpirationWarning,
 			"is_low_stock_warning":  notificationSettings.IsLowStockWarning,
 		})
 
 		if result.Error != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Cannot update notification settings"})
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid update notification settings"})
 			return
 		}
 
