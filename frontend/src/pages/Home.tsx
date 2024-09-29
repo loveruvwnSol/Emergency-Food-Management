@@ -22,7 +22,11 @@ export const Home = () => {
               DeleteItem={DeleteItem}
               title="非常食一覧"
             />
-            <Widget />
+            <Widget
+              AddNewItem={AddNewItem}
+              UpdateItem={UpdateItem}
+              DeleteItem={DeleteItem}
+            />
           </Box>
           <Box display={"flex"}>
             <HomeStockItemList
