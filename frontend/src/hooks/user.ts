@@ -89,7 +89,7 @@ export const useUser = () => {
     try {
       // Cloudinaryへのアップロード
       const uploadRes = await axios.post(
-        'https://api.cloudinary.com/v1_1/dal8eqsg4/image/upload',
+        process.env.REACT_APP_CLOUDINARY_UPLOAD_URL as string,
         formData
       );
 
