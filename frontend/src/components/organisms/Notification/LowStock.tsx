@@ -1,11 +1,11 @@
-import { Box } from '@chakra-ui/react';
-import StockCircle from '../../molecules/Notification/StockCircle';
+import { Box } from "@chakra-ui/react";
+import StockCircles from "../../molecules/Notification/StockCircles";
 
 const LowStock: React.FC = () => {
   return (
     <Box justifyItems="center">
-        <StockCircle />
+      <StockCircles />
     </Box>
   );
-}
+};
 export default LowStock;

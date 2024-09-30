@@ -196,6 +196,24 @@ func GetNotifications(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
+func UpdateReadStatus(db *gorm.DB) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		familyID, err := strconv.Atoi(ctx.Param("family_id"))
+
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid family id"})
+			return
+		}
+
+		if err := db.Model(&model.Notification{}).Where("family_id = ? AND is_read = false", familyID).Update("is_read", true).Error; err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update read status"})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{"success": "Update read status"})
+	}
+}
+
 func InitNotificationSettings(db *gorm.DB, userID int) error {
 	notificationSettings := model.NotificationSettings{UserID: userID, IsExpirationWarning: true, IsLowStockWarning: true}
 

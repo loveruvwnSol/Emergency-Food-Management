@@ -104,7 +104,7 @@ export const useFamily = () => {
 
   const JoinToFamily = async (
     familyID: number,
-    setNotifications: React.Dispatch<React.SetStateAction<any[]>>
+    setInvitations: React.Dispatch<React.SetStateAction<any[]>>
   ) => {
     try {
       const newMember = {
@@ -121,7 +121,7 @@ export const useFamily = () => {
       );
       if (res.status === 200) {
         alert("家族に参加しました。");
-        setNotifications(res.data.invitations);
+        setInvitations(res.data.invitations);
       }
     } catch (error) {
       alert("家族に参加できませんでした。");
