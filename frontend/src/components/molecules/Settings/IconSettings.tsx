@@ -39,7 +39,6 @@ const IconSettings = () => {
       }
     }
   };
-  console.log(user?.icon_url, user?.name);
 
   return (
     <Box
