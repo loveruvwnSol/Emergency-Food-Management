@@ -1,5 +1,4 @@
-import { Box, Image, Text } from "@chakra-ui/react";
-import WaterImage from "../../../images/water.jpg";
+import { AspectRatio, Box, Image, Text } from "@chakra-ui/react";
 import { Item } from "../../../hooks/items";
 
 type ExpiringItemsProps = {
@@ -26,15 +25,18 @@ const ExpiringItem: React.FC<ExpiringItemsProps> = ({ item, size }) => {
       pt={4}
     >
       <Box w={size} h="auto" aspectRatio={1}>
-        <Image
-          w="100%"
-          h="100%"
-          height={size}
-          mb={4}
-          src={WaterImage}
-          alt="water"
-          objectFit="cover"
-        />
+        <AspectRatio w={"150px"} h={"150px"} ratio={4 / 3}>
+          <Image
+            border={"2px"}
+            borderColor={"gray.300"}
+            borderRadius={14}
+            height={size}
+            mb={4}
+            src={item.image_url}
+            alt="itemImage"
+            objectFit="cover"
+          />
+        </AspectRatio>
       </Box>
       <Text fontWeight={"bold"}>{item.name}</Text>
       <Text fontWeight={"bold"} color={"#FB8B24"}>
