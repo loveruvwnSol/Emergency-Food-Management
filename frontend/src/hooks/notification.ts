@@ -48,5 +48,17 @@ export const useNotification = () => {
     }
   };
 
-  return [{ notifications, invitations, setInvitations }];
+  const UpdateReadStatus = async () => {
+    try {
+      if (familyID) {
+        const res = await axios.put(
+          `http://localhost:8080/notifications/${familyID}`
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return [{ notifications, invitations, setInvitations, UpdateReadStatus }];
 };
