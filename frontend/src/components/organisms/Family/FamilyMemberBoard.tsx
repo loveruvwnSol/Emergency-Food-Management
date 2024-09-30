@@ -20,7 +20,7 @@ const FamilyMemberBoard: React.FC<FamilyMemberBoardProps> = ({
         p={4}
       >
         {independentUsers?.map((member, index) => (
-          <UserList id={member.id} name={member.name} key={index} />
+          <UserList id={member.id} name={member.name} icon={member.icon_url} key={index} />
         ))}
       </Box>
     </>

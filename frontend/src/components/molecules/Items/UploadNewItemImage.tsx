@@ -40,21 +40,21 @@ export const UploadNewItemImage: React.FC<UploadNewItemImageProps> = ({
   };
 
   return (
-    <Box
-      bg={"#F0E9E2"}
-      border={"2px"}
-      borderColor={"gray.300"}
-      borderRadius={12}
-      display={"flex"}
-      justifyContent={"center"}
-      alignItems={"center"}
-      flexDirection={"column"}
-      _hover={{ opacity: 0.5 }}
-      cursor={"pointer"}
-      onClick={() => handleImageClick()}
-    >
+    <>
       {previewIcon ? (
-        <>
+        <Box
+          bg={"#F0E9E2"}
+          border={"2px"}
+          borderColor={"gray.300"}
+          borderRadius={12}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          flexDirection={"column"}
+          _hover={{ opacity: 0.5 }}
+          cursor={"pointer"}
+          onClick={() => handleImageClick()}
+        >
           <AspectRatio w="500px" h={"446px"} ratio={4 / 3}>
             <Image borderRadius={12} src={previewIcon} alt="uploadedImage" />
           </AspectRatio>
@@ -64,9 +64,23 @@ export const UploadNewItemImage: React.FC<UploadNewItemImageProps> = ({
             display={"none"}
             onChange={handleImageChange}
           />
-        </>
+        </Box>
       ) : (
-        <>
+        <Box
+          w={"500px"}
+          h={"446px"}
+          bg={"#F0E9E2"}
+          border={"2px"}
+          borderColor={"gray.300"}
+          borderRadius={12}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          flexDirection={"column"}
+          _hover={{ opacity: 0.5 }}
+          cursor={"pointer"}
+          onClick={() => handleImageClick()}
+        >
           <Icon as={IoCameraOutline} boxSize={20} top={26} right={27.5} />
           <Text>写真を撮る</Text>
           <Input
@@ -75,8 +89,8 @@ export const UploadNewItemImage: React.FC<UploadNewItemImageProps> = ({
             display={"none"}
             onChange={handleImageChange}
           />
-        </>
+        </Box>
       )}
-    </Box>
+    </>
   );
 };

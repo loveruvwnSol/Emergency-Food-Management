@@ -45,6 +45,7 @@ const FamilyMemberModal: React.FC<FamilyMemberModalProps> = ({
                   <FamilyMembers
                     userID={member.user_id}
                     name={member.User.name}
+                    icon={member.User.icon_url}
                     food={3}
                     drink={3}
                     key={index}
