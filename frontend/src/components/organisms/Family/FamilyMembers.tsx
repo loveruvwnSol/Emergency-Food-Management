@@ -1,4 +1,4 @@
-import { Box, Icon, Text } from "@chakra-ui/react";
+import { Box, Icon, Image, Text } from "@chakra-ui/react";
 import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { useUser } from "../../../hooks/user";
@@ -6,6 +6,7 @@ import { useUser } from "../../../hooks/user";
 type FamilyMembersProps = {
   userID: number;
   name: string;
+  icon: string | undefined;
   food: number;
   drink: number;
 };
@@ -13,6 +14,7 @@ type FamilyMembersProps = {
 const FamilyMembers: React.FC<FamilyMembersProps> = ({
   userID,
   name,
+  icon,
   drink,
   food,
 }) => {
@@ -56,6 +58,14 @@ const FamilyMembers: React.FC<FamilyMembersProps> = ({
               ) : (
                 <></>
               )}
+              <Image
+                src={icon}
+                alt="User Icon"
+                w={"100%"}
+                h={"100%"}
+                borderRadius={"50%"}
+                objectFit={"cover"}
+              />
             </Box>
             <Text fontSize={"20px"} fontWeight={"bold"}>
               {name}
