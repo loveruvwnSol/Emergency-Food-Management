@@ -4,24 +4,30 @@ import { Item } from "../../../hooks/items";
 
 type StockItemListProps = {
   items: Item[];
+  image: File | undefined;
+  setImage: React.Dispatch<React.SetStateAction<File | undefined>>;
   AddNewItem: (
     name: string,
     expiration: string,
     stock: number,
-    type: string
+    type: string,
+    file: File
   ) => Promise<void>;
   UpdateItem: (
     id: number,
     name: string,
     expiration: string,
     stock: number,
-    type: string
+    type: string,
+    file: File
   ) => Promise<void>;
   DeleteItem: (itemID: number) => Promise<void>;
 };
 
 const StockItemList: React.FC<StockItemListProps> = ({
   items,
+  image,
+  setImage,
   AddNewItem,
   UpdateItem,
   DeleteItem,
@@ -40,8 +46,9 @@ const StockItemList: React.FC<StockItemListProps> = ({
             {items.map((e: any) => (
               <StockItem
                 key={e.id}
-                size={165}
                 item={e}
+                image={image}
+                setImage={setImage}
                 AddNewItem={AddNewItem}
                 UpdateItem={UpdateItem}
                 DeleteItem={DeleteItem}

@@ -1,30 +1,33 @@
-import { Box, Image, Text, useDisclosure } from "@chakra-ui/react";
-import WaterImage from "../../../images/water.jpg";
+import { AspectRatio, Box, Image, Text, useDisclosure } from "@chakra-ui/react";
 import { NewItemModal } from "../../organisms/Items/NewItemModal";
 import { Item } from "../../../hooks/items";
 
 type StockItemProps = {
-  size: number;
   item: Item;
+  image: File | undefined;
+  setImage: React.Dispatch<React.SetStateAction<File | undefined>>;
   AddNewItem: (
     name: string,
     expiration: string,
     stock: number,
-    type: string
+    type: string,
+    file: File
   ) => Promise<void>;
   UpdateItem: (
     id: number,
     name: string,
     expiration: string,
     stock: number,
-    type: string
+    type: string,
+    file: File
   ) => Promise<void>;
   DeleteItem: (itemID: number) => Promise<void>;
 };
 
 export const StockItem: React.FC<StockItemProps> = ({
-  size,
   item,
+  image,
+  setImage,
   AddNewItem,
   UpdateItem,
   DeleteItem,
@@ -42,18 +45,18 @@ export const StockItem: React.FC<StockItemProps> = ({
 
   return (
     <Box>
-      <Image
-        border={"2px"}
-        borderColor={"gray.300"}
-        borderRadius={14}
-        w={size}
-        height={size}
-        src={WaterImage}
-        alt="water"
-        _hover={{ opacity: 0.5 }}
-        cursor={"pointer"}
-        onClick={onOpen}
-      />
+      <AspectRatio w={"150px"} h={"150px"} ratio={4 / 3}>
+        <Image
+          border={"2px"}
+          borderColor={"gray.300"}
+          borderRadius={14}
+          src={item.image_url}
+          alt="itemImage"
+          _hover={{ opacity: 0.5 }}
+          cursor={"pointer"}
+          onClick={onOpen}
+        />
+      </AspectRatio>
       <Text fontWeight={"bold"} mt={2}>
         {item.name}
       </Text>
@@ -65,7 +68,8 @@ export const StockItem: React.FC<StockItemProps> = ({
         onClose={onClose}
         mode="edit"
         item={item}
-        image={WaterImage}
+        image={image}
+        setImage={setImage}
         AddNewItem={AddNewItem}
         UpdateItem={UpdateItem}
         DeleteItem={DeleteItem}

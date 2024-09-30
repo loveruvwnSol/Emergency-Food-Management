@@ -5,9 +5,11 @@ import SidebarItems from "../components/organisms/Base/SidebarItems";
 import { Widget } from "../components/molecules/Home/Widget";
 import { HomeStockItemList } from "../components/organisms/Home/HomeStockItemList";
 import { useItems } from "../hooks/items";
+import { useState } from "react";
 
 export const Home = () => {
   const [{ items, AddNewItem, UpdateItem, DeleteItem }] = useItems();
+  const [image, setImage] = useState<File | undefined>();
   return (
     <Box>
       <Header />
@@ -17,12 +19,16 @@ export const Home = () => {
           <Box display={"flex"} justifyContent={"space-between"}>
             <HomeStockItemList
               items={items}
+              image={image}
+              setImage={setImage}
               AddNewItem={AddNewItem}
               UpdateItem={UpdateItem}
               DeleteItem={DeleteItem}
               title="非常食一覧"
             />
             <Widget
+              image={image}
+              setImage={setImage}
               AddNewItem={AddNewItem}
               UpdateItem={UpdateItem}
               DeleteItem={DeleteItem}
@@ -31,6 +37,8 @@ export const Home = () => {
           <Box display={"flex"}>
             <HomeStockItemList
               items={items}
+              image={image}
+              setImage={setImage}
               AddNewItem={AddNewItem}
               UpdateItem={UpdateItem}
               DeleteItem={DeleteItem}
