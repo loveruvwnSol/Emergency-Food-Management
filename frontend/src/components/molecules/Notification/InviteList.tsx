@@ -1,22 +1,38 @@
-import { Box } from "@chakra-ui/react";
-import InviteItems from "./InviteItems";
+import { Box, Text } from "@chakra-ui/react";
+import InviteItem from "./InviteItem";
+import { useNotification } from "../../../hooks/notification";
 
-const notifications = [
-    { id: 1, userName: '岩崎太郎', action: 'さんから家族に招待されました' },
-    { id: 2, userName: '岩崎太郎', action: 'さんからフォローされました' },
-    { id: 3, userName: '岩崎太郎', action: 'さんがコメントしました' },
-];
+const InviteList = () => {
+  const [{ invitations, setInvitations }] = useNotification();
 
-const InviteList = () => (
+  return (
     <Box>
-        {notifications.map(notification => (
-            <InviteItems
-                key={notification.id}
-                userName={notification.userName}
-                action={notification.action}
+      {invitations.length ? (
+        <>
+          {invitations.map((e, idx) => (
+            <InviteItem
+              key={idx}
+              data={e}
+              setInvitations={setInvitations}
+              userName={e.Inviter.name}
             />
-        ))}
+          ))}
+        </>
+      ) : (
+        <Text
+          height={96}
+          w={"1000px"}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          fontSize={24}
+          fontWeight={"bold"}
+        >
+          招待はありません
+        </Text>
+      )}
     </Box>
-);
+  );
+};
 
 export default InviteList;
