@@ -17,7 +17,6 @@ const InviteItem: React.FC<InviteItemProps> = ({
   const [{ JoinToFamily }] = useFamily();
   const handleButtonClick = () => {
     JoinToFamily(data.family_id, setInvitations);
-    console.log(`${userName}の通知を承認しました。`);
   };
 
   return (

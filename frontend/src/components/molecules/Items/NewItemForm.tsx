@@ -20,19 +20,22 @@ import { Item } from "../../../hooks/items";
 type NewItemModalForm = {
   mode: string;
   item: Item;
+  image: File | undefined;
   onClose: () => void;
   AddNewItem: (
     name: string,
     expiration: string,
     stock: number,
-    type: string
+    type: string,
+    file: File
   ) => Promise<void>;
   UpdateItem: (
     id: number,
     name: string,
     expiration: string,
     stock: number,
-    type: string
+    type: string,
+    file: File
   ) => Promise<void>;
   DeleteItem: (itemID: number) => Promise<void>;
 };
@@ -40,6 +43,7 @@ type NewItemModalForm = {
 export const NewItemModalForm: React.FC<NewItemModalForm> = ({
   mode,
   item,
+  image,
   onClose,
   AddNewItem,
   UpdateItem,
@@ -150,17 +154,17 @@ export const NewItemModalForm: React.FC<NewItemModalForm> = ({
           onClick={
             mode === "edit"
               ? () => {
-                  if (name && expiration && stock && type) {
+                  if (name && expiration && stock && type && image) {
                     onClose();
-                    UpdateItem(item.id, name, expiration, stock, type);
+                    UpdateItem(item.id, name, expiration, stock, type, image);
                   } else {
                     alert("入力していない項目があります。");
                   }
                 }
               : () => {
-                  if (name && expiration && stock && type) {
+                  if (name && expiration && stock && type && image) {
                     onClose();
-                    AddNewItem(name, expiration, stock, type);
+                    AddNewItem(name, expiration, stock, type, image);
                   } else {
                     alert("入力していない項目があります。");
                   }

@@ -14,19 +14,22 @@ type NewItemModalProps = {
   onClose: () => void;
   mode: string;
   item: Item;
-  image: string;
+  image: File | undefined;
+  setImage: React.Dispatch<React.SetStateAction<File | undefined>>;
   AddNewItem: (
     name: string,
     expiration: string,
     stock: number,
-    type: string
+    type: string,
+    file: File
   ) => Promise<void>;
   UpdateItem: (
     id: number,
     name: string,
     expiration: string,
     stock: number,
-    type: string
+    type: string,
+    file: File
   ) => Promise<void>;
   DeleteItem: (itemID: number) => Promise<void>;
 };
@@ -37,6 +40,7 @@ export const NewItemModal: React.FC<NewItemModalProps> = ({
   mode,
   item,
   image,
+  setImage,
   AddNewItem,
   UpdateItem,
   DeleteItem,
@@ -51,10 +55,11 @@ export const NewItemModal: React.FC<NewItemModalProps> = ({
           justifyContent={"space-around"}
           alignItems={"center"}
         >
-          <UploadNewItemImage image={image} />
+          <UploadNewItemImage image={item.image_url} setImage={setImage} />
           <NewItemModalForm
             mode={mode}
             item={item}
+            image={image}
             onClose={onClose}
             AddNewItem={AddNewItem}
             UpdateItem={UpdateItem}

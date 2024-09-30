@@ -2,22 +2,27 @@ import { Box, Text } from "@chakra-ui/react";
 import { StockItem } from "../../molecules/Base/StockItem";
 import { Link } from "react-router-dom";
 import { Item } from "../../../hooks/items";
+import { useState } from "react";
 
 type HomeStockItemListProps = {
   title: string;
   items: Item[];
+  image: File | undefined;
+  setImage: React.Dispatch<React.SetStateAction<File | undefined>>;
   AddNewItem: (
     name: string,
     expiration: string,
     stock: number,
-    type: string
+    type: string,
+    file: File
   ) => Promise<void>;
   UpdateItem: (
     id: number,
     name: string,
     expiration: string,
     stock: number,
-    type: string
+    type: string,
+    file: File
   ) => Promise<void>;
   DeleteItem: (itemID: number) => Promise<void>;
 };
@@ -25,6 +30,8 @@ type HomeStockItemListProps = {
 export const HomeStockItemList: React.FC<HomeStockItemListProps> = ({
   title,
   items,
+  image,
+  setImage,
   AddNewItem,
   UpdateItem,
   DeleteItem,
@@ -69,8 +76,9 @@ export const HomeStockItemList: React.FC<HomeStockItemListProps> = ({
           {items.slice(0, 4).map((e: any) => (
             <StockItem
               key={e.id}
-              size={150}
               item={e}
+              image={image}
+              setImage={setImage}
               AddNewItem={AddNewItem}
               UpdateItem={UpdateItem}
               DeleteItem={DeleteItem}

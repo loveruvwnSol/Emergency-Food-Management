@@ -9,5 +9,6 @@ type Item struct {
 	Type       string    `json:"type" gorm:"not null"`
 	Expiration time.Time `json:"expiration" gorm:"not null"`
 	Stock      int       `json:"stock" gorm:"not null"`
+	ImageURL   string    `json:"image_url"`
 	Family     Family    `gorm:"foreignKey:FamilyID"` // Familyとのリレーション
 }

@@ -57,6 +57,7 @@ type NewItemRequest struct {
 	Type       string `json:"type"`
 	Expiration string `json:"expiration"`
 	Stock      int    `json:"stock"`
+	ImageURL   string `json:"image_url"`
 }
 
 func AddNewItem(db *gorm.DB) gin.HandlerFunc {
@@ -80,7 +81,9 @@ func AddNewItem(db *gorm.DB) gin.HandlerFunc {
 			Name:       requestItem.Name,
 			Type:       requestItem.Type,
 			Expiration: date,
-			Stock:      requestItem.Stock}
+			Stock:      requestItem.Stock,
+			ImageURL:   requestItem.ImageURL,
+		}
 
 		if err := db.Table("items").Create(&newItem).Error; err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to add newItem"})
@@ -126,6 +129,7 @@ func UpdateItem(db *gorm.DB) gin.HandlerFunc {
 			Type:       requestItem.Type,
 			Expiration: date,
 			Stock:      requestItem.Stock,
+			ImageURL:   requestItem.ImageURL,
 		}
 
 		result := db.Table("items").Where("id = ?", updateItem.ID).Updates(updateItem)

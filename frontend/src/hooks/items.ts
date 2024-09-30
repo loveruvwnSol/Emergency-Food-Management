@@ -9,6 +9,7 @@ export type Item = {
   expiration: string;
   stock: number;
   type: string;
+  image_url?: string;
 };
 
 export const useItems = () => {
@@ -36,15 +37,28 @@ export const useItems = () => {
     name: string,
     expiration: string,
     stock: number,
-    type: string
+    type: string,
+    file: File
   ) => {
     try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "my_preset");
+
+      const uploadRes = await axios.post(
+        process.env.REACT_APP_CLOUDINARY_UPLOAD_URL as string,
+        formData
+      );
+
+      const image_url = uploadRes.data.secure_url;
+
       const newItem = {
         family_id: familyID,
         name: name,
         expiration: expiration,
         stock: stock,
         type: type,
+        image_url: image_url,
       };
       console.log(newItem);
       const res = await axios.post(`http://localhost:8080/item`, newItem);
@@ -63,15 +77,28 @@ export const useItems = () => {
     name: string,
     expiration: string,
     stock: number,
-    type: string
+    type: string,
+    file: File
   ) => {
     try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "my_preset");
+
+      const uploadRes = await axios.post(
+        process.env.REACT_APP_CLOUDINARY_UPLOAD_URL as string,
+        formData
+      );
+
+      const image_url = uploadRes.data.secure_url;
+
       const updatedItem = {
         family_id: familyID,
         name: name,
         expiration: expiration,
         stock: stock,
         type: type,
+        image_url: image_url,
       };
       console.log(updatedItem);
       const res = await axios.put(

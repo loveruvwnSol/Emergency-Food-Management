@@ -12,31 +12,37 @@ import { Item } from "../../../hooks/items";
 
 type ItemTabsProps = {
   items: Item[];
+  image: File | undefined;
+  setImage: React.Dispatch<React.SetStateAction<File | undefined>>;
   AddNewItem: (
     name: string,
     expiration: string,
     stock: number,
-    type: string
+    type: string,
+    file: File
   ) => Promise<void>;
   UpdateItem: (
     id: number,
     name: string,
     expiration: string,
     stock: number,
-    type: string
+    type: string,
+    file: File
   ) => Promise<void>;
   DeleteItem: (itemID: number) => Promise<void>;
 };
 
 const ItemTabs: React.FC<ItemTabsProps> = ({
   items,
+  image,
+  setImage,
   AddNewItem,
   UpdateItem,
   DeleteItem,
 }) => {
   const foodItems = items?.filter((item) => item.type === "food");
   const drinkItems = items?.filter((item) => item.type === "drink");
-  
+
   return (
     <Box>
       <Tabs>
@@ -63,6 +69,8 @@ const ItemTabs: React.FC<ItemTabsProps> = ({
         <TabPanels>
           <TabPanel>
             <StockItemList
+              image={image}
+              setImage={setImage}
               AddNewItem={AddNewItem}
               UpdateItem={UpdateItem}
               DeleteItem={DeleteItem}
@@ -71,6 +79,8 @@ const ItemTabs: React.FC<ItemTabsProps> = ({
           </TabPanel>
           <TabPanel>
             <StockItemList
+              image={image}
+              setImage={setImage}
               AddNewItem={AddNewItem}
               UpdateItem={UpdateItem}
               DeleteItem={DeleteItem}
@@ -79,6 +89,8 @@ const ItemTabs: React.FC<ItemTabsProps> = ({
           </TabPanel>
           <TabPanel>
             <StockItemList
+              image={image}
+              setImage={setImage}
               AddNewItem={AddNewItem}
               UpdateItem={UpdateItem}
               DeleteItem={DeleteItem}

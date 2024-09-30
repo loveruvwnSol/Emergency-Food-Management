@@ -3,23 +3,28 @@ import { FiChevronRight } from "react-icons/fi";
 import { NewItemModal } from "../../organisms/Items/NewItemModal";
 
 type WidgetProps = {
+  image: File | undefined;
+  setImage: React.Dispatch<React.SetStateAction<File | undefined>>;
   AddNewItem: (
     name: string,
     expiration: string,
     stock: number,
-    type: string
+    type: string,
+    file: File
   ) => Promise<void>;
   UpdateItem: (
     id: number,
     name: string,
     expiration: string,
     stock: number,
-    type: string
+    type: string,
+    file: File
   ) => Promise<void>;
   DeleteItem: (itemID: number) => Promise<void>;
 };
-
 export const Widget: React.FC<WidgetProps> = ({
+  image,
+  setImage,
   AddNewItem,
   UpdateItem,
   DeleteItem,
@@ -74,8 +79,10 @@ export const Widget: React.FC<WidgetProps> = ({
           expiration: "",
           stock: 1,
           type: "",
+          image_url: "",
         }}
-        image=""
+        image={image}
+        setImage={setImage}
         AddNewItem={AddNewItem}
         UpdateItem={UpdateItem}
         DeleteItem={DeleteItem}
