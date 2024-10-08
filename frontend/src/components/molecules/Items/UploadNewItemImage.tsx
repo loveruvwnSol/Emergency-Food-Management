@@ -12,7 +12,7 @@ export const UploadNewItemImage: React.FC<UploadNewItemImageProps> = ({
   setImage,
 }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [previewIcon, setPreviewIcon] = useState<string | null>(image || null); // プレビュー用のアイコンURL
+  const [previewIcon, setPreviewIcon] = useState<string | null>(image || null); 
 
   const handleImageClick = () => {
     if (fileInputRef.current) {

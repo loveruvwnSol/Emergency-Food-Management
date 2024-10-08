@@ -2,7 +2,6 @@ import { Box, Text } from "@chakra-ui/react";
 import { StockItem } from "../../molecules/Base/StockItem";
 import { Link } from "react-router-dom";
 import { Item } from "../../../hooks/items";
-import { useState } from "react";
 
 type HomeStockItemListProps = {
   title: string;
@@ -22,7 +21,8 @@ type HomeStockItemListProps = {
     expiration: string,
     stock: number,
     type: string,
-    file: File
+    file: File | undefined,
+    image_url: string | undefined
   ) => Promise<void>;
   DeleteItem: (itemID: number) => Promise<void>;
 };

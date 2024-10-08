@@ -2,6 +2,7 @@ import { Box, Icon, Image, Text } from "@chakra-ui/react";
 import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { useUser } from "../../../hooks/user";
+import defaultAvatar from "../../../images/defaultAvatar.png";
 
 type FamilyMembersProps = {
   userID: number;
@@ -42,6 +43,7 @@ const FamilyMembers: React.FC<FamilyMembersProps> = ({
               h={"60px"}
               borderRadius={50}
               border={"1px solid"}
+              borderColor={"gray.300"}
               position={"relative"}
             >
               {user.id === userID ? (
@@ -58,14 +60,25 @@ const FamilyMembers: React.FC<FamilyMembersProps> = ({
               ) : (
                 <></>
               )}
-              <Image
-                src={icon}
-                alt="User Icon"
-                w={"100%"}
-                h={"100%"}
-                borderRadius={"50%"}
-                objectFit={"cover"}
-              />
+              {icon ? (
+                <Image
+                  src={icon}
+                  alt="User Icon"
+                  w={"100%"}
+                  h={"100%"}
+                  borderRadius={"50%"}
+                  objectFit={"cover"}
+                />
+              ) : (
+                <Image
+                  src={defaultAvatar}
+                  alt="User Icon"
+                  w={"100%"}
+                  h={"100%"}
+                  borderRadius={"50%"}
+                  objectFit={"cover"}
+                />
+              )}
             </Box>
             <Text fontSize={"20px"} fontWeight={"bold"}>
               {name}

@@ -125,14 +125,15 @@ func JoinToFamily(db *gorm.DB) gin.HandlerFunc {
 
 func DeleteFamilyMember(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		userID, err := strconv.Atoi(ctx.Param("id"))
+		memberID, err := strconv.Atoi(ctx.Param("member_id"))
+		familyID, err := strconv.Atoi(ctx.Param("family_id"))
 
 		if err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Failed delete member"})
 			return
 		}
 
-		res := db.Where("user_id = ?", userID).Delete(&model.Member{})
+		res := db.Where("user_id = ? AND family_id = ?", memberID, familyID).Delete(&model.Member{})
 
 		if res.Error != nil {
 			ctx.JSON(http.StatusBadRequest, res.Error)
