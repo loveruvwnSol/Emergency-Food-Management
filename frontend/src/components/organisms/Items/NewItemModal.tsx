@@ -5,7 +5,7 @@ import {
   ModalContent,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { NewItemModalForm } from "../../molecules/Items/NewItemForm";
+import { NewItemForm } from "../../molecules/Items/NewItemForm";
 import { UploadNewItemImage } from "../../molecules/Items/UploadNewItemImage";
 import { Item } from "../../../hooks/items";
 
@@ -29,7 +29,8 @@ type NewItemModalProps = {
     expiration: string,
     stock: number,
     type: string,
-    file: File
+    file: File | undefined,
+    image_url: string | undefined
   ) => Promise<void>;
   DeleteItem: (itemID: number) => Promise<void>;
 };
@@ -56,7 +57,7 @@ export const NewItemModal: React.FC<NewItemModalProps> = ({
           alignItems={"center"}
         >
           <UploadNewItemImage image={item.image_url} setImage={setImage} />
-          <NewItemModalForm
+          <NewItemForm
             mode={mode}
             item={item}
             image={image}

@@ -17,7 +17,7 @@ import {
 import { useState } from "react";
 import { Item } from "../../../hooks/items";
 
-type NewItemModalForm = {
+type NewItemForm = {
   mode: string;
   item: Item;
   image: File | undefined;
@@ -35,12 +35,13 @@ type NewItemModalForm = {
     expiration: string,
     stock: number,
     type: string,
-    file: File
+    file: File | undefined,
+    image_url: string | undefined
   ) => Promise<void>;
   DeleteItem: (itemID: number) => Promise<void>;
 };
 
-export const NewItemModalForm: React.FC<NewItemModalForm> = ({
+export const NewItemForm: React.FC<NewItemForm> = ({
   mode,
   item,
   image,
@@ -154,11 +155,28 @@ export const NewItemModalForm: React.FC<NewItemModalForm> = ({
           onClick={
             mode === "edit"
               ? () => {
-                  if (name && expiration && stock && type && image) {
+                  if (image) {
+                    UpdateItem(
+                      item.id,
+                      name,
+                      expiration,
+                      stock,
+                      type,
+                      image,
+                      ""
+                    );
                     onClose();
-                    UpdateItem(item.id, name, expiration, stock, type, image);
                   } else {
-                    alert("入力していない項目があります。");
+                    UpdateItem(
+                      item.id,
+                      name,
+                      expiration,
+                      stock,
+                      type,
+                      image,
+                      item.image_url
+                    );
+                    onClose();
                   }
                 }
               : () => {

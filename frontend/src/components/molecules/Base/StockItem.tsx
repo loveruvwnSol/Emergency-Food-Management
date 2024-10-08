@@ -19,7 +19,8 @@ type StockItemProps = {
     expiration: string,
     stock: number,
     type: string,
-    file: File
+    file: File | undefined,
+    image_url: string | undefined
   ) => Promise<void>;
   DeleteItem: (itemID: number) => Promise<void>;
 };
