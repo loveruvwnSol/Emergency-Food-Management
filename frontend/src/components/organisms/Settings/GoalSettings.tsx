@@ -2,11 +2,11 @@ import FoodGoalSetting from '../../molecules/Settings/FoodGoalSetting';
 import DrinkGoalSetting from '../../molecules/Settings/DrinkGoalSetting';
 
 import { useEffect, useState } from 'react';
-import { UseGoalStocks } from '../../../hooks/goalStocks';
+import { useGoalStocks } from '../../../hooks/goalStocks';
 import { Text } from '@chakra-ui/react';
 
 const GoalSettings = () => {
-  const { stock, UpdateGoalStocks } = UseGoalStocks();
+  const { stock, UpdateGoalStocks } = useGoalStocks();
   const [foodStock, setFoodStock] = useState<number>(3);
   const [drinkStock, setDrinkStock] = useState<number>(3);
 
