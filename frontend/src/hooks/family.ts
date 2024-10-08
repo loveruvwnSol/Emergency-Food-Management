@@ -31,7 +31,7 @@ export const useFamily = () => {
     if (user && user.id) {
       try {
         const res = await axios.get(
-          `http://localhost:8080/user${user.id}/family`,
+          `http://localhost:8080/users/${user.id}/family`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -51,7 +51,7 @@ export const useFamily = () => {
   const CreateNewFamily = async () => {
     try {
       const res = await axios.post(
-        `http://localhost:8080/user/family`,
+        `http://localhost:8080/families`,
         {},
         {
           headers: {
@@ -77,7 +77,7 @@ export const useFamily = () => {
         };
 
         const res = await axios.post(
-          "http://localhost:8080/invitations/invite",
+          "http://localhost:8080/invitations",
           invitation,
           {
             headers: {

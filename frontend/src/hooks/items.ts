@@ -23,7 +23,9 @@ export const useItems = () => {
   const GetItems = async () => {
     if (familyID) {
       try {
-        const res = await axios.get(`http://localhost:8080/items/${familyID}`);
+        const res = await axios.get(
+          `http://localhost:8080/families/${familyID}/items`
+        );
         if (res.status === 200) {
           setItems(res.data.items);
         }
@@ -61,7 +63,10 @@ export const useItems = () => {
         image_url: image_url,
       };
       console.log(newItem);
-      const res = await axios.post(`http://localhost:8080/item`, newItem);
+      const res = await axios.post(
+        `http://localhost:8080/families/items`,
+        newItem
+      );
       if (res.status === 201) {
         alert("アイテムを追加しました。");
         setItems(res.data.items);
@@ -78,19 +83,22 @@ export const useItems = () => {
     expiration: string,
     stock: number,
     type: string,
-    file: File
+    file: File | undefined,
+    image_url: string | undefined
   ) => {
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", "my_preset");
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", "my_preset");
 
-      const uploadRes = await axios.post(
-        process.env.REACT_APP_CLOUDINARY_UPLOAD_URL as string,
-        formData
-      );
+        const uploadRes = await axios.post(
+          process.env.REACT_APP_CLOUDINARY_UPLOAD_URL as string,
+          formData
+        );
 
-      const image_url = uploadRes.data.secure_url;
+        image_url = uploadRes.data.secure_url;
+      }
 
       const updatedItem = {
         family_id: familyID,
@@ -102,7 +110,7 @@ export const useItems = () => {
       };
       console.log(updatedItem);
       const res = await axios.put(
-        `http://localhost:8080/item/${id}`,
+        `http://localhost:8080/items/${id}`,
         updatedItem
       );
       if (res.status === 200) {
@@ -110,7 +118,6 @@ export const useItems = () => {
         setItems(res.data.items);
       }
     } catch (error) {
-      alert("アイテムの編集に失敗しました。");
       console.log(error);
     }
   };
@@ -118,7 +125,7 @@ export const useItems = () => {
   const DeleteItem = async (itemID: number) => {
     try {
       const res = await axios.delete(
-        `http://localhost:8080/item/${familyID}/${itemID}`
+        `http://localhost:8080/families/${familyID}/items/${itemID}`
       );
       if (res.status === 200) {
         alert("アイテムを削除しました。");
@@ -133,9 +140,12 @@ export const useItems = () => {
   const SearchFamilyItems = async (query: string) => {
     if (query.trim()) {
       try {
-        const res = await axios.get(`http://localhost:8080/items/search`, {
-          params: { q: query, familyID: familyID },
-        });
+        const res = await axios.get(
+          `http://localhost:8080/families/${familyID}/items/search`,
+          {
+            params: { q: query, familyID: familyID },
+          }
+        );
         if (res.status === 200) {
           setItems(res.data.filteredItems);
           console.log(res.data);

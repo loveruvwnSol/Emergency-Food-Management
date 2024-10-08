@@ -17,38 +17,38 @@ func main() {
 
 	handler.ScheduleExpiringItemsCheck(db)
 
-	r.POST("/createAccount", handler.CreateAccount(db))
+	r.POST("/account", handler.CreateAccount(db))
 	r.POST("/login", handler.Login(db))
-	r.GET("/isLoggedInUser", handler.IsLoggedInUser())
+	r.GET("/session", handler.IsLoggedInUser())
 
-	r.GET("/user", middleware.AuthMiddleWare(), handler.GetCurrentUser(db))
-	r.PUT("/user", middleware.AuthMiddleWare(), handler.UpdateUsername(db))
-	r.PUT("/user/icon", middleware.AuthMiddleWare(), handler.UpdateIconURL(db))
-	r.GET("/user:id/family", middleware.AuthMiddleWare(), handler.GetFamilyMembers(db))
-	r.POST("/user/family", middleware.AuthMiddleWare(), handler.CreateNewFamily(db))
-	r.DELETE("/user:id/family", handler.DeleteFamilyMember(db))
-
-	r.GET("/users", handler.GetAllIndependentUsers(db))
+	r.GET("/users", middleware.AuthMiddleWare(), handler.GetCurrentUser(db))
+	r.PUT("/users/:id", middleware.AuthMiddleWare(), handler.UpdateUsername(db))
+	r.PUT("/users/:id/icon", middleware.AuthMiddleWare(), handler.UpdateIconURL(db))
 	r.GET("/users/search", handler.SearchIndependentUsers(db))
+	r.GET("/users/independent", handler.GetAllIndependentUsers(db))
 
-	r.GET("/invitations", middleware.AuthMiddleWare(), handler.GetInvitations(db))
-	r.POST("/invitations/invite", middleware.AuthMiddleWare(), handler.InviteUserForFamily(db))
+	r.GET("/users/:id/family", middleware.AuthMiddleWare(), handler.GetFamilyMembers(db))
+	r.POST("/families", middleware.AuthMiddleWare(), handler.CreateNewFamily(db))
+	r.DELETE("/families/:family_id/member/:member_id", handler.DeleteFamilyMember(db))
+
+	r.GET("/users/:id/invitations", middleware.AuthMiddleWare(), handler.GetInvitations(db))
+	r.POST("/invitations", middleware.AuthMiddleWare(), handler.InviteUserForFamily(db))
 	r.POST("/invitations/accept", middleware.AuthMiddleWare(), handler.JoinToFamily(db))
 
-	r.GET("/items/:family_id", handler.GetItems(db))
-	r.GET("/items/search", handler.SearchItems(db))
-	r.POST("/item", handler.AddNewItem(db))
-	r.PUT("/item/:item_id", handler.UpdateItem(db))
+	r.GET("families/:family_id/items", handler.GetItems(db))
+	r.GET("/families/:family_id/items/search", handler.SearchItems(db))
+	r.POST("/families/items", handler.AddNewItem(db))
+	r.PUT("/items/:item_id", handler.UpdateItem(db))
+	r.DELETE("/families/:family_id/items/:item_id", handler.DeleteItem(db))
 
-	r.DELETE("/item/:family_id/:item_id", handler.DeleteItem(db))
+	r.GET("/users/:id/stocks", middleware.AuthMiddleWare(), handler.GetStocks(db))
+	r.PUT("/users/:id/stocks", middleware.AuthMiddleWare(), handler.UpdateStock(db))
 
-	r.GET("/stocks", middleware.AuthMiddleWare(), handler.GetStocks(db))
-	r.PUT("/stock", middleware.AuthMiddleWare(), handler.UpdateStock(db))
+	r.GET("/families/:family_id/notifications", middleware.AuthMiddleWare(), handler.GetNotifications(db))
+	r.PUT("/families/:family_id/notifications", handler.UpdateReadStatus(db))
 
-	r.GET("/notifications/:family_id", middleware.AuthMiddleWare(), handler.GetNotifications(db))
-	r.PUT("/notifications/:family_id", handler.UpdateReadStatus(db))
-	r.GET("/notifications/settings", middleware.AuthMiddleWare(), handler.GetNotificationSettings(db))
-	r.PUT("/notifications/settings", middleware.AuthMiddleWare(), handler.UpdateNotificationSettings(db))
+	r.GET("/users/:id/notifications/settings", middleware.AuthMiddleWare(), handler.GetNotificationSettings(db))
+	r.PUT("/users/:id/notifications/settings", middleware.AuthMiddleWare(), handler.UpdateNotificationSettings(db))
 
 	r.Run(":8080")
 }

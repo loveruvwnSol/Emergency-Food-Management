@@ -1,12 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useFamily } from "./family";
+import { useUser } from "./user";
 
 export const useNotification = () => {
   const [invitations, setInvitations] = useState<any[]>([]);
   const [notifications, setNotifications] = useState<any[]>([]);
   const token = sessionStorage.getItem("TOKEN_KEY");
   const [{ familyID }] = useFamily();
+  const [{ user }] = useUser();
 
   useEffect(() => {
     GetInvitations();
@@ -15,11 +17,14 @@ export const useNotification = () => {
 
   const GetInvitations = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/invitations", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axios.get(
+        `http://localhost:8080/users/${user?.id}/invitations`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (res.status === 200) {
         setInvitations(res.data.invitations);
       }
@@ -32,7 +37,7 @@ export const useNotification = () => {
     try {
       if (familyID) {
         const res = await axios.get(
-          `http://localhost:8080/notifications/${familyID}`,
+          `http://localhost:8080/families/${familyID}/notifications`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -52,7 +57,7 @@ export const useNotification = () => {
     try {
       if (familyID) {
         const res = await axios.put(
-          `http://localhost:8080/notifications/${familyID}`
+          `http://localhost:8080/families/${familyID}/notifications`
         );
       }
     } catch (error) {

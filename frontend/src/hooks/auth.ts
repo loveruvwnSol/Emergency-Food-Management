@@ -34,10 +34,7 @@ export const useAuth = () => {
           email: email,
           password: password,
         };
-        const res = await axios.post(
-          "http://localhost:8080/createAccount",
-          user
-        );
+        const res = await axios.post("http://localhost:8080/account", user);
         if (res.status === 201) {
           alert("アカウントを作成しました。");
           navigate("/login");
@@ -52,7 +49,7 @@ export const useAuth = () => {
     const token = sessionStorage.getItem("TOKEN_KEY");
     if (token) {
       try {
-        const res = await axios.get("http://localhost:8080/isLoggedInUser", {
+        const res = await axios.get("http://localhost:8080/session", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
