@@ -14,7 +14,6 @@ const InviteList = () => {
               key={idx}
               data={e}
               setInvitations={setInvitations}
-              userName={e.Inviter.name}
             />
           ))}
         </>

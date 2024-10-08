@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Button, Image, Text } from "@chakra-ui/react";
 import { useFamily } from "../../../hooks/family";
+import defaultAvatar from "../../../images/defaultAvatar.png";
 
 type UserListProps = {
   id: number;
@@ -24,15 +25,27 @@ const UserList: React.FC<UserListProps> = ({ id, name, icon }) => {
           h={"55px"}
           borderRadius={50}
           border={"1px solid"}
+          borderColor={"gray.300"}
         >
-          <Image
-            src={icon}
-            alt="User Icon"
-            w={"100%"}
-            h={"100%"}
-            borderRadius={"50%"}
-            objectFit={"cover"}
-          />
+          {icon ? (
+            <Image
+              src={icon}
+              alt="User Icon"
+              w={"100%"}
+              h={"100%"}
+              borderRadius={"50%"}
+              objectFit={"cover"}
+            />
+          ) : (
+            <Image
+              src={defaultAvatar}
+              alt="User Icon"
+              w={"100%"}
+              h={"100%"}
+              borderRadius={"50%"}
+              objectFit={"cover"}
+            />
+          )}
         </Box>
         <Text>{name}</Text>
       </Box>

@@ -4,13 +4,11 @@ import InviteUser from "../../atoms/Notification/InviteUser";
 import { useFamily } from "../../../hooks/family";
 
 type InviteItemProps = {
-  userName: string;
   data: any;
   setInvitations: React.Dispatch<React.SetStateAction<any[]>>;
 };
 
 const InviteItem: React.FC<InviteItemProps> = ({
-  userName,
   data,
   setInvitations,
 }) => {
@@ -27,7 +25,7 @@ const InviteItem: React.FC<InviteItemProps> = ({
       p={4}
     >
       <Box display="flex" alignItems="center" gap={2} whiteSpace="nowrap">
-        <InviteUser name={userName} />
+        <InviteUser data={data} />
         <Text>から招待されました！</Text>
       </Box>
       <Box ml={16}>
