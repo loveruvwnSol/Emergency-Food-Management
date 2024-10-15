@@ -2,7 +2,6 @@ import { Box, Divider, Icon, PopoverBody, PopoverContent } from '@chakra-ui/reac
 import { AiOutlineUser } from 'react-icons/ai';
 import { MdOutlineLogout } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
-import { useUser } from '../../../hooks/user';
 
 type HeaderPopoverProps = {
   Logout: () => void;
