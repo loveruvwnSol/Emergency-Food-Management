@@ -4,6 +4,8 @@ import (
 	"app/app/model"
 	"fmt"
 	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -78,5 +80,69 @@ func UpdateStock(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		ctx.JSON(http.StatusOK, gin.H{"success": "Update user's stock"})
+	}
+}
+
+func GetFamilyStocks(db *gorm.DB) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		familyID, err := strconv.Atoi(ctx.Param("family_id"))
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid family"})
+			return
+		}
+
+		var members []model.Member
+		if err := db.Preload("User").Preload("Family").Where("family_id = ?", familyID).Find(&members).Error; err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get family members"})
+			return
+		}
+
+		var stocks []model.Stock
+		for _, member := range members {
+			var stock model.Stock
+			if err := db.Preload("User").Where("user_id = ?", member.UserID).Find(&stock).Error; err != nil {
+				ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get user stocks setting"})
+				return
+			}
+			stocks = append(stocks, stock)
+		}
+
+		var familyFoodStocks model.FamilyStocks
+		var familyDrinkStocks model.FamilyStocks
+
+		for _, stock := range stocks {
+			familyFoodStocks.Goal += stock.Food
+			familyDrinkStocks.Goal += stock.Drink
+		}
+
+		var items []model.Item
+		if err := db.Table("items").Where("family_id = ?", familyID).Preload("Family").Find(&items).Error; err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get items"})
+			return
+		}
+
+		now := time.Now()
+		threeDaysLater := now.Add(72 * time.Hour)
+
+		for _, item := range items {
+			if item.Type == "food" {
+				if item.Expiration.Before(threeDaysLater) {
+					familyFoodStocks.NearExpiryCount += item.Stock
+				} else {
+					familyFoodStocks.LongShelfLifeCount += item.Stock
+				}
+				familyFoodStocks.Current += item.Stock
+			} else {
+				if item.Expiration.Before(threeDaysLater) {
+					familyDrinkStocks.NearExpiryCount += item.Stock
+				} else {
+					familyDrinkStocks.LongShelfLifeCount += item.Stock
+				}
+				familyDrinkStocks.Current += item.Stock
+			}
+
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{"familyFoodStocks": familyFoodStocks, "familyDrinkStocks": familyDrinkStocks})
 	}
 }

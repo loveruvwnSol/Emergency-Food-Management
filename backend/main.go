@@ -28,6 +28,7 @@ func main() {
 	r.GET("/users/independent", handler.GetAllIndependentUsers(db))
 
 	r.GET("/users/:id/family", middleware.AuthMiddleWare(), handler.GetFamilyMembers(db))
+	r.GET("/families/:family_id/stocks", handler.GetFamilyStocks(db))
 	r.POST("/families", middleware.AuthMiddleWare(), handler.CreateNewFamily(db))
 	r.DELETE("/families/:family_id/member/:member_id", handler.DeleteFamilyMember(db))
 
