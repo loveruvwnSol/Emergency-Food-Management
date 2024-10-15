@@ -36,8 +36,12 @@ const FamilyMembers: React.FC<FamilyMembersProps> = ({
         w={"800px"}
         h={"60px"}
       >
-        <Box display={"flex"} alignItems={"center"} w={"80%"} gap={50}>
-          <Box display={"flex"} alignItems={"center"} gap={8}>
+        <Box
+          display={"flex"}
+          alignItems={"center"}
+          justifyContent={"space-between"}
+        >
+          <Box display={"flex"} alignItems={"center"} w={72} gap={8}>
             <Box //アイコン
               w={"60px"}
               h={"60px"}

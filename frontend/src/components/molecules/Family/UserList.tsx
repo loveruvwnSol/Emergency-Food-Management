@@ -16,6 +16,7 @@ const UserList: React.FC<UserListProps> = ({ id, name, icon }) => {
       display={"flex"}
       justifyContent={"space-between"}
       alignItems={"center"}
+      mb={10}
       w={"400px"}
       h={"60px"}
     >

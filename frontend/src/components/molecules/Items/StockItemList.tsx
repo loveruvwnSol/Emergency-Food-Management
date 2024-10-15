@@ -43,7 +43,7 @@ const StockItemList: React.FC<StockItemListProps> = ({
       ></Box>
       {items?.length >= 1 ? (
         <Box display={"flex"} alignItems={"center"} gap={10}>
-          <Grid templateColumns="repeat(5, 1fr)" gap={6}>
+          <Grid templateColumns="repeat(5, 1fr)" gap={9} ml={3}>
             {items.map((e: any) => (
               <StockItem
                 key={e.id}
