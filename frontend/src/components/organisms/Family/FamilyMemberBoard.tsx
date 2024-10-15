@@ -10,20 +10,23 @@ const FamilyMemberBoard: React.FC<FamilyMemberBoardProps> = ({
   independentUsers,
 }) => {
   return (
-    <>
-      <Box
-        h={"400px"}
-        display={"flex"}
-        flexWrap={"wrap"}
-        justifyContent={"space-between"}
-        overflowY={"auto"}
-        p={4}
-      >
-        {independentUsers?.map((member, index) => (
-          <UserList id={member.id} name={member.name} icon={member.icon_url} key={index} />
-        ))}
-      </Box>
-    </>
+    <Box
+      maxHeight={"400px"}
+      display={"flex"}
+      flexWrap={"wrap"}
+      justifyContent={"space-between"}
+      overflowY={"auto"}
+      p={4}
+    >
+      {independentUsers?.map((member, index) => (
+        <UserList
+          id={member.id}
+          name={member.name}
+          icon={member.icon_url}
+          key={index}
+        />
+      ))}
+    </Box>
   );
 };
 
