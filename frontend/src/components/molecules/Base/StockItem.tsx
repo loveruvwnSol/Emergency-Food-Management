@@ -1,4 +1,11 @@
-import { AspectRatio, Box, Image, Text, useDisclosure } from "@chakra-ui/react";
+import {
+  AspectRatio,
+  Badge,
+  Box,
+  Image,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { NewItemModal } from "../../organisms/Items/NewItemModal";
 import { Item } from "../../../hooks/items";
 
@@ -45,7 +52,25 @@ export const StockItem: React.FC<StockItemProps> = ({
   };
 
   return (
-    <Box>
+    <Box position={"relative"}>
+      <Badge
+        position="absolute"
+        top="-3"
+        left="-3"
+        zIndex={1}
+        backgroundColor="#FB8B24"
+        color="white"
+        borderRadius="full"
+        fontSize="0.8em"
+        w={8}
+        h={8}
+        textAlign={"center"}
+        display={"flex"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <Text fontSize={16}>{item.stock}</Text>
+      </Badge>
       <AspectRatio w={"150px"} h={"150px"} ratio={4 / 3}>
         <Image
           border={"2px"}
