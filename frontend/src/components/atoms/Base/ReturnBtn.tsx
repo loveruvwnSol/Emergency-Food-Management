@@ -9,7 +9,7 @@ type ReturnBtn = {
 export const ReturnBtn: React.FC<ReturnBtn> = ({ to }) => {
   return (
     <Link to={to}>
-      <Box mb={16}>
+      <Box display={{ base: "flex", sm: "none" }} mb={16}>
         <FiArrowLeft size={36} />
       </Box>
     </Link>
