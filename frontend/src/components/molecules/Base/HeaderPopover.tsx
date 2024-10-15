@@ -4,9 +4,11 @@ import { MdOutlineLogout } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import { useUser } from '../../../hooks/user';
 
-const HeaderPopover = () => {
-  const [{ Logout }] = useUser();
+type HeaderPopoverProps = {
+  Logout: () => void;
+};
 
+const HeaderPopover: React.FC<HeaderPopoverProps> = ({ Logout }) => {
   return (
     <PopoverContent
       w={180}

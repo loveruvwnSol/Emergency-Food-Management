@@ -118,8 +118,6 @@ export const useUser = () => {
   const Logout = () => {
     // セッションストレージからトークンを削除
     sessionStorage.removeItem('TOKEN_KEY');
-    setUser(undefined);
-    alert('ログアウトしました。');
 
     navigate('/login'); //
   };

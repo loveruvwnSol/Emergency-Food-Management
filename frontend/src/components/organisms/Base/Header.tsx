@@ -9,7 +9,7 @@ import HeaderPopover from '../../molecules/Base/HeaderPopover';
 
 const Header = () => {
   const [{ notifications, invitations }] = useNotification();
-  const [{ user }] = useUser();
+  const [{ user, Logout }] = useUser();
 
   const unreadItems = notifications?.filter(
     (notification) => notification.notification.is_read === false
@@ -66,7 +66,7 @@ const Header = () => {
               )}
             </Box>
           </PopoverTrigger>
-          <HeaderPopover />
+          <HeaderPopover Logout={Logout} />
         </Popover>
         <Link to='/notifications'>
           {unreadItems?.length || invitations?.length ? (
