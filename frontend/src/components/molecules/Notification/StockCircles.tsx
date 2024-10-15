@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Text } from "@chakra-ui/react";
 import ProgressCircle from "../../atoms/Notification/ProgressCircle";
+import { useStocks } from "../../../hooks/stocks";
 
 const StockCircles: React.FC = () => {
-  const [currentFoodStock, setCurrentFoodStock] = useState(4);
-  const [goalFoodStock, setGoalFoodStock] = useState(10);
+  const { familyFoodStocks, familyDrinkStocks } = useStocks();
 
-  const [currentDrinkStock, setDrinkStock] = useState(7);
-  const [goalDrinkStock, setGoalDrinkStock] = useState(10);
+  if (!familyFoodStocks || !familyDrinkStocks) {
+    return <Text>loading...</Text>;
+  }
 
   return (
     <Box
@@ -23,8 +24,8 @@ const StockCircles: React.FC = () => {
           食料備蓄達成度
         </Text>
         <ProgressCircle
-          current={currentFoodStock}
-          goal={goalFoodStock}
+          current={familyFoodStocks.current}
+          goal={familyFoodStocks.goal}
           color="#FB8B24"
         />
       </Box>
@@ -33,8 +34,8 @@ const StockCircles: React.FC = () => {
           飲料備蓄達成度
         </Text>
         <ProgressCircle
-          current={currentDrinkStock}
-          goal={goalDrinkStock}
+          current={familyDrinkStocks.current}
+          goal={familyDrinkStocks.goal}
           color="#00C2FF"
         />
       </Box>

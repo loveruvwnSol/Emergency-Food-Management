@@ -3,6 +3,7 @@ import DataBoard from "../../molecules/Family/DataBoard";
 import { Box, Icon, Text, useDisclosure } from "@chakra-ui/react";
 import FamilyMemberModal from "../../organisms/Family/FamilyMemberModal";
 import { FamilyMember } from "../../../hooks/family";
+import { useStocks } from "../../../hooks/stocks";
 
 type FamilyContentsProps = {
   familyMembers: FamilyMember[];
@@ -10,6 +11,11 @@ type FamilyContentsProps = {
 
 const FamilyContents: React.FC<FamilyContentsProps> = ({ familyMembers }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { familyFoodStocks, familyDrinkStocks } = useStocks();
+
+  if (!familyFoodStocks || !familyDrinkStocks) {
+    return <Text>loading...</Text>;
+  }
 
   return (
     <>
@@ -28,7 +34,7 @@ const FamilyContents: React.FC<FamilyContentsProps> = ({ familyMembers }) => {
           <Text fontSize={"28px"} fontWeight={"bold"}>
             家族の備蓄目標
           </Text>
-          <Icon //家族メンバー一覧を開くアイコン
+          <Icon
             as={GoPeople}
             boxSize={"32px"}
             mr={"48px"}
@@ -39,24 +45,28 @@ const FamilyContents: React.FC<FamilyContentsProps> = ({ familyMembers }) => {
         </Box>
         <Box mt={"24px"} display={"flex"} gap={20}>
           <DataBoard
-            Type="食料"
-            Goal={12}
-            Now={12}
-            GoodFood={15}
-            BadFood={15}
+            type="食料"
+            goal={familyFoodStocks.goal}
+            current={familyFoodStocks.current}
+            longShelfLifeCount={familyFoodStocks.longShelfLifeCount}
+            nearExpiryCount={familyFoodStocks.nearExpiryCount}
             bg="#FB8B24"
           />
           <DataBoard
-            Type="飲料"
-            Goal={12}
-            Now={12}
-            GoodFood={15}
-            BadFood={15}
+            type="飲料"
+            goal={familyDrinkStocks.goal}
+            current={familyDrinkStocks.current}
+            longShelfLifeCount={familyDrinkStocks.longShelfLifeCount}
+            nearExpiryCount={familyDrinkStocks.nearExpiryCount}
             bg="#00C2FF"
           />
         </Box>
       </Box>
-      <FamilyMemberModal onClose={onClose} isOpen={isOpen} familyMembers={familyMembers} />
+      <FamilyMemberModal
+        onClose={onClose}
+        isOpen={isOpen}
+        familyMembers={familyMembers}
+      />
     </>
   );
 };
