@@ -128,6 +128,19 @@ export const useFamily = () => {
     }
   };
 
+  const DeleteFamilyMember = async (id: number) => {
+    try {
+      const res = await axios.delete(
+        `http://localhost:8080/families/${familyID}/members/${id}`
+      );
+      if (res.status === 200) {
+        setFamilyMembers(res.data.members);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return [
     {
       familyMembers,
@@ -135,6 +148,7 @@ export const useFamily = () => {
       CreateNewFamily,
       InviteUserForFamily,
       JoinToFamily,
+      DeleteFamilyMember,
     },
   ];
 };
