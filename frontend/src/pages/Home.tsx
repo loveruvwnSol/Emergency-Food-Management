@@ -12,7 +12,7 @@ export const Home = () => {
   const [image, setImage] = useState<File | undefined>();
   return (
     <Box>
-      <Header />
+      <Header title={"ホーム"}/>
       <Box display={"flex"}>
         <SidebarItems />
         <Box display={"flex"} flexDirection={"column"} w={"100%"}>

@@ -31,7 +31,7 @@ const SidebarItems = () => {
   ];
 
   return (
-    <Box mr={12}>
+    <Box mr={12} display={{ base: "none", sm: "flex" }} flexDirection={"column"}>
       {data.map((data, index) => (
         <NavLink to={data.link} key={index}>
           {({ isActive }) => (

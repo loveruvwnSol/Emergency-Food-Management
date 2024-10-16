@@ -13,7 +13,7 @@ const Family = () => {
 
   return (
     <>
-      <Header />
+      <Header title={"家族"}/>
       <Box display={"flex"}>
         <SidebarItems />
         {familyMembers.length !== 0 ? (
