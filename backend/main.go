@@ -30,7 +30,7 @@ func main() {
 	r.GET("/users/:id/family", middleware.AuthMiddleWare(), handler.GetFamilyMembers(db))
 	r.GET("/families/:family_id/stocks", handler.GetFamilyStocks(db))
 	r.POST("/families", middleware.AuthMiddleWare(), handler.CreateNewFamily(db))
-	r.DELETE("/families/:family_id/member/:member_id", handler.DeleteFamilyMember(db))
+	r.DELETE("/families/:family_id/members/:id", handler.DeleteFamilyMember(db))
 
 	r.GET("/users/:id/invitations", middleware.AuthMiddleWare(), handler.GetInvitations(db))
 	r.POST("/invitations", middleware.AuthMiddleWare(), handler.InviteUserForFamily(db))

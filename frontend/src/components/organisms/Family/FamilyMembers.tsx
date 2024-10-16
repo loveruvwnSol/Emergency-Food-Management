@@ -1,33 +1,46 @@
-import { Box, Icon, Image, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Icon,
+  Image,
+  Popover,
+  PopoverTrigger,
+  Text,
+} from "@chakra-ui/react";
 import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
-import { useUser } from "../../../hooks/user";
+import { User } from "../../../hooks/user";
 import defaultAvatar from "../../../images/defaultAvatar.png";
+import { FiMoreHorizontal } from "react-icons/fi";
+import FamilyMemberPopover from "../../molecules/Family/FamilyMemberPopover";
 
 type FamilyMembersProps = {
+  user: User | undefined;
+  isShow: boolean;
   userID: number;
   name: string;
   icon: string | undefined;
   food: number;
   drink: number;
+  DeleteFamilyMember: (id: number) => void;
 };
 
 const FamilyMembers: React.FC<FamilyMembersProps> = ({
+  user,
+  isShow,
   userID,
   name,
   icon,
   drink,
   food,
+  DeleteFamilyMember,
 }) => {
-  const [{ user }] = useUser();
-
   if (!user) {
     return <Text>loading...</Text>;
   }
 
   return (
     <>
-      <Box //利用者のプロフィール
+      <Box
         display={"flex"}
         justifyContent={"start"}
         alignItems={"center"}
@@ -42,7 +55,7 @@ const FamilyMembers: React.FC<FamilyMembersProps> = ({
           justifyContent={"space-between"}
         >
           <Box display={"flex"} alignItems={"center"} w={72} gap={8}>
-            <Box //アイコン
+            <Box
               w={"60px"}
               h={"60px"}
               borderRadius={50}
@@ -119,6 +132,55 @@ const FamilyMembers: React.FC<FamilyMembersProps> = ({
               </Text>
             </Box>
           </Box>
+          {isShow ? (
+            <Popover placement="right">
+              <PopoverTrigger>
+                <Box
+                  p={2}
+                  ml={3}
+                  _hover={{ bgColor: "gray.100", borderRadius: "50%" }}
+                  cursor={"pointer"}
+                >
+                  <FiMoreHorizontal size={20} opacity={"50%"} />
+                </Box>
+              </PopoverTrigger>
+              <FamilyMemberPopover
+                id={userID}
+                width={user.id === userID ? 220 : 300}
+                text={
+                  user.id === userID
+                    ? "家族から退出する"
+                    : "このユーザーを退出させる"
+                }
+                DeleteFamilyMember={DeleteFamilyMember}
+              />
+            </Popover>
+          ) : (
+            <>
+              {user.id === userID ? (
+                <Popover placement="right">
+                  <PopoverTrigger>
+                    <Box
+                      p={2}
+                      ml={3}
+                      _hover={{ bgColor: "gray.100", borderRadius: "50%" }}
+                      cursor={"pointer"}
+                    >
+                      <FiMoreHorizontal size={20} opacity={"50%"} />
+                    </Box>
+                  </PopoverTrigger>
+                  <FamilyMemberPopover
+                    id={userID}
+                    width={220}
+                    text={"家族から退出する"}
+                    DeleteFamilyMember={DeleteFamilyMember}
+                  />
+                </Popover>
+              ) : (
+                <></>
+              )}
+            </>
+          )}
         </Box>
       </Box>
     </>

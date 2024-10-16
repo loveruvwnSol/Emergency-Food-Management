@@ -1,13 +1,43 @@
 import React from "react";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Button, Text } from "@chakra-ui/react";
 import ProgressCircle from "../../atoms/Notification/ProgressCircle";
 import { useStocks } from "../../../hooks/stocks";
+import { useNavigate } from "react-router-dom";
 
 const StockCircles: React.FC = () => {
   const { familyFoodStocks, familyDrinkStocks } = useStocks();
+  const navigate = useNavigate();
 
   if (!familyFoodStocks || !familyDrinkStocks) {
-    return <Text>loading...</Text>;
+    return (
+      <Box
+        w={"1100px"}
+        h={"500px"}
+        display={"flex"}
+        flexDirection={"column"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <Text fontSize={"36px"} fontWeight={"bold"} mb={"48px"}>
+          家族がありません
+        </Text>
+        <Button
+          color={"#fff"}
+          bgColor={"#FB8B24"}
+          w={"220px"}
+          h={"60px"}
+          borderRadius={"25px"}
+          border={"none"}
+          fontSize={"16px"}
+          fontWeight={"bold"}
+          cursor={"pointer"}
+          _hover={{ bgColor: "#ffa959" }}
+          onClick={() => navigate("/family")}
+        >
+          家族ページに移動する
+        </Button>
+      </Box>
+    );
   }
 
   return (

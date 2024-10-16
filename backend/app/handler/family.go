@@ -10,10 +10,10 @@ import (
 	"gorm.io/gorm"
 )
 
-func FetchFamily(db *gorm.DB, userID int) ([]model.Member, error) {
+func FetchFamily(db *gorm.DB, familyID int) ([]model.Member, error) {
 	var members []model.Member
 
-	result := db.Preload("User").Preload("Family").Where("user_id = ?", userID).Find(&members)
+	result := db.Preload("User").Preload("Family").Where("family_id = ?", familyID).Find(&members)
 
 	if result.Error != nil {
 		return nil, result.Error
@@ -125,7 +125,7 @@ func JoinToFamily(db *gorm.DB) gin.HandlerFunc {
 
 func DeleteFamilyMember(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		memberID, err := strconv.Atoi(ctx.Param("member_id"))
+		userID, err := strconv.Atoi(ctx.Param("id"))
 		familyID, err := strconv.Atoi(ctx.Param("family_id"))
 
 		if err != nil {
@@ -133,13 +133,20 @@ func DeleteFamilyMember(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		res := db.Where("user_id = ? AND family_id = ?", memberID, familyID).Delete(&model.Member{})
+		res := db.Where("user_id = ? AND family_id = ?", userID, familyID).Delete(&model.Member{})
 
 		if res.Error != nil {
 			ctx.JSON(http.StatusBadRequest, res.Error)
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{"success": "Delete member"})
+		members, err := FetchFamily(db, familyID)
+
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed fetch family members"})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{"success": "Delete member", "members": members})
 	}
 }

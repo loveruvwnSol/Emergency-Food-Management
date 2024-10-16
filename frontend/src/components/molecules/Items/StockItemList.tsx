@@ -1,6 +1,7 @@
-import { Box, Grid, Text } from "@chakra-ui/react";
+import { Box, Button, Grid, Text } from "@chakra-ui/react";
 import { StockItem } from "../Base/StockItem";
 import { Item } from "../../../hooks/items";
+import { useNavigate } from "react-router-dom";
 
 type StockItemListProps = {
   items: Item[];
@@ -33,6 +34,7 @@ const StockItemList: React.FC<StockItemListProps> = ({
   UpdateItem,
   DeleteItem,
 }) => {
+  const navigate = useNavigate();
   return (
     <Box mb={10} maxH={"500px"} overflowY={"auto"}>
       <Box
@@ -58,9 +60,33 @@ const StockItemList: React.FC<StockItemListProps> = ({
           </Grid>
         </Box>
       ) : (
-        <Text fontWeight={"bold"} fontSize={20} ml={2}>
-          アイテムがありません
-        </Text>
+        <Box
+          w={"1100px"}
+          h={"500px"}
+          display={"flex"}
+          flexDirection={"column"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <Text fontSize={"36px"} fontWeight={"bold"} mb={"48px"}>
+            家族がありません
+          </Text>
+          <Button
+            color={"#fff"}
+            bgColor={"#FB8B24"}
+            w={"220px"}
+            h={"60px"}
+            borderRadius={"25px"}
+            border={"none"}
+            fontSize={"16px"}
+            fontWeight={"bold"}
+            cursor={"pointer"}
+            _hover={{ bgColor: "#ffa959" }}
+            onClick={() => navigate("/family")}
+          >
+            家族ページに移動する
+          </Button>
+        </Box>
       )}
     </Box>
   );
