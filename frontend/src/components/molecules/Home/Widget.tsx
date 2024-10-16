@@ -1,8 +1,7 @@
-import { Box, Button, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Text, useDisclosure } from "@chakra-ui/react";
 import { FiChevronRight } from "react-icons/fi";
 import { NewItemModal } from "../../organisms/Items/NewItemModal";
 import { useFamily } from "../../../hooks/family";
-import { useNavigate } from "react-router-dom";
 
 type WidgetProps = {
   image: File | undefined;

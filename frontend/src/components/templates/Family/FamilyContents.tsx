@@ -7,9 +7,13 @@ import { useStocks } from "../../../hooks/stocks";
 
 type FamilyContentsProps = {
   familyMembers: FamilyMember[];
+  DeleteFamilyMember: (id: number) => void;
 };
 
-const FamilyContents: React.FC<FamilyContentsProps> = ({ familyMembers }) => {
+const FamilyContents: React.FC<FamilyContentsProps> = ({
+  familyMembers,
+  DeleteFamilyMember,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { familyFoodStocks, familyDrinkStocks } = useStocks();
 
@@ -66,6 +70,7 @@ const FamilyContents: React.FC<FamilyContentsProps> = ({ familyMembers }) => {
         onClose={onClose}
         isOpen={isOpen}
         familyMembers={familyMembers}
+        DeleteFamilyMember={DeleteFamilyMember}
       />
     </>
   );

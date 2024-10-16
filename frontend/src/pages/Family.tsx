@@ -5,7 +5,7 @@ import FamilyContents from "../components/templates/Family/FamilyContents";
 import { useFamily } from "../hooks/family";
 
 const Family = () => {
-  const [{ familyMembers, CreateNewFamily }] = useFamily();
+  const [{ familyMembers, CreateNewFamily, DeleteFamilyMember }] = useFamily();
 
   if (!familyMembers) {
     return <Text>loading family...</Text>;
@@ -17,7 +17,10 @@ const Family = () => {
       <Box display={"flex"}>
         <SidebarItems />
         {familyMembers.length !== 0 ? (
-          <FamilyContents familyMembers={familyMembers} />
+          <FamilyContents
+            familyMembers={familyMembers}
+            DeleteFamilyMember={DeleteFamilyMember}
+          />
         ) : (
           <Box
             w={"1100px"}
@@ -28,7 +31,7 @@ const Family = () => {
             alignItems={"center"}
           >
             <Text fontSize={"36px"} fontWeight={"bold"} mb={"48px"}>
-              家族がいません
+              家族がありません
             </Text>
             <Button
               color={"#fff"}

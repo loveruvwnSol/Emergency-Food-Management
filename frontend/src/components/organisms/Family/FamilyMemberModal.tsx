@@ -6,22 +6,35 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import FamilyMembers from "./FamilyMembers";
 import InviteFamilyBtn from "../../molecules/Family/InviteFamilyBtn";
 import { FamilyMember } from "../../../hooks/family";
+import { useUser } from "../../../hooks/user";
 
 type FamilyMemberModalProps = {
   onClose: () => void;
   isOpen: boolean;
   familyMembers: FamilyMember[];
+  DeleteFamilyMember: (id: number) => void;
 };
 
 const FamilyMemberModal: React.FC<FamilyMemberModalProps> = ({
   onClose,
   isOpen,
   familyMembers,
+  DeleteFamilyMember,
 }) => {
+  const [{ user }] = useUser();
+  const [isShow, setIsShow] = useState(false);
+
+  useEffect(() => {
+    const isAdmin = familyMembers.some(
+      (member) => member.user_id === user?.id && member.role === "admin"
+    );
+    setIsShow(isAdmin);
+  }, [familyMembers, user]);
+
   return (
     <>
       <Modal onClose={onClose} isOpen={isOpen} isCentered>
@@ -43,12 +56,15 @@ const FamilyMemberModal: React.FC<FamilyMemberModalProps> = ({
 
                 {familyMembers.map((member, index) => (
                   <FamilyMembers
+                    user={user}
+                    isShow={isShow}
                     userID={member.user_id}
                     name={member.User.name}
                     icon={member.User.icon_url}
                     food={3}
                     drink={3}
                     key={index}
+                    DeleteFamilyMember={DeleteFamilyMember}
                   />
                 ))}
               </Box>
