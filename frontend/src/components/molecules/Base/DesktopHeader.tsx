@@ -23,30 +23,16 @@ const DesktopHeader = () => {
         <Popover>
           <PopoverTrigger>
             <Box cursor={"pointer"} _hover={{ opacity: "50%" }}>
-              {user?.icon_url ? (
-                <Image
-                  src={user?.icon_url}
-                  alt="User Icon"
-                  w={"37px"}
-                  h={"37px"}
-                  border={"1px solid"}
-                  borderColor={"gray.300"}
-                  borderRadius={"50%"}
-                  objectFit={"cover"}
-                />
-              ) : (
-                <Image
-                  mb={2}
-                  src={defaultAvatar}
-                  alt="User Icon"
-                  w={"37px"}
-                  h={"37px"}
-                  border={"1px solid"}
-                  borderColor={"gray.300"}
-                  borderRadius={"50%"}
-                  objectFit={"cover"}
-                />
-              )}
+              <Image
+                src={user?.icon_url ? user?.icon_url : defaultAvatar}
+                alt="User Icon"
+                w={"37px"}
+                h={"37px"}
+                border={"1px solid"}
+                borderColor={"gray.300"}
+                borderRadius={"50%"}
+                objectFit={"cover"}
+              />
             </Box>
           </PopoverTrigger>
           <HeaderPopover Logout={Logout} />
