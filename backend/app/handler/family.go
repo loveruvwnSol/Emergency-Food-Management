@@ -3,7 +3,6 @@ package handler
 import (
 	"app/app/model"
 	"errors"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -147,8 +146,6 @@ func DeleteFamilyMember(db *gorm.DB) gin.HandlerFunc {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed fetch family members"})
 			return
 		}
-
-		fmt.Print(members)
 
 		ctx.JSON(http.StatusOK, gin.H{"success": "Delete member", "members": members})
 	}
