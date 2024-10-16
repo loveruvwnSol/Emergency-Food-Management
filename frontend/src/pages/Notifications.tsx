@@ -6,7 +6,7 @@ import NotificationTabs from "../components/templates/Notification/NotificationT
 const Notifications = () => {
     return (
         <Box>
-            <Header />
+            <Header title={"通知"}/>
             <Box display="flex">
                 <SidebarItems />
                 <Box display="flex">

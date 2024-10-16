@@ -6,7 +6,7 @@ import SettingBoard from '../components/templates/Settings/SettingBoard';
 const Settings = () => {
   return (
     <Box>
-      <Header />
+      <Header title={"設定"}/>
       <Box display={'flex'}>
         <SidebarItems />
         <SettingBoard />

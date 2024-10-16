@@ -6,7 +6,7 @@ import Header from '../components/organisms/Base/Header';
 const Items = () => {
   return (
     <>
-      <Header />
+      <Header title={"一覧"}/>
       <Box display={'flex'}>
         <SidebarItems />
         <ItemsBoard />
