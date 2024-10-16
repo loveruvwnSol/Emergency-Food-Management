@@ -1,6 +1,8 @@
-import { Box, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Text, useDisclosure } from "@chakra-ui/react";
 import { FiChevronRight } from "react-icons/fi";
 import { NewItemModal } from "../../organisms/Items/NewItemModal";
+import { useFamily } from "../../../hooks/family";
+import { useNavigate } from "react-router-dom";
 
 type WidgetProps = {
   image: File | undefined;
@@ -31,6 +33,7 @@ export const Widget: React.FC<WidgetProps> = ({
   DeleteItem,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [{ familyID }] = useFamily();
   return (
     <Box
       w={"372px"}
@@ -41,7 +44,7 @@ export const Widget: React.FC<WidgetProps> = ({
       mr={8}
       color={"white"}
       boxShadow={"0 10px 10px #FED6B1"}
-      onClick={onOpen}
+      onClick={familyID ? onOpen : onClose}
     >
       <Box
         display={"flex"}
