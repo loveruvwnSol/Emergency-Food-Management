@@ -2,6 +2,7 @@ package handler
 
 import (
 	"app/app/model"
+	"app/app/validations"
 	"net/http"
 	"strings"
 
@@ -83,8 +84,8 @@ func SearchIndependentUsers(db *gorm.DB) gin.HandlerFunc {
 }
 
 type UpdateUsernameRequest struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
+	ID   int    `json:"id"  binding:"required"`
+	Name string `json:"name" binding:"required,max=16"`
 }
 
 func UpdateUsername(db *gorm.DB) gin.HandlerFunc {
@@ -93,7 +94,7 @@ func UpdateUsername(db *gorm.DB) gin.HandlerFunc {
 		user := UpdateUsernameRequest{ID: userID}
 
 		if err := ctx.Bind(&user); err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user"})
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": validations.UpdateUsernameError(err)})
 			return
 		}
 
@@ -113,19 +114,18 @@ func UpdateUsername(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
-func UpdateIconURL(db *gorm.DB) gin.HandlerFunc {
+func UpdateUserIconURL(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		userID := ctx.MustGet("user_id").(int) // 認証されたユーザーのIDを取得
+		userID := ctx.MustGet("user_id").(int)
 		var request struct {
-			IconURL string `json:"icon_url"` // リクエストから取得する新しいアイコンのURL
+			IconURL string `json:"icon_url" binding:"required,url"`
 		}
 
 		if err := ctx.Bind(&request); err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": validations.UpdateUserIconError(err)})
 			return
 		}
 
-		// usersテーブルのicon_urlカラムを更新
 		result := db.Table("users").Where("id = ?", userID).Update("icon_url", request.IconURL)
 
 		if result.Error != nil {

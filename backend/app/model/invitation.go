@@ -2,9 +2,9 @@ package model
 
 type Invitation struct {
 	Base
-	InviterID int    `json:"inviter_id"`
-	InviteeID int    `json:"invitee_id"`
-	FamilyID  int    `json:"family_id"`
-	Inviter   User   `gorm:"foreignKey:InviterID"` // Userとのリレーション
-	Family    Family `gorm:"foreignKey:FamilyID"`  // Familyとのリレーション
+	InviterID int    `json:"inviter_id" gorm:"not null"`
+	InviteeID int    `json:"invitee_id" gorm:"not null"`
+	FamilyID  int    `json:"family_id" gorm:"not null"`
+	Inviter   User   `gorm:"foreignKey:InviterID"`
+	Family    Family `gorm:"foreignKey:FamilyID"`
 }

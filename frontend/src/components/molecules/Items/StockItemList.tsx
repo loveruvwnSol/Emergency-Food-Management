@@ -12,7 +12,8 @@ type StockItemListProps = {
     expiration: string,
     stock: number,
     type: string,
-    file: File
+    file: File,
+    onClose: () => void
   ) => Promise<void>;
   UpdateItem: (
     id: number,
@@ -21,7 +22,8 @@ type StockItemListProps = {
     stock: number,
     type: string,
     file: File | undefined,
-    image_url: string | undefined
+    image_url: string | undefined,
+    onClose: () => void
   ) => Promise<void>;
   DeleteItem: (itemID: number) => Promise<void>;
 };

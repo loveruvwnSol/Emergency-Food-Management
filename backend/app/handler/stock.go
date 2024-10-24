@@ -12,18 +12,14 @@ import (
 )
 
 func InitStock(db *gorm.DB, userID int) error {
-	// 新しいストックを初期化
 	stock := model.Stock{UserID: userID, Food: 3, Drink: 3}
 
-	// ストックをデータベースに作成
 	res := db.Table("stocks").Create(&stock)
 	if res.Error != nil {
-		// エラーが発生した場合、詳細なエラーメッセージを返す
 		return fmt.Errorf("failed to create stock: %v", res.Error)
 	}
 
 	if res.RowsAffected == 0 {
-		// データが作成されなかった場合のエラー処理
 		return fmt.Errorf("no rows affected, stock creation failed")
 	}
 

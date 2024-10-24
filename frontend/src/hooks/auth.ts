@@ -1,5 +1,9 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
+
+interface ErrorResponse {
+  error: string;
+}
 
 export const useAuth = () => {
   const navigate = useNavigate();
@@ -16,6 +20,8 @@ export const useAuth = () => {
           sessionStorage.setItem("TOKEN_KEY", res.data);
           navigate("/");
         }
+      } else {
+        alert("入力していない項目があります。");
       }
     } catch (error) {
       alert("ログインできませんでした。");
@@ -39,9 +45,22 @@ export const useAuth = () => {
           alert("アカウントを作成しました。");
           navigate("/login");
         }
+      } else {
+        alert("入力していない項目があります。");
       }
-    } catch (error) {
-      alert("アカウントが作れませんでした。");
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        const errorData = axiosError.response.data as ErrorResponse;
+
+        if (errorData && typeof errorData.error === "string") {
+          alert(errorData.error);
+        } else {
+          alert("不明なエラーが発生しました。");
+        }
+      } else {
+        alert("不明なエラーが発生しました。");
+      }
     }
   };
 

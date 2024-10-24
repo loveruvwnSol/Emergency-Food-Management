@@ -23,7 +23,7 @@ func main() {
 
 	r.GET("/users", middleware.AuthMiddleWare(), handler.GetCurrentUser(db))
 	r.PUT("/users/:id", middleware.AuthMiddleWare(), handler.UpdateUsername(db))
-	r.PUT("/users/:id/icon", middleware.AuthMiddleWare(), handler.UpdateIconURL(db))
+	r.PUT("/users/:id/icon", middleware.AuthMiddleWare(), handler.UpdateUserIconURL(db))
 	r.GET("/users/search", handler.SearchIndependentUsers(db))
 	r.GET("/users/independent", handler.GetAllIndependentUsers(db))
 

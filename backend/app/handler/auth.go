@@ -2,6 +2,7 @@ package handler
 
 import (
 	"app/app/model"
+	"app/app/validations"
 	"crypto/sha256"
 	"fmt"
 	"net/http"
@@ -14,16 +15,16 @@ import (
 )
 
 type EmailLoginRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password" binding:"required"`
 }
 
 func CreateAccount(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var newUser model.User
 
-		if err := ctx.BindJSON(&newUser); err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid"})
+		if err := ctx.ShouldBindJSON(&newUser); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": validations.CreateAccountError(err)})
 			return
 		}
 

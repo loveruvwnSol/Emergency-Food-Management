@@ -23,7 +23,7 @@ const InviteBtn: React.FC<InviteBtnProps> = ({ onClick }) => {
             py={4}
             borderRadius={50}
             onClick={handleClick}
-            _hover={{ bgColor: isClicked ? "#828282" : "#FB8B24" }} // ホバー時の色変化はこのままでOK
+            _hover={{ bgColor: isClicked ? "#828282" : "#FB8B24" }} 
         >
             承認
         </Button>

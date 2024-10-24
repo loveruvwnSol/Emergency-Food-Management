@@ -27,7 +27,7 @@ const NameSettings = () => {
   };
 
   return (
-    <Box //名前設定
+    <Box
       display={'flex'}
       justifyContent={'space-between'}
       alignItems={'center'}

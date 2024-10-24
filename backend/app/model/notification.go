@@ -7,7 +7,7 @@ type Notification struct {
 	FamilyID int             `json:"family_id"`
 	Text     string          `json:"text"`
 	Type     string          `json:"type" gorm:"not null"`
-	IsRead   bool            `json:"is_read"`
+	IsRead   bool            `json:"is_read" binding:"required"`
 	Family   Family          `gorm:"foreignKey:FamilyID"`
 	ItemIDs  json.RawMessage `json:"item_ids"  gorm:"type:json"`
 }

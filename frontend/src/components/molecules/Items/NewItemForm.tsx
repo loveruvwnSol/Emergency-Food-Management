@@ -27,7 +27,8 @@ type NewItemForm = {
     expiration: string,
     stock: number,
     type: string,
-    file: File
+    file: File,
+    onClose: () => void
   ) => Promise<void>;
   UpdateItem: (
     id: number,
@@ -36,7 +37,8 @@ type NewItemForm = {
     stock: number,
     type: string,
     file: File | undefined,
-    image_url: string | undefined
+    image_url: string | undefined,
+    onClose: () => void
   ) => Promise<void>;
   DeleteItem: (itemID: number) => Promise<void>;
 };
@@ -163,9 +165,10 @@ export const NewItemForm: React.FC<NewItemForm> = ({
                       stock,
                       type,
                       image,
-                      ""
+                      "",
+                      onClose
                     );
-                    onClose();
+                    // onClose();
                   } else {
                     UpdateItem(
                       item.id,
@@ -174,15 +177,15 @@ export const NewItemForm: React.FC<NewItemForm> = ({
                       stock,
                       type,
                       image,
-                      item.image_url
+                      item.image_url,
+                      onClose
                     );
-                    onClose();
+                    // onClose();
                   }
                 }
               : () => {
                   if (name && expiration && stock && type && image) {
-                    onClose();
-                    AddNewItem(name, expiration, stock, type, image);
+                    AddNewItem(name, expiration, stock, type, image, onClose);
                   } else {
                     alert("入力していない項目があります。");
                   }

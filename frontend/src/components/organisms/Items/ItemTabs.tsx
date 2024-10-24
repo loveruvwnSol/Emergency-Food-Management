@@ -19,7 +19,8 @@ type ItemTabsProps = {
     expiration: string,
     stock: number,
     type: string,
-    file: File
+    file: File,
+    onClose: () => void
   ) => Promise<void>;
   UpdateItem: (
     id: number,
@@ -28,7 +29,8 @@ type ItemTabsProps = {
     stock: number,
     type: string,
     file: File | undefined,
-    image_url: string | undefined
+    image_url: string | undefined,
+    onClose: () => void
   ) => Promise<void>;
   DeleteItem: (itemID: number) => Promise<void>;
 };
@@ -75,7 +77,7 @@ const ItemTabs: React.FC<ItemTabsProps> = ({
               AddNewItem={AddNewItem}
               UpdateItem={UpdateItem}
               DeleteItem={DeleteItem}
-              items={items} //全てのタイプを表示
+              items={items}
             />
           </TabPanel>
           <TabPanel>
@@ -85,7 +87,7 @@ const ItemTabs: React.FC<ItemTabsProps> = ({
               AddNewItem={AddNewItem}
               UpdateItem={UpdateItem}
               DeleteItem={DeleteItem}
-              items={foodItems} //食料を表示
+              items={foodItems}
             />
           </TabPanel>
           <TabPanel>
@@ -95,7 +97,7 @@ const ItemTabs: React.FC<ItemTabsProps> = ({
               AddNewItem={AddNewItem}
               UpdateItem={UpdateItem}
               DeleteItem={DeleteItem}
-              items={drinkItems} //飲料を表示
+              items={drinkItems}
             />
           </TabPanel>
         </TabPanels>

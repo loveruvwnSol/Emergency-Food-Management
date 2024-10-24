@@ -1,6 +1,10 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useFamily } from "./family";
+
+interface ErrorResponse {
+  error: string;
+}
 
 export type Item = {
   id: number;
@@ -40,7 +44,8 @@ export const useItems = () => {
     expiration: string,
     stock: number,
     type: string,
-    file: File
+    file: File,
+    onClose: () => void
   ) => {
     try {
       const formData = new FormData();
@@ -62,7 +67,6 @@ export const useItems = () => {
         type: type,
         image_url: image_url,
       };
-      console.log(newItem);
       const res = await axios.post(
         `http://localhost:8080/families/items`,
         newItem
@@ -70,10 +74,21 @@ export const useItems = () => {
       if (res.status === 201) {
         alert("アイテムを追加しました。");
         setItems(res.data.items);
+        onClose();
       }
-    } catch (error) {
-      alert("アイテムの追加に失敗しました。");
-      console.log(error);
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        const errorData = axiosError.response.data as ErrorResponse;
+
+        if (errorData && typeof errorData.error === "string") {
+          alert(errorData.error);
+        } else {
+          alert("不明なエラーが発生しました。");
+        }
+      } else {
+        alert("不明なエラーが発生しました。");
+      }
     }
   };
 
@@ -84,7 +99,8 @@ export const useItems = () => {
     stock: number,
     type: string,
     file: File | undefined,
-    image_url: string | undefined
+    image_url: string | undefined,
+    onClose: () => void
   ) => {
     try {
       if (file) {
@@ -108,7 +124,6 @@ export const useItems = () => {
         type: type,
         image_url: image_url,
       };
-      console.log(updatedItem);
       const res = await axios.put(
         `http://localhost:8080/items/${id}`,
         updatedItem
@@ -116,9 +131,25 @@ export const useItems = () => {
       if (res.status === 200) {
         alert("アイテムを編集しました。");
         setItems(res.data.items);
+        onClose();
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        const errorData = axiosError.response.data as ErrorResponse;
+
+        if (errorData && typeof errorData.error === "string") {
+          if (errorData.error === "Not found update item") {
+            alert("項目を変更してください。");
+          } else {
+            alert(errorData.error);
+          }
+        } else {
+          alert("不明なエラーが発生しました。");
+        }
+      } else {
+        alert("不明なエラーが発生しました。");
+      }
     }
   };
 
@@ -148,9 +179,7 @@ export const useItems = () => {
         );
         if (res.status === 200) {
           setItems(res.data.filteredItems);
-          console.log(res.data);
         }
-        console.log(res);
       } catch (error) {
         console.log(error);
       }

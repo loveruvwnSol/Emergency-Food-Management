@@ -2,6 +2,7 @@ package handler
 
 import (
 	"app/app/model"
+	"app/app/validations"
 	"net/http"
 	"strconv"
 	"strings"
@@ -52,12 +53,12 @@ func GetItems(db *gorm.DB) gin.HandlerFunc {
 
 type NewItemRequest struct {
 	model.Base
-	FamilyID   int    `json:"family_id"`
-	Name       string `json:"name"`
-	Type       string `json:"type"`
-	Expiration string `json:"expiration"`
-	Stock      int    `json:"stock"`
-	ImageURL   string `json:"image_url"`
+	FamilyID   int    `json:"family_id" binding:"required"`
+	Name       string `json:"name" binding:"required,max=16"`
+	Type       string `json:"type" binding:"required"`
+	Expiration string `json:"expiration" binding:"required"`
+	Stock      int    `json:"stock" binding:"required"`
+	ImageURL   string `json:"image_url" binding:"required,url"`
 }
 
 func AddNewItem(db *gorm.DB) gin.HandlerFunc {
@@ -66,7 +67,7 @@ func AddNewItem(db *gorm.DB) gin.HandlerFunc {
 		var requestItem NewItemRequest
 
 		if err := ctx.ShouldBindJSON(&requestItem); err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid newItem"})
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": validations.ItemError(err)})
 			return
 		}
 
@@ -112,7 +113,7 @@ func UpdateItem(db *gorm.DB) gin.HandlerFunc {
 		var requestItem NewItemRequest
 
 		if err := ctx.ShouldBindJSON(&requestItem); err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid item"})
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": validations.ItemError(err)})
 			return
 		}
 
