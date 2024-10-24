@@ -2,6 +2,7 @@ import { Box, Text, useDisclosure } from "@chakra-ui/react";
 import { FiChevronRight } from "react-icons/fi";
 import { NewItemModal } from "../../organisms/Items/NewItemModal";
 import { useFamily } from "../../../hooks/family";
+import { useStocks } from "../../../hooks/stocks";
 
 type WidgetProps = {
   image: File | undefined;
@@ -11,7 +12,8 @@ type WidgetProps = {
     expiration: string,
     stock: number,
     type: string,
-    file: File
+    file: File,
+    onClose: () => void
   ) => Promise<void>;
   UpdateItem: (
     id: number,
@@ -20,7 +22,8 @@ type WidgetProps = {
     stock: number,
     type: string,
     file: File | undefined,
-    image_url: string | undefined
+    image_url: string | undefined,
+    onClose: () => void
   ) => Promise<void>;
   DeleteItem: (itemID: number) => Promise<void>;
 };
@@ -33,10 +36,12 @@ export const Widget: React.FC<WidgetProps> = ({
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [{ familyID }] = useFamily();
+  const { familyFoodStocks, familyDrinkStocks } = useStocks();
+
   return (
     <Box
       w={"372px"}
-      height={"150px"}
+      height={"160px"}
       backgroundColor={"#FB8B24"}
       borderRadius={10}
       padding={5}
@@ -56,12 +61,12 @@ export const Widget: React.FC<WidgetProps> = ({
         <FiChevronRight size={32} />
       </Box>
       <Text mt={2} ml={2}>
-        期限が1年以上先の食品
+        期限に余裕のある非常食
       </Text>
       <Text
         fontWeight={"bold"}
         fontSize={24}
-        mt={2}
+        mt={3}
         ml={2}
         w={20}
         textAlign={"center"}
@@ -69,7 +74,10 @@ export const Widget: React.FC<WidgetProps> = ({
         background={"white"}
         color={"#FB8B24"}
       >
-        3件
+        {`${
+          (familyDrinkStocks?.longShelfLifeCount ?? 0) +
+          (familyFoodStocks?.current ?? 0)
+        }件`}
       </Text>
       <NewItemModal
         isOpen={isOpen}

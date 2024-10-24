@@ -4,11 +4,11 @@ import "time"
 
 type Item struct {
 	Base
-	FamilyID   int       `json:"family_id"`
-	Name       string    `json:"name" gorm:"not null"`
-	Type       string    `json:"type" gorm:"not null"`
-	Expiration time.Time `json:"expiration" gorm:"not null"`
-	Stock      int       `json:"stock" gorm:"not null"`
-	ImageURL   string    `json:"image_url"`
-	Family     Family    `gorm:"foreignKey:FamilyID"` // Familyとのリレーション
+	FamilyID   int       `json:"family_id" binding:"required"`
+	Name       string    `json:"name" gorm:"not null" binding:"required,max=16"`
+	Type       string    `json:"type" gorm:"not null" binding:"required"`
+	Expiration time.Time `json:"expiration" gorm:"not null" binding:"required"`
+	Stock      int       `json:"stock" gorm:"not null" binding:"required"`
+	ImageURL   string    `json:"image_url" binding:"required,url"`
+	Family     Family    `gorm:"foreignKey:FamilyID"`
 }
