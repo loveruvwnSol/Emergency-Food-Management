@@ -253,14 +253,25 @@ func GetNotificationSettings(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
+type UpdateNotificationSettingsRequest struct {
+	IsExpirationWarning bool `json:"is_expiration_warning" gorm:"not null"`
+	IsLowStockWarning   bool `json:"is_low_stock_warning" gorm:"not null"`
+}
+
 func UpdateNotificationSettings(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		userID := ctx.MustGet("user_id").(int)
-		notificationSettings := model.NotificationSettings{UserID: userID}
+		var updatedNotificationSettings UpdateNotificationSettingsRequest
 
-		if err := ctx.Bind(&notificationSettings); err != nil {
+		if err := ctx.BindJSON(&updatedNotificationSettings); err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid notification settings"})
 			return
+		}
+
+		notificationSettings := model.NotificationSettings{
+			UserID:              userID,
+			IsExpirationWarning: updatedNotificationSettings.IsExpirationWarning,
+			IsLowStockWarning:   updatedNotificationSettings.IsLowStockWarning,
 		}
 
 		result := db.Table("notification_settings").Where("user_id = ?", notificationSettings.UserID).Updates(map[string]interface{}{

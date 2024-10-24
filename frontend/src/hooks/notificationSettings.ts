@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useUser } from "./user";
+import { User, useUser } from "./user";
 
 export type NotificationSettings = {
+  user_id: number;
   is_expiration_warning: boolean;
   is_low_stock_warning: boolean;
+  User: User;
 };
 
 export const useNotificationSettings = () => {
@@ -36,9 +38,7 @@ export const useNotificationSettings = () => {
     GetNotificationSettings();
   }, []);
 
-  const UpdateNotificationSettings = async (
-    newNotificationSettings: NotificationSettings
-  ) => {
+  const UpdateNotificationSettings = async (newNotificationSettings: any) => {
     try {
       const response = await axios.put(
         `http://localhost:8080/users/${user?.id}/notifications/settings`,
@@ -52,7 +52,6 @@ export const useNotificationSettings = () => {
 
       if (response.status === 200) {
         setNotificationSettings(newNotificationSettings);
-        console.log("通知設定を更新しました。");
       }
     } catch (error) {
       console.log("通知設定の更新に失敗しました。", error);
