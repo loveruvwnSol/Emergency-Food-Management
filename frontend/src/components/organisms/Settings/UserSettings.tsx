@@ -16,7 +16,7 @@ const UserSettings = () => {
         ml={6}
         w={'100%'}
       >
-        <Text //プロフィール設定
+        <Text
           fontSize={'18px'}
           fontWeight={'medium'}
           color={'#000000'}
@@ -31,7 +31,7 @@ const UserSettings = () => {
         </Box>
 
         <Box>
-          <Text //目標備蓄量設定
+          <Text
             fontSize={'18px'}
             fontWeight={'medium'}
             color={'#000000'}
